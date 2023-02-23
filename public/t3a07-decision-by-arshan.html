@@ -56,3 +56,18 @@ if (myHour < 18) {
         document.getElementById('myNum02').value = 'Bye'                                  
        }
                                           }">
+ <p>A time-based greeting:</p>
+
+<p id="demo"></p>
+
+
+const time = new Date().getHours();
+let greeting;
+if (time < 10) {
+  greeting = "Good morning";
+} else if (time < 20) {
+  greeting = "Good day";
+} else {
+  greeting = "Good evening";
+}
+document.getElementById("demo").innerHTML = greeting;
