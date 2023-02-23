@@ -2,7 +2,7 @@ Version 0.0.1-1
 <head>
 <title>Decisions</title>
   <style>
-    body {background-color: #ff0000}
+    body {background-color: #00FFFF}
   </style>
 </head>
 <h2 align=center>t3a07-decision-by-arshan.html</h2>
@@ -46,11 +46,18 @@ if (myHour < 18) {
         document.getElementById('myDiv01').innerHTML = myIn01 + ' is not complex'}
 }">
 
+<script>
+const hour = new Date().getHours(); 
+let greeting;
+
 if (hour < 18) {
   greeting = "Good day";
 } else {
   greeting = "Good evening";
 }
+
+document.getElementById("demo").innerHTML = greeting;
+</script>
 
 
 <div id="myDiv01">...</div>
