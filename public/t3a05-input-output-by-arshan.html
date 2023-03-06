@@ -25,7 +25,7 @@ Javascript innerHTML value by Arshan</a>
 }"><br>
 
 <div id="myDiv01">...</div>
-
+<hr>
 <input id="myNum01" type=number value="21" ><br>
 <input type=button value="Number Divided" onclick="{
      let myIn01 = parseFloat(document.getElementById('myNum01').value);
@@ -40,6 +40,17 @@ Javascript innerHTML value by Arshan</a>
    let myIn01 = parseFloat(document.getElementById('myNum01').value);
    let myAnswer = myIn01 + myIn01;
       document.getElementById('myDiv03').innerHTML =
-                                                         myIn01 + ' Added = ' = myAnswer
+                                                         myIn01 + ' Added = ' + myAnswer
 }">
-<div id="myDiv03">...</div>                                                                                                                      
+<div id="myDiv03">...</div><hr>                                                                                                                   
+
+<input id="myNum01" type=number value=21><br>
+<input id="myNum02" type=number value=4><br>
+<input type=button value="Numbers Added" onclick="{
+     let myIn01 = parseFloat(document.getElementById('myNum01').value);
+     let myIn02 = parseFloat(document.getElementById('myNum02').value);
+     let myAnswer = myIn01 + myIn02
+      document.getElementById('myDiv04').innerHTML = 
+                                                  myIn01 + myIn02 + ' Added = ' + myAnswer
+}">
+<div id="myDiv04">...</div><hr>
