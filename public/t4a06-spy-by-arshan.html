@@ -7,25 +7,61 @@
    myString = document.getElementById('myArea01').value.toLowerCase().split('')
    for (let myLoop=0;   myLoop < myString.length; myLoop++){
       myTemp = myString[myLoop]
-      if (myString[myLoop] == 'e') {myTemp  = 'f'} 
-      if (myString[myLoop] == 'g') {myTemp  = 'h'}
-      if (myString[myLoop] == 'a') {myTemp  = 'b'}
-      if (myString[myLoop] == 'c') {myTemp  = 'd'}
-      if (myString[myLoop] == 'i') {myTemp  = 'j'}
-      if (myString[myLoop] == 'k') {myTemp  = 'l'}
-      if (myString[myLoop] == 'm') {myTemp  = 'n'}
-      if (myString[myLoop] == 'o') {myTemp  = 'p'}
-      if (myString[myLoop] == 'q') {myTemp  = 'r'}
-      if (myString[myLoop] == 's') {myTemp  = 't'}
-      if (myString[myLoop] == 'u') {myTemp  = 'v'}
-      if (myString[myLoop] == 'w') {myTemp  = 'x'}
-      if (myString[myLoop] == 'y') {myTemp  = 'z'}
-      if (myString[myLoop] == '1') {myTemp  = '2'}
-      if (myString[myLoop] == '3') {myTemp  = '4'}
-      if (myString[myLoop] == '5') {myTemp  = '6'}
-      if (myString[myLoop] == '7') {myTemp  = '8'}
-      if (myString[myLoop] == '9') {myTemp  = '0'}
-      if (myString[myLoop] == '%') {myTemp  = '$'}
+      if (myString[myLoop] == 'a') {myTemp  = '!'} 
+      if (myString[myLoop] == 'b') {myTemp  = '@'}
+      if (myString[myLoop] == 'c') {myTemp  = '#'}
+      if (myString[myLoop] == 'd') {myTemp  = '$'}
+      if (myString[myLoop] == 'e') {myTemp  = '%'}
+      if (myString[myLoop] == 'f') {myTemp  = '^'}
+      if (myString[myLoop] == 'g') {myTemp  = '&'}
+      if (myString[myLoop] == 'h') {myTemp  = '*'}
+      if (myString[myLoop] == 'i') {myTemp  = '('}
+      if (myString[myLoop] == 'j') {myTemp  = ')'}
+      if (myString[myLoop] == 'k') {myTemp  = '1'}
+      if (myString[myLoop] == 'l') {myTemp  = '2'}
+      if (myString[myLoop] == 'm') {myTemp  = '3'}
+      if (myString[myLoop] == 'n') {myTemp  = '4'}
+      if (myString[myLoop] == 'o') {myTemp  = '5'}
+      if (myString[myLoop] == 'p') {myTemp  = '6'}
+      if (myString[myLoop] == 'q') {myTemp  = '7'}
+      if (myString[myLoop] == 'r') {myTemp  = '8'}
+      if (myString[myLoop] == 's') {myTemp  = '9'}
+      if (myString[myLoop] == 't') {myTemp  = '0'} 
+      if (myString[myLoop] == 'u') {myTemp  = 'a'}
+      if (myString[myLoop] == 'v') {myTemp  = 'b'}
+      if (myString[myLoop] == 'w') {myTemp  = 'c'}
+      if (myString[myLoop] == 'x') {myTemp  = 'd'}
+      if (myString[myLoop] == 'y') {myTemp  = 'e'}
+      if (myString[myLoop] == 'z') {myTemp  = 'f'}
+      if (myString[myLoop] == '1') {myTemp  = 'g'}
+      if (myString[myLoop] == '2') {myTemp  = 'h'}
+      if (myString[myLoop] == '3') {myTemp  = 'i'}
+      if (myString[myLoop] == '4') {myTemp  = 'j'}
+      if (myString[myLoop] == '5') {myTemp  = 'k'} 
+      if (myString[myLoop] == '6') {myTemp  = 'l'}
+      if (myString[myLoop] == '7') {myTemp  = 'm'}
+      if (myString[myLoop] == '8') {myTemp  = 'n'}
+      if (myString[myLoop] == '9') {myTemp  = 'o'}
+      if (myString[myLoop] == '0') {myTemp  = 'p'}                                      
+      if (myString[myLoop] == '!') {myTemp  = 'q'} 
+      if (myString[myLoop] == '@') {myTemp  = 'r'}
+      if (myString[myLoop] == '#') {myTemp  = 's'} 
+      if (myString[myLoop] == '$') {myTemp  = 't'}
+      if (myString[myLoop] == '%') {myTemp  = 'u'}
+      if (myString[myLoop] == '^') {myTemp  = 'v'}
+      if (myString[myLoop] == '&') {myTemp  = 'w'}
+      if (myString[myLoop] == '*') {myTemp  = 'x'} 
+      if (myString[myLoop] == '(') {myTemp  = 'y'}
+      if (myString[myLoop] == ')') {myTemp  = 'z'} 
+      if (myString[myLoop] == '`') {myTemp = '~'}   
+      if (myString[myLoop] == '-') {myTemp = '_'}
+      if (myString[myLoop] == '=') {myTemp = '+'}
+      if (myString[myLoop] == '[') {myTemp = '{'}
+      if (myString[myLoop] == ']') {myTemp = '}'} 
+      if (myString[myLoop] == ';') {myTemp = ':'}   
+      if (myString[myLoop] == ''') {myTemp = '"'}
+      if (myString[myLoop] == ',') {myTemp = '|'}
+      if (myString[myLoop] == '.') {myTemp = '/'}                                           
       myString[myLoop] = myTemp
    }
    document.getElementById('myArea02').value = myString.join('')
@@ -39,26 +75,62 @@
    let myanswer = ''
    myString = document.getElementById('myArea02').value.toLowerCase().split('') 
    for (let myLoop=0;   myLoop < myString.length; myLoop++){
-      myTemp = myString[myLoop]
-      if (myString[myLoop] == 'f') {myTemp  = 'e'} 
-      if (myString[myLoop] == 'h') {myTemp  = 'g'}
-      if (myString[myLoop] == 'b') {myTemp  = 'a'}
-      if (myString[myLoop] == 'd') {myTemp  = 'c'}
-      if (myString[myLoop] == 'j') {myTemp  = 'i'}
-      if (myString[myLoop] == 'l') {myTemp  = 'j'}
-      if (myString[myLoop] == 'n') {myTemp  = 'm'}
-      if (myString[myLoop] == 'p') {myTemp  = 'o'}
-      if (myString[myLoop] == 'r') {myTemp  = 'q'}
-      if (myString[myLoop] == 't') {myTemp  = 's'}
-      if (myString[myLoop] == 'v') {myTemp  = 'u'}
-      if (myString[myLoop] == 'x') {myTemp  = 'w'}
-      if (myString[myLoop] == 'z') {myTemp  = 'y'}
-      if (myString[myLoop] == '2') {myTemp  = '1'}
-      if (myString[myLoop] == '4') {myTemp  = '3'}
-      if (myString[myLoop] == '6') {myTemp  = '5'}
-      if (myString[myLoop] == '8') {myTemp  = '7'}
-      if (myString[myLoop] == '0') {myTemp  = '9'}
-      if (myString[myLoop] == '$') {myTemp  = '%'}   
+      myanswer = myString[myLoop]
+      if (myString[myLoop] == '!') {myTemp  = 'a'} 
+      if (myString[myLoop] == '@') {myTemp  = 'b'}
+      if (myString[myLoop] == '#') {myTemp  = 'c'}
+      if (myString[myLoop] == '$') {myTemp  = 'd'}
+      if (myString[myLoop] == '%') {myTemp  = 'e'}
+      if (myString[myLoop] == '^') {myTemp  = 'f'}
+      if (myString[myLoop] == '&') {myTemp  = 'g'}
+      if (myString[myLoop] == '*') {myTemp  = 'h'}
+      if (myString[myLoop] == '(') {myTemp  = 'i'}
+      if (myString[myLoop] == ')') {myTemp  = 'j'}
+      if (myString[myLoop] == '1') {myTemp  = 'k'}
+      if (myString[myLoop] == '2') {myTemp  = 'l'}
+      if (myString[myLoop] == '3') {myTemp  = 'm'}
+      if (myString[myLoop] == '4') {myTemp  = 'n'}
+      if (myString[myLoop] == '5') {myTemp  = 'o'}
+      if (myString[myLoop] == '6') {myTemp  = 'p'}
+      if (myString[myLoop] == '7') {myTemp  = 'q'}
+      if (myString[myLoop] == '8') {myTemp  = 'r'}
+      if (myString[myLoop] == '9') {myTemp  = 's'}
+      if (myString[myLoop] == '0') {myTemp  = 't'} 
+      if (myString[myLoop] == 'a') {myTemp  = 'u'}
+      if (myString[myLoop] == 'b') {myTemp  = 'v'}
+      if (myString[myLoop] == 'c') {myTemp  = 'w'}
+      if (myString[myLoop] == 'd') {myTemp  = 'x'}
+      if (myString[myLoop] == 'e') {myTemp  = 'y'}
+      if (myString[myLoop] == 'f') {myTemp  = 'z'}
+      if (myString[myLoop] == 'g') {myTemp  = '1'}
+      if (myString[myLoop] == 'h') {myTemp  = '2'}
+      if (myString[myLoop] == 'i') {myTemp  = '3'}
+      if (myString[myLoop] == 'j') {myTemp  = '4'}
+      if (myString[myLoop] == 'k') {myTemp  = '5'} 
+      if (myString[myLoop] == 'l') {myTemp  = '6'}
+      if (myString[myLoop] == 'm') {myTemp  = '7'}
+      if (myString[myLoop] == 'n') {myTemp  = '8'}
+      if (myString[myLoop] == 'o') {myTemp  = '9'}
+      if (myString[myLoop] == 'p') {myTemp  = '0'}                                      
+      if (myString[myLoop] == 'q') {myTemp  = '!'} 
+      if (myString[myLoop] == 'r') {myTemp  = '@'}
+      if (myString[myLoop] == 's') {myTemp  = '#'} 
+      if (myString[myLoop] == 't') {myTemp  = '$'}
+      if (myString[myLoop] == 'u') {myTemp  = '%'}
+      if (myString[myLoop] == 'v') {myTemp  = '^'}
+      if (myString[myLoop] == 'w') {myTemp  = '&'}
+      if (myString[myLoop] == 'x') {myTemp  = '*'} 
+      if (myString[myLoop] == 'y') {myTemp  = '('}
+      if (myString[myLoop] == 'z') {myTemp  = ')'} 
+      if (myString[myLoop] == '~') {myTemp = '~'}   
+      if (myString[myLoop] == '_') {myTemp = '-'}
+      if (myString[myLoop] == '+') {myTemp = '='}
+      if (myString[myLoop] == '{') {myTemp = '['}
+      if (myString[myLoop] == '}') {myTemp = ']'} 
+      if (myString[myLoop] == ':') {myTemp = ';'}   
+      if (myString[myLoop] == '"') {myTemp = '''}
+      if (myString[myLoop] == '|') {myTemp = ','}
+      if (myString[myLoop] == '/') {myTemp = '.'}                                     
        myString[myLoop] = myanswer
    }
    document.getElementById('myArea03').value = myString.join('')                                      
@@ -66,4 +138,3 @@
 
 
 <textarea id="myArea03" rows=4 cols=70></textarea><br> 
-
