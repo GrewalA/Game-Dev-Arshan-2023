@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lists and tables</title>
+    <link rel="stylesheet" href="main.css" type="text/css">
+    <link rel="icon" href="images/7.png" type="x-icon/image">
+  </head>
+  <body>
+    <center>
+      <h1>Lists and tables by Arshan</h1>
+      <h3></h3>
+      <hr>
+    </center>
+    <ol>
+      <h3>Best colors</h3>
+      <li>Blue</li>
+      <ul>
+        <li>Dark blue</li>
+        <li>Light blue</li>
+        <li>cyan</li>
+      </ul>
+      <li>Green</li>
+      <li>Pink</li>
+      <li>Gray</li>
+    </ol><br>
+
+    <h3>Best trees</h3>
+    <ul>
+      <li>Maple</li>
+      <ol>
+        <li>Red Maple</li>
+        <li>Sugar Maple</li>
+      </ol>
+      <li>oak</li>
+      <ol>
+        <li>Black Oak</li>
+        <li>Scarlet Oak</li>
+        <li>Chestnut Oak</li>
+      </ol>
+    </ul>
+    
+    <h3>Tables</h3>
+  
+<table>
+  <caption>Example table</caption>
+  <tr>
+    <td>A</td>
+    <td>B</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>2</td>
+  </tr>
+  </table>
+
+  <br>
+
+  <table>
+    <caption>better table</caption>
+    <tr>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>Q</td>
+      <td>W</td>
+      <td>T</td>
+    </tr>
+    <tr>
+      <td>Z</td>
+      <td>B</td>
+      <td>3</td>
+    </tr>
+    </table>
+
+    <br>
+
+    <table style="border: 0px solid white;">
+      <caption style="border: 0px solid white;">Sneaky table</caption>
+      <tr>
+        <td style="border: 0px solid white;">A</td>
+        <td style="border: 0px solid white;">B</td>
+      </tr>
+      <tr>
+        <td style="border: 0px solid white;">1</td>
+        <td style="border: 0px solid white;">2</td>
+      </tr>
+      </table>
+
+      <br>
+
+      <table>
+        <caption>Media table</caption>
+          <th>Link to the image</th>
+          <th>Image</th>
+        <tr>
+          <td><a href="https://th.bing.com/th/id/OIP.utlBGCla4bmIFf8euXVVWQHaGv?pid=ImgDet&rs=1" target="_blank">Link</a></td>
+          <td><img src="https://th.bing.com/th/id/OIP.utlBGCla4bmIFf8euXVVWQHaGv?pid=ImgDet&rs=1" width="120" height="100"></td>
+        </tr>
+        <tr>
+          <td><a href="https://png.pngtree.com/thumb_back/fh260/back_pic/03/54/06/62579986dba62df.jpg" target="_blank">Link</a></td>
+          <td><img src="https://png.pngtree.com/thumb_back/fh260/back_pic/03/54/06/62579986dba62df.jpg" width="200" height="100"></td>
+        </tr>
+        </table>
+
+        <br>
+
+    <table>
+      <caption>
+        best table
+      </caption>
+      <tr>
+        <th>Box one</th>
+        <th>Box two</th>
+        <th>Box three</th>
+      </tr>
+      <tr>
+        <td>Data cell001</td>
+        <td>Data cell002</td>
+        <td>Data cell003</td>
+      </tr>
+      <tr>
+        <td colspan="2">Wide data cell</td>
+        <td>Smol data cell</td>
+      </tr>
+      <tr>
+        <td rowspan="2">Fat cell</td>
+        <td>Data cell 004</td>
+        <td>Data cell 005</td>
+      </tr>
+      <tr>
+        <td>Data cell 006</td>
+        <td>Data cell 007</td>
+      </tr>
+    </table>
+    <br><br>
+      
+      <button class="button button001" onclick="{document.getElementById('flwr').style.left = parseInt(document.getElementById('flwr').style.left) + 10 + 'px'};
+                                                {document.getElementById('soup').innerHTML = 'WASD also works'}">Move image</button><br>
+    <p id="soup"></p>
+      <img id="flwr" src="https://png.pngtree.com/thumb_back/fh260/back_pic/03/54/06/62579986dba62df.jpg" style="position: absolute; width: 100px; height: 100px; top: 2450px; left: 170px;">
+    
+
+      
+
+    <script>
+      document.addEventListener("keydown", function(e) {
+           if (e.keyCode == 83) {
+            document.getElementById('flwr').style.top = parseInt(document.getElementById('flwr').style.top) + 10 + 'px'
+           };
+       });
+
+       document.addEventListener("keydown", function(e) {
+           if (e.keyCode == 87) {
+            document.getElementById('flwr').style.top = parseInt(document.getElementById('flwr').style.top) + -10 + 'px'
+           };
+       });
+
+       document.addEventListener("keydown", function(e) {
+           if (e.keyCode == 68) {
+            document.getElementById('flwr').style.left = parseInt(document.getElementById('flwr').style.left) + 10 + 'px'
+           };
+       });
+
+       document.addEventListener("keydown", function(e) {
+           if (e.keyCode == 65) {
+            document.getElementById('flwr').style.left = parseInt(document.getElementById('flwr').style.left) + -10 + 'px'
+           };
+       });
+    </script>
+  </body>
