@@ -89,12 +89,12 @@
           <th>Link to the image</th>
           <th>Image</th>
         <tr>
-          <td><a href="https://th.bing.com/th/id/OIP.utlBGCla4bmIFf8euXVVWQHaGv?pid=ImgDet&rs=1" target="_blank">Link</a></td>
-          <td><img src="https://th.bing.com/th/id/OIP.utlBGCla4bmIFf8euXVVWQHaGv?pid=ImgDet&rs=1" width="120" height="100"></td>
+          <td><a href="https://expertphotography.b-cdn.net/wp-content/uploads/2022/05/Landscape-Photography-Sophie-Turner.jpg" target="_blank">Link</a></td>
+          <td><img src="https://expertphotography.b-cdn.net/wp-content/uploads/2022/05/Landscape-Photography-Sophie-Turner.jpg" width="120" height="100"></td>
         </tr>
         <tr>
-          <td><a href="https://png.pngtree.com/thumb_back/fh260/back_pic/03/54/06/62579986dba62df.jpg" target="_blank">Link</a></td>
-          <td><img src="https://png.pngtree.com/thumb_back/fh260/back_pic/03/54/06/62579986dba62df.jpg" width="200" height="100"></td>
+          <td><a href="https://cdn.britannica.com/87/205187-050-BEE2B338/tapetum-lucidum-light-retina-night-vision-vertebrates.jpg" target="_blank">Link</a></td>
+          <td><img src="https://cdn.britannica.com/87/205187-050-BEE2B338/tapetum-lucidum-light-retina-night-vision-vertebrates.jpg" width="200" height="100"></td>
         </tr>
         </table>
 
@@ -110,30 +110,30 @@
         <th>Box three</th>
       </tr>
       <tr>
-        <td>Data cell001</td>
-        <td>Data cell002</td>
-        <td>Data cell003</td>
+        <td>Data box 001</td>
+        <td>Data box 002</td>
+        <td>Data box 003</td>
       </tr>
       <tr>
-        <td colspan="2">Wide data cell</td>
-        <td>Smol data cell</td>
+        <td colspan="2">Wide box</td>
+        <td>Small box</td>
       </tr>
       <tr>
-        <td rowspan="2">Fat cell</td>
-        <td>Data cell 004</td>
-        <td>Data cell 005</td>
+        <td rowspan="2">Big box</td>
+        <td>Data box 004</td>
+        <td>Data box 005</td>
       </tr>
       <tr>
-        <td>Data cell 006</td>
-        <td>Data cell 007</td>
+        <td>Data box 006</td>
+        <td>Data box 007</td>
       </tr>
     </table>
     <br><br>
       
-      <button class="button button001" onclick="{document.getElementById('flwr').style.left = parseInt(document.getElementById('flwr').style.left) + 10 + 'px'};
-                                                {document.getElementById('soup').innerHTML = 'WASD also works'}">Move image</button><br>
-    <p id="soup"></p>
-      <img id="flwr" src="https://png.pngtree.com/thumb_back/fh260/back_pic/03/54/06/62579986dba62df.jpg" style="position: absolute; width: 100px; height: 100px; top: 2450px; left: 170px;">
+      <button class="button button001" onclick="{document.getElementById('dog').style.left = parseInt(document.getElementById('dog').style.left) + 10 + 'px'};
+                                                {document.getElementById('run').innerHTML = 'WASD also works'}">Move image</button><br>
+    <p id="run"></p>
+      <img id="dog" src="https://cdn.outsideonline.com/wp-content/uploads/2018/12/10/running-dog-breeds_h.jpg" style="position: absolute; width: 100px; height: 100px; top: 2450px; left: 170px;">
     
 
       
@@ -141,25 +141,25 @@
     <script>
       document.addEventListener("keydown", function(e) {
            if (e.keyCode == 83) {
-            document.getElementById('flwr').style.top = parseInt(document.getElementById('flwr').style.top) + 10 + 'px'
+            document.getElementById('dog').style.top = parseInt(document.getElementById('dog').style.top) + 10 + 'px'
            };
        });
 
        document.addEventListener("keydown", function(e) {
            if (e.keyCode == 87) {
-            document.getElementById('flwr').style.top = parseInt(document.getElementById('flwr').style.top) + -10 + 'px'
+            document.getElementById('dog').style.top = parseInt(document.getElementById('dog').style.top) + -10 + 'px'
            };
        });
 
        document.addEventListener("keydown", function(e) {
            if (e.keyCode == 68) {
-            document.getElementById('flwr').style.left = parseInt(document.getElementById('flwr').style.left) + 10 + 'px'
+            document.getElementById('dog').style.left = parseInt(document.getElementById('dog').style.left) + 10 + 'px'
            };
        });
 
        document.addEventListener("keydown", function(e) {
            if (e.keyCode == 65) {
-            document.getElementById('flwr').style.left = parseInt(document.getElementById('flwr').style.left) + -10 + 'px'
+            document.getElementById('dog').style.left = parseInt(document.getElementById('dog').style.left) + -10 + 'px'
            };
        });
     </script>
