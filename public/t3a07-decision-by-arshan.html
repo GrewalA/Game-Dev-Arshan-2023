@@ -72,3 +72,78 @@ if (hour < 18) {
 
 document.getElementById("demo").innerHTML = greeting;
 </script>
+<div id="myDiv02">...</div>
+Search Jeremy or Michael or any other random name
+<input id="myName01" type=text placeholder="Insert your first name" value=""><br>
+    <input type=button value="Common Name?" onclick="name()">
+    <div id="myDiv03">...</div>
+    
+How are you feeling today?<br>
+    <input type=radio name="myRad01" id='sad' value="Sad">Sad<br>
+    <input type=radio name="myRad01" id='happy' value="Happy">Happy<br>
+    <input type=radio name="myRad01" id='normal' value="Normal">Normal<br>
+    <input type=radio name="myRad01" id='dunno' value="I don\'t know">I don't know<br>
+    <input type=button value="Check" onclick="hru()">    
+    <div id="myDiv04">...</div>
+    
+ <b>Even or Odd try to get the magiacl number of 42 and 69</b><br><br>
+    <input id="myNum02" type=number placeholder="Insert number"><br>
+    <input type=button value="Even or Odd?" onclick="num()">
+    <h6>Hint: do you celebrate the towel day?</h6>
+    <div id="myDiv05">...</div><br><br>
+    
+You say a number and I say its next, or its previous, whatever you want<br>
+    <input type=number id="myNumToChange" placegolher="5"><br>
+    <input type=radio name="changeName" id="next" checked>Next<br>
+    <input type=radio name="changeName" id="previous">Previous<br>
+    <input type=button value="Number, please" onclick="ex04()">
+    <div id="myDiv06">...</div>   
+   <script> 
+   function name() {
+      var name = document.getElementById('myName01').value;       
+      var boyName = ['Michael', 'John', 'Chris', 'David', 'Mike', 'Ryan', 'Matt', 'Jason', 'Brian', 'Andrew'];
+      var girlName = ['Olivia', 'Emma', 'Amelia', 'Ava', 'Sophia', 'Charlote', 'Isabella', 'Mia', 'Luna', 'Harper', 'Mary'];
+      if (boyName.includes(name) || girlName.includes(name)) {
+        document.getElementById('myDiv03').innerHTML = 'Pretty common name, But Nice!';
+      } else if (name == 'Ellis' || name == 'Jeremy') {
+        document.getElementById('myDiv03').innerHTML = 'Welcome, Mr.Ellis.'; 
+      } else {
+        document.getElementById('myDiv03').innerHTML = 'Unusual! But Nice!';
+      }
+    }
+    function hru() {  
+      if (document.getElementById('sad').checked) {
+        document.getElementById('myDiv04').innerHTML = 'I am so sorry to hear that'
+                                                       
+      } else if (document.getElementById('happy').checked) {
+        document.getElementById('myDiv04').innerHTML = 'So good to hear that!';
+      } else if (document.getElementById('normal').checked) {
+        document.getElementById('myDiv04').innerHTML = 'That is usually good';
+      } else if (document.getElementById('dunno').checked) {
+        document.getElementById('myDiv04').innerHTML = 'Sorry...'
+      }
+    }
+    function num() {
+      let myIn02 = parseFloat(document.getElementById('myNum02').value);
+      let myMod01 = myIn02 % 2;
+      if (myIn02 == 42) {
+        document.getElementById('myDiv05').innerHTML = 'Hey nice you found it btw this number is even';
+      } else if (myIn02 == 69) {
+        document.getElementById('myDiv05').innerHTML = 'This number is odd nice but you found it';
+      } else if (myMod01 == 0) {
+        document.getElementById('myDiv05').innerHTML = 'This number is even';
+      }else{
+        document.getElementById('myDiv05').innerHTML = 'This number is odd';
+      }
+    }
+    function ex04() {
+      var myNumToChange = parseFloat(document.getElementById('myNumToChange').value)
+      if (document.getElementById('next').checked) {
+        myNumToChange = myNumToChange + 1
+        document.getElementById('myDiv06').innerHTML = myNumToChange
+      } else {
+        myNumToChange = myNumToChange - 1
+        document.getElementById('myDiv06').innerHTML = myNumToChange
+      }
+    }
+  </script> 
