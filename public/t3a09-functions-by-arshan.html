@@ -1,6 +1,6 @@
 <script>
   
-function myExampleFunction(){
+ function myExampleFunction(){
   let myIn01 = parseInt(document.getElementById('myText01').value)
   let mySum = myIn01 + myIn01
   let myReply = myIn01 + ' + ' + myIn01 + ' = ' + mySum
@@ -8,6 +8,34 @@ function myExampleFunction(){
   
 }
   
+  function mySquare(){
+    let myIn01 = parseFloat(document.getElementById('myNum01').value)
+    let myAnswer = myIn01 * myIn01
+    let mySquare = myIn01 + ' squared = ' + myAnswer
+    return mySquare
+    
+}    
+  
+  function my2(){
+   let myIn01 = parseFloat(document.getElementById('myNum03').value);
+   let myAnswer = myIn01 + myIn01;
+   let my2add = myIn01 + ' Added = ' + myAnswer
+   return my2add
+    
+}
+  function my#added(){
+    let myIn01 = parseFloat(document.getElementById('myNum04').value);
+    let myIn02 = parseFloat(document.getElementById('myNum05').value);
+    let myAnswer = myIn01 + myIn02;
+    let my2added = myIn01 + myIn02 + ' Added = ' + myAnswer
+    return my2added
+    
+}    
+  function myWordFunction(){
+    let myIn01 = (document.getElementById('myText02').value)
+    let mySum = myIn01 + ' is a nice name '
+    let myReply = myIn01 + ' is a nice name  '
+    return myReply  
 </script>
 
 Version 0.0.1
@@ -37,3 +65,32 @@ function myGrabNumber(){
 }">
 
 <div id="myDiv01">...</div>
+
+<input type=button value="myEvent squares" onclick="{
+   document.getElementById('myDiv02').innerHTML =  mySquare()
+}"><br>
+
+<div id="myDiv02">...</div><br>
+
+<input id="myNum03" type=number value="21"><br>
+<input type=button value="Number Added By Itself" onclick="{
+   document.getElementById('myDiv03').innerHTML = my2()
+}"><br>
+
+<div id="myDiv03">...</div><br> 
+
+<input id="myNum04" type=number value="21"><br>
+<input id="myNum05" type=number value="4"><br>
+<input type=button value="Numbers Added" onclick="{
+     document.getElementById('myDiv04').innerHTML = my#added()
+}"><br>
+<div id="myDiv04">...</div><br>
+
+<input type=text id="myText02" value="Enter your name..."><br>
+<input type=button value="Word Function" onClick="{
+      document.getElementById('myDiv05').innerHTML = myWordFunction()
+}"><br>   
+
+<div id="myDiv05">..</div><br>
+
+
