@@ -1,61 +1,39 @@
-<!DOCTYPE html>
-<head>
-    <link rel="stylesheet" href="style.css">
-    <script>
-    function myExampleFunction(){
-    let myIn01 = parseInt(document.getElementById('myText01').value)
-    let mySum = myIn01 + myIn01
-    let myReply = myIn01 + ' + ' + myIn01 + ' = ' + mySum
-    return myReply
+<script>
+  
+function myExampleFunction(){
+  let myIn01 = parseInt(document.getElementById('myText01').value)
+  let mySum = myIn01 + myIn01
+  let myReply = myIn01 + ' + ' + myIn01 + ' = ' + mySum
+  return myReply
+  
 }
-    </script>
+  
+</script>
 
-    Version 0.0.3
+Version 0.0.1
 
-    <h2 align="center">t3a09-functions-by-arshan.html</h2>
-<a href="https://www.w3schools.com/js/js_functions.asp">
-    Good reference to Javascript funtions</a><br>
+<h2 align=center>t1a09-functions-by-arshan.html</h2>
 
-<style>
-    body{
-    background-color:darkslategrey;
-    font:900;
-    margin:2px;
+<a href="https://www.w3.schools.com/js/js_functions.asp">
+  Good reference to Javascript functions</a><br>
+
+Functions are used to sensibly organize code. Then they are "Called" elsewhere.
+Information can also be passed to functions (that's more advanced).
+
+<h4> Example Functions code</h4>
+<pre>
+function myGrabNumber(){
+    return parseInt(document.getElementById('myText01').value)
 }
+</pre>
 
-button:hover{
-    transition:ease-in-out;
-    transform:scale(1.05);
-    background-color:gray;
-}
-
-button:active{
-    transition:ease-out;
-    transform:scale(.95);
-    background-color:black;
-    color:aliceblue;
-}
-</style>
-</head>
-<body>
-    Funtions are used to sensibly organize code. Then they are "called" elsewhere.
-    Information can also be passed to funtions(that's more advanced).
-
-    <h4>Example Funtions code</h4>
-    <pre>
-        function myGrabNumber(){
-            return parseInt(document.getElementById('myText01').value)
-        }
-    </pre>
-
-    <h4>Example working code</h4>
+<h4> Example working code</h4>
 
 
-    <input type="text" id="myText01" value="3"><br>
+<input type=text id="myText01" value="3"><br>
 
-    <button onclick="{
-    document.getElementById('myDiv01').innerHTML = myExampleFunction()
-    }">Function Example</button><br>
-    <div id="myDiv01">...</div>
-    
-</body>
+<input type=button value="Function Example" onClick="{
+   document.getElementById('myDiv01').innerHTML =  myExampleFunction()
+}">
+
+<div id="myDiv01">...</div>
