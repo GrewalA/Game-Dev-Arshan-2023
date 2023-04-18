@@ -65,9 +65,17 @@
       myString[myLoop] = myTemp
    }
    document.getElementById('myArea02').value = myString.join('')
-}"><br><br>
+}">
 
+<input type="button" value="base64 encrypt" onclick="{ 
+  const input = document.getElementById('myArea01'); 
+  const inputValue = input.value; 
+  const base64Value = btoa(inputValue); 
+  const output = document.getElementById('myArea02'); 
+  output.innerHTML = base64Value; 
+}">  
 
+<br><br>
 
 <textarea id="myArea02" rows=4 cols=70></textarea><br> 
 
@@ -134,7 +142,17 @@
       myString[myLoop] = myTemp
    }
    document.getElementById('myArea03').value = myString.join('')                                      
-}"><br><br>
+}">
+
+<input type="button" value="base64 decrypt" onclick="{ 
+  const input = document.getElementById('myArea02'); 
+  const inputValue = input.value; 
+  const decodedValue = atob(inputValue); 
+  const output = document.getElementById('myArea03'); 
+  output.value = decodedValue; 
+}"> 
+
+<br><br>
 
 
 <textarea id="myArea03" rows=4 cols=70></textarea><br> 
