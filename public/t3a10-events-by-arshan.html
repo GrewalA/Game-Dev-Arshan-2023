@@ -33,6 +33,7 @@ Events are HTML code that activates Javascript code
 You do at least 8 other events:<br> 
 onClick, onDBClick, onChange, onBlur, onFocus, orMouseMove, onTouch, onKeyDown, onKeyPress, onDragStart, onTouchStart, onTouchEnd, onTouchMove 
 
+
  <div class="droptarget" ondrop="drop(event)" ondragover="allowDrop(event)">
   <p ondragstart="dragStart(event)" ondragend="dragEnd(event)" draggable="true" id="dragtarget">Drag me!</p>
 </div>
@@ -77,12 +78,12 @@ function mouseOut() {
 </script>
 <h4 style="border-top: 2px solid Black"></h4><br><br>
 onDBLClick:<br> 
-        <input type="text" value="2" id="myText01"><br>
+        <input type="text" value="2" id="myText02"><br>
         <input type="button" value="onDBLClick" ondblclick="onDBClickFunc()"><br>
-        <div id="myDiv01">...</div>
+        <div id="myDiv02">...</div>
 <script>
 function onDBClickFunc() {
-            document.getElementById("myDiv01").innerHTML = document.getElementById("myText003").value;
+            document.getElementById("myDiv02").innerHTML = document.getElementById("myText02").value;
 }
 </script>
   
