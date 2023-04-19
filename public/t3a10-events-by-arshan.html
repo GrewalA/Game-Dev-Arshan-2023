@@ -77,11 +77,12 @@ function mouseOut() {
 </script>
 <h4 style="border-top: 2px solid Black"></h4><br><br>
 onDBLClick:<br> 
-        <input type="text" value="2" id="myText003"><br>
+        <input type="text" value="2" id="myText01"><br>
         <input type="button" value="onDBLClick" ondblclick="onDBClickFunc()"><br>
+        <div id="myDiv01">...</div>
 <script>
 function onDBClickFunc() {
-            document.getElementById("myDiv003").innerHTML = document.getElementById("myText003").value;
+            document.getElementById("myDiv01").innerHTML = document.getElementById("myText003").value;
 }
 </script>
   
