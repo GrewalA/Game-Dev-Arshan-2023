@@ -32,3 +32,46 @@ Events are HTML code that activates Javascript code
 
 You do at least 8 other events:<br> 
 onClick, onDBClick, onChange, onBlur, onFocus, orMouseMove, onTouch, onKeyDown, onKeyPress, onDragStart, onTouchStart, onTouchEnd, onTouchMove 
+
+ <div class="droptarget" ondrop="drop(event)" ondragover="allowDrop(event)">
+  <p ondragstart="dragStart(event)" ondragend="dragEnd(event)" draggable="true" id="dragtarget">Drag me!</p>
+</div>
+
+<p id="demo"></p>
+
+<div class="droptarget" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+
+<script>
+function dragStart(event) {
+  event.dataTransfer.setData("Text", event.target.id);
+  document.getElementById("demo").innerHTML = "Dragging started";
+}
+
+function dragEnd(event) {
+  document.getElementById("demo").innerHTML = "Dragging ended.";
+}
+
+function allowDrop(event) {
+  event.preventDefault();
+}
+
+function drop(event) {
+  event.preventDefault();
+  const data = event.dataTransfer.getData("Text");
+  event.target.appendChild(document.getElementById(data));
+}
+</script>
+<h4 style="border-top: 2px solid Black"></h4><br><br>
+<div id="hoverMe" onmouseover="mouseOver()" onmouseout="mouseOut()">
+  <p>Hover over me!</p>
+</div><br><br><br>
+
+<script>
+function mouseOver() {
+  document.getElementById("hoverMe").style.backgroundColor = "Khaki";
+}
+
+function mouseOut() {
+  document.getElementById("hoverMe").style.backgroundColor = "LightPink";
+}
+</script>
