@@ -31,7 +31,7 @@ Events are HTML code that activates Javascript code
 <br>
 
 You do at least 8 other events:<br> 
-onClick, onDBClick, onChange, onBlur, onFocus, orMouseMove, onTouch, onKeyDown, onKeyPress, onDragStart, onTouchStart, onTouchEnd, onTouchMove 
+onClick, onDBClick, onChange, onBlur, onFocus, orMouseMove, onTouch, onKeyDown, onKeyPress, onDragStart, onTouchStart, onTouchEnd, onTouchMove<br>
 
  onDragStart:<br>
  <div class="droptarget" ondrop="drop(event)" ondragover="allowDrop(event)">
@@ -63,7 +63,7 @@ function drop(event) {
 }
 </script>
 <h4 style="border-top: 2px solid Black"></h4><br><br>
-orMouseMove:<br>
+onMouseMove:<br>
 <div id="hoverMe" onmouseover="mouseOver()" onmouseout="mouseOut()">
   <p>Hover over me!</p>
 </div><br><br><br>
@@ -97,4 +97,12 @@ Select Box: (CLick the box)<BR>
 <option value='myOne'>One
 <option value='myTwo'>Two
 <option value='myThree'>Three
-</select><br><br
+</select><br><br>
+<h4 style="border-top: 2px solid Black"></h4><br><br> 
+onFocus:<br>
+     <input type="text" id="myText03" value="..." onfocus="onFocusFunc()"> 
+<script>  
+      function onFocusFunc() {
+            document.getElementById('myText005').value = 'Write whatever you want';
+        }
+</script>  
