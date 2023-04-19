@@ -100,9 +100,19 @@ Select Box: (CLick the box)<BR>
 </select><br><br>
 <h4 style="border-top: 2px solid Black"></h4><br><br> 
 onFocus:<br>
-     <input type="text" id="myText03" value="..." onfocus="onFocusFunc()"> 
+     <input type="text" id="myText03" value="..." onfocus="onFocus()"> 
 <script>  
-      function onFocusFunc() {
-            document.getElementById('myText005').value = 'Write whatever you want';
+      function onFocus() {
+            document.getElementById('myText03').value = 'It works';
         }
-</script>  
+</script>
+<h4 style="border-top: 2px solid Black"></h4><br><br> 
+onBlur:<br>
+        <input type="text" id="myText04" value="..." onblur="onBlur()">
+  
+<script>
+  function onBlur() {
+            document.getElementById('myText04').value = 'It works';
+        }
+  </script>
+<h4 style="border-top: 2px solid Black"></h4><br><br>  
