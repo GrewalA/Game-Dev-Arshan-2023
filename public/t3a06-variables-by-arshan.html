@@ -65,3 +65,21 @@ document.getElementById ('myDiv02' ).innerHTML = myIn01
     countElement.innerHTML = count;
   }
 </script>
+Greeting changes depending on time of day<br>
+<p id="greeting"></p><br>
+<script>
+  let now = new Date();
+  let hour = now.getHours();
+
+  let greeting;
+  if (hour < 12) {
+    greeting = "Good morning";
+  } else if (hour < 18) {
+    greeting = "Good afternoon";
+  } else {
+    greeting = "Good evening";
+  }
+
+  let greetingElement = document.getElementById("greeting");
+  greetingElement.innerHTML = greeting;
+</script>
