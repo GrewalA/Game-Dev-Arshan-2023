@@ -21,20 +21,4 @@ Text example: <input id="myText1" type=text size=70 value="" placeholder="Write 
 
 <input type="button" value="Retrieve Text" onClick="{
    document.getElementById('myText1').value = localStorage.getItem('myStoredText')
-}"> 
-Number example: <input id="myText2" type=number size=70 value="" placeholder="Write here"><br>
-
-<input type="button" value="Store number" onClick="{
-   let myNumber = parseInt(document.getElementById('myText2').value);
-   if (!isNaN(myNumber)) {
-      localStorage.setItem('myStoredNumber', myNumber);
-      alert(myNumber + ' \nHas been stored')
-      document.getElementById('myText2').value = ''
-   } else {
-      alert('Please enter a valid number.')
-   }
-}">
-
-<input type="button" value="Get number" onClick="{
-   document.getElementById('myText2').value = localStorage.getItem('myStoredNumber')
-}"> 
+}"><br>
