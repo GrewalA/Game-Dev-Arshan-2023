@@ -12,7 +12,7 @@ Tax rate %: <input id="taxRate" type="number" value="30"><br>
    let daypay = wage * hours;
    let netpay = daypay - (daypay * taxRate);
    let monthlypay = daypay * 20;
-   let yearlypay = monthlypay * 240;
+   let yearlypay = monthlypay * 12;
    let daytax = daypay * taxRate;
    let monthlytax = monthlypay * taxRate;
    let monthlynetpay = monthlypay - (monthlypay * taxRate);
