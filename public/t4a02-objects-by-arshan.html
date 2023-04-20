@@ -36,22 +36,22 @@ Nothing: <input type=text id="myText01" value="Useless at the moment"><br>
                                                                 }">
 <div id="myDiv01">...</div>
 <br><hr>
-<input type=textarea value="Jane" id="myText01"><br>
-<input type=textarea value="Doe" id="myText02"><br>
-<input type=textarea value="50" id="myText03"><br>
-<input type=textarea value="Blue" id="myText04"><br>
+<input type=textarea value="Jane" id="myText02"><br>
+<input type=textarea value="Doe" id="myText03"><br>
+<input type=textarea value="50" id="myText04"><br>
+<input type=textarea value="Blue" id="myText05"><br>
 <input type=button value="Submit" onclick="{
   let myPerson = {
-'first' : document.getElementById('myText01').value,
-'last': document.getElementById('myText02').value,
-'age' : document.getElementById('myText03').value,
-'eyes' : document.getElementById('myText04').value
+'first' : document.getElementById('myText02').value,
+'last': document.getElementById('myText03').value,
+'age' : document.getElementById('myText04').value,
+'eyes' : document.getElementById('myText05').value
 }
-document.getElementById('myDiv02').innerHTML = '<br> this person is: <br>'
-document.getElementById('myDiv02').innerHTML += 'first Name: ' + myPerson.first + '<br>'
+document.getElementById('myDiv02').innerHTML = '<br> This person is: <br>'
+document.getElementById('myDiv02').innerHTML += 'First Name: ' + myPerson.first + '<br>'
 document.getElementById('myDiv02').innerHTML += 'Last Name: ' + myPerson.last + '<br>'
-document.getElementById('myDiv02').innerHTML += 'age: ' + myPerson.age + '<br>'
-document.getElementById('myDiv02').innerHTML += 'eyes: ' + myPerson.eyes + '<br>'
+document.getElementById('myDiv02').innerHTML += 'Age: ' + myPerson.age + '<br>'
+document.getElementById('myDiv02').innerHTML += 'Eye Colour: ' + myPerson.eyes + '<br>'
 }">
 
 <div id="myDiv02">...</div>
