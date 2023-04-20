@@ -1,10 +1,21 @@
-<script> let mySound1 = new Audio('Yeh.m4a') </script>
- 
+<script> 
+ let mySound1 = new Audio('Yeh.m4a') 
+let mySound2 = new Audio('https://michaelcedrone.github.io/gamedevmike/public/Mario%20Jump.wav')
+let mySound3 = new Audio('https://michaelcedrone.github.io/gamedevmike/public/Mario%20Death%20-%20QuickSounds.com.mp3')
+</script>
 
 
 <h1 align=center>T3A12-Sounds-and-events-name.html</h1>
-
-
+<hr>
 <input type=button value=sound onClick="{
     mySound1.play()
-}">
+}"><br><br>
+
+<input type=button value=jump onClick="{
+    mySound2.play()
+}"><br><br>
+ 
+  
+<input type=button value=death onClick="{
+    mySound3.play()
+}"><br><br>  
