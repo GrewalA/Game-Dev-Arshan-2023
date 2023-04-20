@@ -83,3 +83,21 @@ Greeting changes depending on time of day<br>
   let greetingElement = document.getElementById("greeting");
   greetingElement.innerHTML = greeting;
 </script>
+<hr>
+Please solve for "x":
+ <br>
+ <var id="x">x</var> +
+ <var id="y">y</var> = 7 
+ <br>
+ <input id="answer">
+ <script>
+ x.innerText = 'x'
+ y.innerText = 4
+ answer.addEventListener(
+ 'keyup',
+ () => {
+ x.innerText = answer.value
+ if(!!!x.innerText) x.innerText = 'x'
+}
+)
+</script>
