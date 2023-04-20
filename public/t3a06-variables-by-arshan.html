@@ -85,19 +85,21 @@ Greeting changes depending on time of day<br>
 </script>
 <hr>
 Please solve for "x":
- <br>
- <var id="x">x</var> +
- <var id="y">y</var> = 7 
- <br>
- <input id="answer">
- <script>
- x.innerText = 'x'
- y.innerText = 4
- answer.addEventListener(
- 'keyup',
- () => {
- x.innerText = answer.value
- if(!!!x.innerText) x.innerText = 'x'
-}
-)
+<br>
+<var id="x">x</var> +
+<var id="y">y</var> = 7 
+<input id="answer">
+<script>
+  let x = document.getElementById("x");
+  let y = document.getElementById("y");
+  let answer = document.getElementById("answer");
+  x.innerHTML = 'x';
+  y.innerHTML = 4;
+  answer.addEventListener('keyup', () => {
+    x.innerHTML = answer.value;
+    if (!x.innerHTML) {
+      x.innerHTML = 'x';
+    }
+  });
 </script>
+
