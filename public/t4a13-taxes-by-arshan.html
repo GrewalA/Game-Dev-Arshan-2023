@@ -9,22 +9,25 @@ Tax rate %: <input id="taxRate" type="number" value="30"><br>
    let wage = parseFloat(document.getElementById('wage').value);
    let hours = parseFloat(document.getElementById('hours').value);
    let taxRate = parseFloat(document.getElementById('taxRate').value) / 100;
-   let grosspay = wage * hours;
-   let netpay = grosspay - (grosspay * taxRate);
-   let monthpay = netpay * 20;
-   let yearpay = netpay * 240;
-   let tax = grosspay * taxRate;
-   document.getElementById('myDiv01').innerHTML = 'Gross pay $' + grosspay;
+   let daypay = wage * hours;
+   let netpay = daypay - (daypay * taxRate);
+   let monthlypay = daypay * 20;
+   let yearpay = monthlypay * 240;
+   let daytax = daypay * taxRate;
+   let monthlytax = monthlypay * taxRate;                                      
+   document.getElementById('myDiv01').innerHTML = 'Day pay $' + daypay;
    document.getElementById('myDiv02').innerHTML = 'Net income $' + netpay;
-   document.getElementById('myDiv03').innerHTML = 'Tax $' + tax;
-   document.getElementById('myDiv04').innerHTML = 'Monthly pay $' + monthpay;
-   document.getElementById('myDiv05').innerHTML = 'Yearly pay $' + yearpay;
+   document.getElementById('myDiv03').innerHTML = 'Tax $' + daytax;
+   document.getElementById('myDiv04').innerHTML = 'Monthly pay $' + monthlypay;
+   document.getElementById('myDiv05').innerHTML = 'Monthly netpay $' + monthlytax;                                      
+   document.getElementById('myDiv06').innerHTML = 'Yearly pay $' + yearpay;
 }">
 <div id="myDiv01">..</div>
 <div id="myDiv03">..</div>
 <div id="myDiv02">..</div>
 <div id="myDiv04">..</div>
 <div id="myDiv05">..</div>
+<div id="myDiv06">..</div>
 
 <p id="dayPay"></p><br>
 <p id="total"></p>
