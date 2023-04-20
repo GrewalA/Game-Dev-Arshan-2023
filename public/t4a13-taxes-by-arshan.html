@@ -1,1 +1,34 @@
+<h2 align="center" style="border: 2px solid Black"><b>Taxes</b></h2>
+<br>
+<hr>
+Hourly Wage:   <input id="wage" type="number" value="15"><br>
+Hours Worked:   <input id="hours" type="number" value="8"><br>
+Tax rate %: <input id="taxRate" type="number" value="30"><br><br>
 
+<input type="button" value="Go" onclick="{
+ 
+   let wage = parseFloat(document.getElementById('wage').value);
+   let hours = parseFloat(document.getElementById('hours').value);
+   let taxRate = parseFloat(document.getElementById('taxRate').value) / 100;
+   let grosspay = wage * hours;
+   let netpay = grosspay - (grosspay * taxRate);
+   let monthpay = netpay * 20;
+   let yearpay = netpay * 240;
+   let moneyded = grosspay * taxRate;
+   document.getElementById('myDiv4').innerHTML = 'Gross pay $' + grosspay;
+   document.getElementById('myDiv').innerHTML = 'Net income $' + netpay;
+   document.getElementById('myDiv5').innerHTML = 'Money deducted $' + moneyded;
+   document.getElementById('myDiv2').innerHTML = 'Monthly pay $' + monthpay;
+   document.getElementById('myDiv3').innerHTML = 'Yearly pay $' + yearpay;
+                                                     
+}">
+<div id="myDiv4">..</div>
+<div id="myDiv">..</div>
+<div id="myDiv5">..</div>
+<div id="myDiv2">..</div>
+<div id="myDiv3">..</div>
+
+<p id="dayPay"></p><br>
+<p id="total"></p>
+<p id="tax"></p>
+<p id="takeHomePay"></p>
