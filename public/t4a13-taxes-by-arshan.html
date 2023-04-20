@@ -13,18 +13,18 @@ Tax rate %: <input id="taxRate" type="number" value="30"><br>
    let netpay = grosspay - (grosspay * taxRate);
    let monthpay = netpay * 20;
    let yearpay = netpay * 240;
-   let moneyded = grosspay * taxRate;
-   document.getElementById('myDiv4').innerHTML = 'Gross pay $' + grosspay;
-   document.getElementById('myDiv').innerHTML = 'Net income $' + netpay;
-   document.getElementById('myDiv5').innerHTML = 'Money deducted $' + moneyded;
-   document.getElementById('myDiv2').innerHTML = 'Monthly pay $' + monthpay;
-   document.getElementById('myDiv3').innerHTML = 'Yearly pay $' + yearpay;
+   let tax = grosspay * taxRate;
+   document.getElementById('myDiv01').innerHTML = 'Gross pay $' + grosspay;
+   document.getElementById('myDiv02').innerHTML = 'Net income $' + netpay;
+   document.getElementById('myDiv03').innerHTML = 'Tax $' + tax;
+   document.getElementById('myDiv04').innerHTML = 'Monthly pay $' + monthpay;
+   document.getElementById('myDiv05').innerHTML = 'Yearly pay $' + yearpay;
 }">
-<div id="myDiv4">..</div>
-<div id="myDiv">..</div>
-<div id="myDiv5">..</div>
-<div id="myDiv2">..</div>
-<div id="myDiv3">..</div>
+<div id="myDiv01">..</div>
+<div id="myDiv03">..</div>
+<div id="myDiv02">..</div>
+<div id="myDiv04">..</div>
+<div id="myDiv05">..</div>
 
 <p id="dayPay"></p><br>
 <p id="total"></p>
