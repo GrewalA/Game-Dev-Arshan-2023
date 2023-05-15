@@ -21,15 +21,14 @@ Text example: <input id="myText1" type=text size=70 value="" placeholder="Write 
 <input type="button" value="Retrieve Text" onClick="{
    document.getElementById('myText1').value = localStorage.getItem('myStoredText')
 }"><br>
-Range: <input type=range id="myRange01" style="width:100px;" min="0" max="100" value="50" oninput="this.nextElementSibling.value = this.value; document.getElementById('myDiv01').innerHTML = document.getElementById('myRange01').value;">
+<input type="range" id="myRange01" style="width:100px;" min="0" max="100" value="50" oninput="this.nextElementSibling.value = this.value; document.getElementById('myDiv01').innerHTML = this.value;">
 <div id="myDiv01"></div>
 <input type="button" value="Store Range" onClick="{
-    localStorage.setItem('myStoredRange', document.getElementById('myRange01').value)             
-    alert(document.getElementById('myRange01').value + ' \nHas been stored')                                              
-    document.getElementById('myRange01').value = ''
+    localStorage.setItem('myStoredRange', document.getElementById('myRange01').value);
+    alert(document.getElementById('myRange01').value + ' \nHas been stored');
+    document.getElementById('myRange01').value = '';
 }">
-   <input type="button" value="Retrieve Range" onClick="{
-   document.getElementById('myRange01').value = localStorage.getItem('myStoredRange')
-   document.getElementById('myDiv01').innerHTML = document.getElementById('myRange01').value
+<input type="button" value="Retrieve Range" onClick="{
+    document.getElementById('myRange01').value = localStorage.getItem('myStoredRange');
+    document.getElementById('myDiv01').innerHTML = document.getElementById('myRange01').value;
 }">
-<br>
