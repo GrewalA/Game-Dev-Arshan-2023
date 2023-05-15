@@ -22,3 +22,13 @@ Text example: <input id="myText1" type=text size=70 value="" placeholder="Write 
 <input type="button" value="Retrieve Text" onClick="{
    document.getElementById('myText1').value = localStorage.getItem('myStoredText')
 }"><br>
+Name: <input id="myText02" type="text" size="70" value="" placeholder="Write here to store"><br>
+<input type="button" value="Save" onClick="{
+    const inputText = document.getElementById('myText02').value;
+    localStorage.setItem('username', inputText);
+    const storedData = localStorage.getItem('username');
+    console.log(storedData);
+    localStorage.setItem('username', 'Jane');
+    localStorage.removeItem('username');
+  }">
+
