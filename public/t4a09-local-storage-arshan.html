@@ -31,4 +31,10 @@ Name: <input id="myText02" type="text" size="70" value="" placeholder="Write her
     localStorage.setItem('username', 'Jane');
     localStorage.removeItem('username');
   }">
+ <input type="button" value="Load" onClick="{
+    const storedData = localStorage.getItem('username');
+    document.getElementById('myText02').value = storedData;
+  }">
+
+
 
