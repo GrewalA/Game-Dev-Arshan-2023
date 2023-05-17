@@ -86,6 +86,41 @@ function myCheckHit() {
 
   // more if statements here
 }
+let verticalDirection = 1; // 1 for moving down, -1 for moving up
+
+// Function to update the positions of the elements
+function updatePositions() {
+  const img02 = document.getElementById('myImg02');
+  const img03 = document.getElementById('myImg03');
+  const img04 = document.getElementById('myImg04');
+
+  // Get the current top positions of the elements
+  let top02 = parseInt(img02.style.top);
+  let top03 = parseInt(img03.style.top);
+  let top04 = parseInt(img04.style.top);
+
+  // Update the top positions based on the vertical direction
+  top02 += 5 * verticalDirection;
+  top03 += 5 * verticalDirection;
+  top04 += 5 * verticalDirection;
+
+  // Check if the elements have reached the top or bottom boundaries
+  // Reverse the direction if they have reached the boundaries
+  if (top02 <= 0 || top04 >= window.innerHeight) {
+    verticalDirection *= -1;
+  }
+
+  // Update the style of the elements with the new positions
+  img02.style.top = top02 + 'px';
+  img03.style.top = top03 + 'px';
+  img04.style.top = top04 + 'px';
+
+  // Call the collision check function
+  myCheckHit();
+}
+
+// Start updating the positions every 100 milliseconds (adjust the interval as needed)
+setInterval(updatePositions, 100);
 </script>
 
 
