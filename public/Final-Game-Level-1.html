@@ -161,17 +161,17 @@ setInterval(updatePositions, 16);
 
 <input type="button" value="Up" onclick="{
   let imgTop = parseInt(document.getElementById('myImg01').style.top);
-  let wallBottom = parseInt(document.getElementById('myWall01').style.top) + parseInt(document.getElementById('myWall01').style.height);
+  let wallBottom = parseInt(document.getElementById('myWall02').style.top) + parseInt(document.getElementById('myWall02').style.height);
   if (imgTop > wallBottom) {
     document.getElementById('myImg01').style.top = (imgTop - 10) + 'px';
     myCheckHit(); // checks for all collisions
   }
 }">
- 
- <input type="button" value="Down" onclick="{
+
+<input type="button" value="Down" onclick="{
   let imgTop = parseInt(document.getElementById('myImg01').style.top);
-  let wallBottom = parseInt(document.getElementById('myWall01').style.top) + parseInt(document.getElementById('myWall01').style.height);
-  if (imgTop < wallBottom) {
+  let wallTop = parseInt(document.getElementById('myWall02').style.top) + parseInt(document.getElementById('myWall02').style.height);
+  if (imgTop < wallTop) {
     document.getElementById('myImg01').style.top = (imgTop + 10) + 'px';
     myCheckHit(); // checks for all collisions
   }
