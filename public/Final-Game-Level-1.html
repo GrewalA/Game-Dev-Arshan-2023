@@ -143,8 +143,11 @@ setInterval(updatePositions, 16);
     
 <input type="button" value="Right" onclick="{
   let imgLeft = parseInt(document.getElementById('myImg01').style.left);
-  let wallLeft = parseInt(document.getElementById('myWall01').style.left) + parseInt(document.getElementById('myWall01').style.width);
-  if (imgLeft < wallLeft) {
+  let wallRight = parseInt(document.getElementById('myWall01').style.left) + parseInt(document.getElementById('myWall01').style.width);
+  let imgWidth = parseInt(document.getElementById('myImg01').style.width);
+  let maxRight = wallRight - imgWidth;
+  
+  if (imgLeft < maxRight) {
     document.getElementById('myImg01').style.left = (imgLeft + 10) + 'px';
     myCheckHit(); // checks for all collisions
   }
@@ -152,27 +155,21 @@ setInterval(updatePositions, 16);
 
 <input type="button" value="Left" onclick="{
   let imgLeft = parseInt(document.getElementById('myImg01').style.left);
-  let wallRight = parseInt(document.getElementById('myWall01').style.left);
-  if (imgLeft > wallRight) {
-    document.getElementById('myImg01').style.left = (imgLeft - 10) + 'px';
+  document.getElementById('myImg01').style.left = (imgLeft - 10) + 'px';
     myCheckHit(); // checks for all collisions
   }
 }">
 
 <input type="button" value="Up" onclick="{
   let imgTop = parseInt(document.getElementById('myImg01').style.top);
-  let wallBottom = parseInt(document.getElementById('myWall02').style.top) + parseInt(document.getElementById('myWall02').style.height);
-  if (imgTop > wallBottom) {
-    document.getElementById('myImg01').style.top = (imgTop - 10) + 'px';
+  document.getElementById('myImg01').style.top = (imgTop - 10) + 'px';
     myCheckHit(); // checks for all collisions
   }
 }">
 
 <input type="button" value="Down" onclick="{
   let imgTop = parseInt(document.getElementById('myImg01').style.top);
-  let wallTop = parseInt(document.getElementById('myWall02').style.top) + parseInt(document.getElementById('myWall02').style.height);
-  if (imgTop < wallTop) {
-    document.getElementById('myImg01').style.top = (imgTop + 10) + 'px';
+  document.getElementById('myImg01').style.top = (imgTop + 10) + 'px';
     myCheckHit(); // checks for all collisions
   }
 }">
