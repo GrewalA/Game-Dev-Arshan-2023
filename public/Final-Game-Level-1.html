@@ -4,14 +4,14 @@
     let imgLeft = parseInt(document.getElementById('myImg01').style.left);
     let wallLeft = parseInt(document.getElementById('myWall01').style.left) + parseInt(document.getElementById('myWall01').style.width);
     if (imgLeft < wallLeft) {
-      document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px';
+      document.getElementById('myImg01').style.left = (imgLeft + 10) + 'px';
     }
   }
   if (event.key == 's') {   // s = go down
     let imgTop = parseInt(document.getElementById('myImg01').style.top);
     let wallTop = parseInt(document.getElementById('myWall02').style.top) + parseInt(document.getElementById('myWall02').style.height);
     if (imgTop < wallTop) {
-      document.getElementById('myImg01').style.top = parseInt(document.getElementById('myImg01').style.top) + 10 + 'px';
+      document.getElementById('myImg01').style.top = (imgTop + 10) + 'px';
     }
   }
   myCheckHit();     // checks for all collisions
@@ -123,11 +123,11 @@ function updatePositions() {
 }
 
 // Start updating the positions every 100 milliseconds (adjust the interval as needed)
-setInterval(updatePositions, 16);
+setInterval(updatePositions, 100);
+
 </script>
 
-
-<h1 align=center><font color=Yellow>Final Game Level 1</font></h1>
+<h1 align="center" style="color: yellow">Final Game Level 1</h1>
 
 <input id="myText01" type="text" value="" size="50" placeholder="Feedback here"><br>
 
@@ -135,9 +135,9 @@ setInterval(updatePositions, 16);
   clearInterval(myClock);
   let myTemp = '100px 0px';
   myClock = setInterval(function(){
-      myGlobalX -= 5;
-      myTemp =  myGlobalX + 'px 0px';
-      document.getElementById('myBody').style.backgroundPosition = myTemp;
+    myGlobalX -= 5;
+    myTemp =  myGlobalX + 'px 0px';
+    document.getElementById('myBody').style.backgroundPosition = myTemp;
   }, 100);
 }">
     
@@ -174,12 +174,7 @@ setInterval(updatePositions, 16);
   }
 }">
 
-
-
-
-
-
-<input type="button" value="shoot" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
+  <input type="button" value="Shoot" onclick="{
   if (myShooting > 2 ){myShooting = 1}
   // Bullet Number 2
   if (myShooting == 2){
@@ -205,16 +200,12 @@ setInterval(updatePositions, 16);
   }
 }"><br><br>
 
+<img id="myImg01" src="myImgNew.jpg" style="position:absolute; width:100px; height:80px; left: 10px; top:190px;">
+<img id="myImg02" src="myImgNew.jpg" style="position:absolute; width:100px; height:80px; left:700px; top:190px;">
+<img id="myImg03" src="myImgNew.jpg" style="position:absolute; width:100px; height:80px; left:850px; top:190px;">
+<img id="myImg04" src="myImgNew.jpg" style="position:absolute; width:100px; height:80px; left:1000px; top:400px;">
 
+<img id="myWall01" src="myImgNew.jpg" style="position:absolute; width:10px; height:100vh; left:400px; top:0px;">
 
-
-
-<img id="myImg01" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left: 10px; top:190px;">
-<img id="myImg02" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:700px; top:190px;">
-<img id="myImg03" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:850px; top:190px;">
-<img id="myImg04" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:1000px; top:400px;">
-
-<img id="myWall01" src="myImgNew.jpg"  style="position:absolute; width:10px; height:100vh; left:400px; top:0px;">
-
-<img id="myBullet01" src="myImgNew.jpg"  style="position:absolute; width:10px; height:10px; left: 130px; top:190px;">
-<img id="myBullet02" src="myImgNew.jpg"  style="position:absolute; width:10px; height:10px; left: 150px; top:190px;">
+<img id="myBullet01" src="myImgNew.jpg" style="position:absolute; width:10px; height:10px; left: 130px; top:190px;">
+<img id="myBullet02" src="myImgNew.jpg" style="position:absolute; width:10px; height:10px; left: 150px; top:190px;">
