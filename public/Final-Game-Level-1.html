@@ -26,6 +26,56 @@ let myGun01 = null;
 let myGun02 = null;
 let myShooting = 1;
 
+function updatePositions() {
+  const img02 = document.getElementById('myImg02');
+  const img03 = document.getElementById('myImg03');
+  const img04 = document.getElementById('myImg04');
+
+  // Get the current positions and sizes of the walls
+  const wall01 = document.getElementById('myWall01').getBoundingClientRect();
+  const wall02 = document.getElementById('myWall02').getBoundingClientRect();
+
+  // Update the positions of the elements with random directions
+  moveInRandomDirection(img02, wall01, wall02);
+  moveInRandomDirection(img03, wall01, wall02);
+  moveInRandomDirection(img04, wall01, wall02);
+
+  // Call the collision check function
+  myCheckHit();
+}
+
+// Function to move an element in a random direction without crossing walls
+function moveInRandomDirection(element, wall01, wall02) {
+  const left = parseInt(element.style.left);
+  const top = parseInt(element.style.top);
+  const width = parseInt(element.style.width);
+  const height = parseInt(element.style.height);
+
+  // Generate random numbers for horizontal and vertical movements
+  const horizontalDirection = Math.random() > 0.5 ? 1 : -1;
+  const verticalDirection = Math.random() > 0.5 ? 1 : -1;
+
+  // Calculate the potential new positions
+  const newLeft = left + horizontalDirection * 5;
+  const newTop = top + verticalDirection * 5;
+
+  // Check if the new positions would cross the walls
+  const withinWallBounds =
+    newLeft >= wall01.left + wall01.width &&
+    newLeft + width <= wall02.left &&
+    newTop >= wall01.top + wall01.height &&
+    newTop + height <= wall02.top;
+
+  // Update the positions if within bounds, otherwise reverse the direction
+  if (withinWallBounds) {
+    element.style.left = newLeft + 'px';
+    element.style.top = newTop + 'px';
+  } else {
+    element.style.left = left - horizontalDirection * 5 + 'px';
+    element.style.top = top - verticalDirection * 5 + 'px';
+  }
+}
+
 function myHitOther(my1, my2) {
   let left1 = parseInt(document.getElementById(my1).style.left);
   let right1 = left1 + parseInt(document.getElementById(my1).style.width);
