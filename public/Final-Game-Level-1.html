@@ -156,22 +156,19 @@ setInterval(updatePositions, 100);
 <input type="button" value="Left" onclick="{
   let imgLeft = parseInt(document.getElementById('myImg01').style.left);
   document.getElementById('myImg01').style.left = (imgLeft - 10) + 'px';
-    myCheckHit(); // checks for all collisions
-  }
+  myCheckHit(); // checks for all collisions
 }">
 
 <input type="button" value="Up" onclick="{
   let imgTop = parseInt(document.getElementById('myImg01').style.top);
   document.getElementById('myImg01').style.top = (imgTop - 10) + 'px';
-    myCheckHit(); // checks for all collisions
-  }
+  myCheckHit(); // checks for all collisions
 }">
 
 <input type="button" value="Down" onclick="{
   let imgTop = parseInt(document.getElementById('myImg01').style.top);
   document.getElementById('myImg01').style.top = (imgTop + 10) + 'px';
-    myCheckHit(); // checks for all collisions
-  }
+  myCheckHit(); // checks for all collisions
 }">
 
   <input type="button" value="Shoot" onclick="{
