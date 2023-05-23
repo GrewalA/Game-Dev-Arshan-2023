@@ -28,115 +28,144 @@
   myCheckHit(); // checks for all collisions
 }">
 
-<script>
-// global variables here
-let myGlobalX = 0;
-let myClock = null;
-let myScore = 10;
-let myGun01 = null;
-let myGun02 = null;
-let myShooting = 1;
+ <script>
+    // global variables here
+    let myGlobalX = 0;
+    let myClock = null;
+    let myScore = 10;
+    let myGun01 = null;
+    let myGun02 = null;
+    let myShooting = 1;
 
-function myHitOther(my1, my2) {
-  let left1 = parseInt(document.getElementById(my1).style.left);
-  let right1 = left1 + parseInt(document.getElementById(my1).style.width);
-  let top1 = parseInt(document.getElementById(my1).style.top);
-  let bottom1 = top1 + parseInt(document.getElementById(my1).style.height);
-  let left2 = parseInt(document.getElementById(my2).style.left);
-  let right2 = left2 + parseInt(document.getElementById(my2).style.width);
-  let top2 = parseInt(document.getElementById(my2).style.top);
-  let bottom2 = top2 + parseInt(document.getElementById(my2).style.height);
-  if (right1 >= left2 && bottom1 >= top2 && left1 <= right2 && top1 <= bottom2) {
-    return true;
-  }
-}
-
-function myCheckHit() {
-  document.all.myText01.value = myScore; // show the present score
-
-  if (myHitOther('myImg01', 'myImg02')) {
-    document.getElementById('myImg01').style.left = '20px';
-    document.all.myText01.value = 'You hit myImg02';
-    myScore -= 1;
-  }
-
-  if (myHitOther('myImg01', 'myImg03')) {
-    document.getElementById('myImg01').style.left = '20px';
-    document.all.myText01.value = 'You hit myImg03';
-    myScore -= 1;
-  }
-
-  if (myHitOther('myBullet01', 'myImg03')) {
-    clearInterval(myGun01);
-    document.getElementById('myBullet01').style.left = '-200px';
-    document.all.myText01.value = 'You shot myImg03';
-    myScore += 1;
-  }
-
-  if (myHitOther('myBullet02', 'myImg03')) {
-    clearInterval(myGun02);
-    document.getElementById('myBullet02').style.left = '-200px';
-    document.all.myText01.value = 'You shot myImg03';
-    myScore += 1;
-  }
-
-  // Collision check for myWall01
-  let imgLeft = parseInt(document.getElementById('myImg01').style.left);
-  let wallRight = parseInt(document.getElementById('myWall01').style.left);
-  let imgTop = parseInt(document.getElementById('myImg01').style.top);
-  let wallBottom = parseInt(document.getElementById('myWall01').style.top) + parseInt(document.getElementById('myWall01').style.height);
-
-  if (myHitOther('myImg01', 'myWall01')) {
-    if (imgLeft < wallRight) {
-      document.getElementById('myImg01').style.left = (wallRight + 10) + 'px';
+    function myHitOther(my1, my2) {
+      let left1 = parseInt(document.getElementById(my1).style.left);
+      let right1 = left1 + parseInt(document.getElementById(my1).style.width);
+      let top1 = parseInt(document.getElementById(my1).style.top);
+      let bottom1 = top1 + parseInt(document.getElementById(my1).style.height);
+      let left2 = parseInt(document.getElementById(my2).style.left);
+      let right2 = left2 + parseInt(document.getElementById(my2).style.width);
+      let top2 = parseInt(document.getElementById(my2).style.top);
+      let bottom2 = top2 + parseInt(document.getElementById(my2).style.height);
+      if (right1 >= left2 && bottom1 >= top2 && left1 <= right2 && top1 <= bottom2) {
+        return true;
+      }
     }
 
-    if (imgTop > wallBottom) {
-      document.getElementById('myImg01').style.top = (wallBottom - 10) + 'px';
+    function myCheckHit() {
+      document.getElementById('myText01').value = myScore; // show the present score
+
+      if (myHitOther('myImg01', 'myImg02')) {
+        document.getElementById('myImg01').style.left = '20px';
+        document.getElementById('myText01').value = 'You hit myImg02';
+        myScore -= 1;
+      }
+
+      if (myHitOther('myImg01', 'myImg03')) {
+        document.getElementById('myImg01').style.left = '20px';
+        document.getElementById('myText01').value = 'You hit myImg03';
+        myScore -= 1;
+      }
+
+      if (myHitOther('myBullet01', 'myImg03')) {
+        clearInterval(myGun01);
+        document.getElementById('myBullet01').style.left = '-200px';
+        document.getElementById('myText01').value = 'You shot myImg03';
+        myScore += 1;
+      }
+
+      if (myHitOther('myBullet02', 'myImg03')) {
+        clearInterval(myGun02);
+        document.getElementById('myBullet02').style.left = '-200px';
+        document.getElementById('myText01').value = 'You shot myImg03';
+        myScore += 1;
+      }
+
+      // Collision check for myWall01
+      let imgLeft = parseInt(document.getElementById('myImg01').style.left);
+      let wallRight = parseInt(document.getElementById('myWall01').style.left);
+      let imgTop = parseInt(document.getElementById('myImg01').style.top);
+      let wallBottom = parseInt(document.getElementById('myWall01').style.top) + parseInt(document.getElementById('myWall01').style.height);
+
+      if (myHitOther('myImg01', 'myWall01')) {
+        if (imgLeft < wallRight) {
+          document.getElementById('myImg01').style.left = (wallRight + 10) + 'px';
+        }
+
+        if (imgTop > wallBottom) {
+          document.getElementById('myImg01').style.top = (wallBottom - 10) + 'px';
+        }
+      }
+
+      // ...
+
+      // Rest of the collision checks and game logic
     }
-  }
 
-  // ...
+    let verticalDirection = 1; // 1 for moving down, -1 for moving up
+    let horizontalDirection = 1; // 1 for moving right, -1 for moving left
 
-  // Rest of the collision checks and game logic
-}
-let verticalDirection = 1; // 1 for moving down, -1 for moving up
+    function updatePositions() {
+      let imgLeft = parseInt(document.getElementById('myImg01').style.left);
+      let imgTop = parseInt(document.getElementById('myImg01').style.top);
 
-// Function to update the positions of the elements
-function updatePositions() {
-  const img02 = document.getElementById('myImg02');
-  const img03 = document.getElementById('myImg03');
-  const img04 = document.getElementById('myImg04');
+      // Move the image vertically
+      if (verticalDirection === 1) {
+        document.getElementById('myImg01').style.top = (imgTop + 10) + 'px';
+      } else {
+        document.getElementById('myImg01').style.top = (imgTop - 10) + 'px';
+      }
 
-  // Get the current top positions of the elements
-  let top02 = parseInt(img02.style.top);
-  let top03 = parseInt(img03.style.top);
-  let top04 = parseInt(img04.style.top);
+      // Move the image horizontally
+      if (horizontalDirection === 1) {
+        document.getElementById('myImg01').style.left = (imgLeft + 10) + 'px';
+      } else {
+        document.getElementById('myImg01').style.left = (imgLeft - 10) + 'px';
+      }
 
-  // Update the top positions based on the vertical direction
-  top02 += 5 * verticalDirection;
-  top03 += 5 * verticalDirection;
-  top04 += 5 * verticalDirection;
+      // Reverse the vertical direction if the image reaches the top or bottom
+      if (imgTop <= 0 || imgTop >= (window.innerHeight - 100)) {
+        verticalDirection *= -1;
+      }
 
-  // Check if the elements have reached the top or bottom boundaries
-  // Reverse the direction if they have reached the boundaries
-  if (top02 <= 0 || top04 >= window.innerHeight) {
-    verticalDirection *= -1;
-  }
+      // Reverse the horizontal direction if the image reaches the left or right
+      if (imgLeft <= 0 || imgLeft >= (window.innerWidth - 100)) {
+        horizontalDirection *= -1;
+      }
 
-  // Update the style of the elements with the new positions
-  img02.style.top = top02 + 'px';
-  img03.style.top = top03 + 'px';
-  img04.style.top = top04 + 'px';
+      myCheckHit();
+    }
 
-  // Call the collision check function
-  myCheckHit();
-}
+    // Start updating the positions every 100 milliseconds (adjust the interval as needed)
+    setInterval(updatePositions, 100);
 
-// Start updating the positions every 100 milliseconds (adjust the interval as needed)
-setInterval(updatePositions, 100);
+    // Event listener for keydown event
+    document.addEventListener('keydown', function(event) {
+      let imgLeft = parseInt(document.getElementById('myImg01').style.left);
+      let imgTop = parseInt(document.getElementById('myImg01').style.top);
 
-</script>
+      if (event.key === 'd' || event.key === 'ArrowRight') {
+        // Move right
+        document.getElementById('myImg01').style.left = (imgLeft + 10) + 'px';
+        myCheckHit();
+      }
+      if (event.key === 'a' || event.key === 'ArrowLeft') {
+        // Move left
+        document.getElementById('myImg01').style.left = (imgLeft - 10) + 'px';
+        myCheckHit();
+      }
+      if (event.key === 's' || event.key === 'ArrowDown') {
+        // Move down
+        document.getElementById('myImg01').style.top = (imgTop + 10) + 'px';
+        myCheckHit();
+      }
+      if (event.key === 'w' || event.key === 'ArrowUp') {
+        // Move up
+        document.getElementById('myImg01').style.top = (imgTop - 10) + 'px';
+        myCheckHit();
+      }
+    });
+
+  </script>
 
 <h1 align="center" style="color: yellow">Final Game Level 1</h1>
 
