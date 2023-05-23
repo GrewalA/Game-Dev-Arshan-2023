@@ -104,35 +104,28 @@
     let horizontalDirection = 1; // 1 for moving right, -1 for moving left
 
     function updatePositions() {
-      let imgLeft = parseInt(document.getElementById('myImg01').style.left);
-      let imgTop = parseInt(document.getElementById('myImg01').style.top);
+  // Perform collision checks and other game logic
 
-      // Move the image vertically
-      if (verticalDirection === 1) {
-        document.getElementById('myImg01').style.top = (imgTop + 10) + 'px';
-      } else {
-        document.getElementById('myImg01').style.top = (imgTop - 10) + 'px';
-      }
+  // Collision check for myWall01
+  let imgLeft = parseInt(document.getElementById('myImg01').style.left);
+  let wallRight = parseInt(document.getElementById('myWall01').style.left);
+  let imgTop = parseInt(document.getElementById('myImg01').style.top);
+  let wallBottom = parseInt(document.getElementById('myWall01').style.top) + parseInt(document.getElementById('myWall01').style.height);
 
-      // Move the image horizontally
-      if (horizontalDirection === 1) {
-        document.getElementById('myImg01').style.left = (imgLeft + 10) + 'px';
-      } else {
-        document.getElementById('myImg01').style.left = (imgLeft - 10) + 'px';
-      }
-
-      // Reverse the vertical direction if the image reaches the top or bottom
-      if (imgTop <= 0 || imgTop >= (window.innerHeight - 100)) {
-        verticalDirection *= -1;
-      }
-
-      // Reverse the horizontal direction if the image reaches the left or right
-      if (imgLeft <= 0 || imgLeft >= (window.innerWidth - 100)) {
-        horizontalDirection *= -1;
-      }
-
-      myCheckHit();
+  if (myHitOther('myImg01', 'myWall01')) {
+    if (imgLeft < wallRight) {
+      document.getElementById('myImg01').style.left = (wallRight + 10) + 'px';
     }
+
+    if (imgTop > wallBottom) {
+      document.getElementById('myImg01').style.top = (wallBottom - 10) + 'px';
+    }
+  }
+
+  // ... (additional collision checks and game logic)
+
+  myCheckHit();
+}
 
     // Start updating the positions every 100 milliseconds (adjust the interval as needed)
    
