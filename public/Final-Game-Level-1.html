@@ -5,12 +5,12 @@
   let wallTop = parseInt(document.getElementById('myWall02').style.top) + parseInt(document.getElementById('myWall02').style.height);
 
   if (event.key === 'd' || event.key === 'ArrowRight') { // d or ArrowRight = go right
-  if (imgLeft < wallLeft && (imgLeft + 10) <= wallLeft) {
+ if (imgLeft < wallRight && (imgLeft + 10) <= wallRight) {
     document.getElementById('myImg01').style.left = (imgLeft + 10) + 'px';
   }
 }
   if (event.key === 'a' || event.key === 'ArrowLeft') { // a or ArrowLeft = go left
-    if (imgLeft > 0) {
+     if (imgLeft > 0 && (imgLeft - 10) + imgWidth >= wallRight) {
       document.getElementById('myImg01').style.left = (imgLeft - 10) + 'px';
     }
   }
