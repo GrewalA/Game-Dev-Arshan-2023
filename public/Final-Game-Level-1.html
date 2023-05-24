@@ -2,15 +2,15 @@
   let imgLeft = parseInt(document.getElementById('myImg01').style.left);
   let imgTop = parseInt(document.getElementById('myImg01').style.top);
   let wallLeft = parseInt(document.getElementById('myWall01').style.left) + parseInt(document.getElementById('myWall01').style.width);
-  let wallTop = parseInt(document.getElementById('myWall02').style.top) + parseInt(document.getElementById('myWall02').style.height);
+  let wallTop = parseInt(document.getElementById('myWall01').style.top) + parseInt(document.getElementById('myWall01').style.height);
 
   if (event.key === 'd' || event.key === 'ArrowRight') { // d or ArrowRight = go right
- if (imgLeft < wallRight && (imgLeft + 10) <= wallRight) {
-    document.getElementById('myImg01').style.left = (imgLeft + 10) + 'px';
+    if (imgLeft < wallLeft && (imgLeft + 10) <= wallLeft) {
+      document.getElementById('myImg01').style.left = (imgLeft + 10) + 'px';
+    }
   }
-}
   if (event.key === 'a' || event.key === 'ArrowLeft') { // a or ArrowLeft = go left
-     if (imgLeft > 0 && (imgLeft - 10) + imgWidth >= wallRight) {
+    if (imgLeft > 0 && (imgLeft - 10) >= wallLeft) {
       document.getElementById('myImg01').style.left = (imgLeft - 10) + 'px';
     }
   }
