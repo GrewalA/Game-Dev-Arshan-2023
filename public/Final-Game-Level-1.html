@@ -64,7 +64,7 @@
       myScore += 2;
     }
         if (myHitOther('myImg01', 'myWall01')) {
-      document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) - 10;
+      document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) - 10 + 'px';
     }
   }
 
@@ -98,7 +98,7 @@
   let imgTop = parseInt(document.getElementById('myImg01').style.top);
 
   if (event.key === 'd' || event.key === 'ArrowRight') { // d or ArrowRight = go right
-document.getElementById('myImg01').style.left = (imgLeft + 10) + 'px';
+document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px';
    myCheckHit();                                                                                                                  
   }
   if (event.key === 'a' || event.key === 'ArrowLeft') { // a or ArrowLeft = go left
