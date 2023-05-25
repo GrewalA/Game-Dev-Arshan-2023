@@ -62,36 +62,47 @@
       document.getElementById('myText01').value = 'You hit myImg03 with myGun02';
       myScore += 2;
     }
-        if (myHitOther('myImg01', 'myWall01')) {
+    if (myHitOther('myImg01', 'myWall01')) {
       document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) - 10 + 'px';
     }
   }
 
   function randomMovement(elementId) {
     let imgLeft = parseInt(document.getElementById(elementId).style.left);
-    let imgTop = parseInt(document.getElementById(elementId).style.top);
-    let directionX = Math.random() > 0.5 ? 1 : -1; // Randomly choose left or right movement
-    let directionY = Math.random() > 0.5 ? 1 : -1; // Randomly choose up or down movement
+     let imgTop = parseInt(document.getElementById(elementId).style.top);
 
-    if (imgLeft <= 0) {
-      directionX = 1; // If element reaches left boundary, move right
-    } else if (imgLeft >= 900) {
-      directionX = -1; // If element reaches right boundary, move left
+    // Generate random values for horizontal and vertical movement
+    let moveX = Math.floor(Math.random() * 21) - 10; // Random number between -10 and 10
+    let moveY = Math.floor(Math.random() * 21) - 10; // Random number between -10 and 10
+
+    let newLeft = imgLeft + moveX;
+    let newTop = imgTop + moveY;
+
+    // Check if the new position is within the visible area
+    if (
+      newLeft >= 0 &&
+      newLeft + parseInt(document.getElementById(elementId).style.width) <= window.innerWidth &&
+      newTop >= 0 &&
+      newTop + parseInt(document.getElementById(elementId).style.height) <= window.innerHeight
+    ) {
+      // Update the element's position
+      document.getElementById(elementId).style.left = newLeft + 'px';
+      document.getElementById(elementId).style.top = newTop + 'px';
     }
-
-    if (imgTop <= 0) {
-      directionY = 1; // If element reaches top boundary, move down
-    } else if (imgTop >= 500) {
-      directionY = -1; // If element reaches bottom boundary, move up
-    }
-
-    let newX = imgLeft + directionX * Math.floor(Math.random() * 10); // Randomly move along X-axis
-    let newY = imgTop + directionY * Math.floor(Math.random() * 10); // Randomly move along Y-axis
-
-    document.getElementById(elementId).style.left = newX + 'px';
-    document.getElementById(elementId).style.top = newY + 'px';
   }
-  </script>
+
+  function moveImages() {
+    randomMovement('myImg02');
+    randomMovement('myImg03');
+
+    // Move myImg04 to the rightmost visible area
+    let imgWidth = parseInt(document.getElementById('myImg04').style.width);
+    document.getElementById('myImg04').style.left = window.innerWidth - imgWidth + 'px';
+  }
+
+  setInterval(moveImages, 1000); // Call moveImages every 1 second
+
+ </script>
 <body id="myBody" style="background-repeat: repeat; background-size: 80%" background="myBackground01.jpg" onkeydown="{
   let imgLeft = parseInt(document.getElementById('myImg01').style.left);
   let imgTop = parseInt(document.getElementById('myImg01').style.top);
