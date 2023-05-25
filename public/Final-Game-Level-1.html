@@ -62,64 +62,52 @@
       document.getElementById('myText01').value = 'You hit myImg03 with myGun02';
       myScore += 2;
     }
+
     if (myHitOther('myImg01', 'myWall01')) {
       document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) - 10 + 'px';
     }
   }
 
-  function randomMovement(elementId) {
-    let imgLeft = parseInt(document.getElementById(elementId).style.left);
-    let imgTop = parseInt(document.getElementById(elementId).style.top);
 
-    // Generate random values for horizontal and vertical movement
-    let horizontalMove = Math.floor(Math.random() * 10) - 5;
-    let verticalMove = Math.floor(Math.random() * 10) - 5;
+ function randomMovement(elementId) {
+      let imgLeft = parseInt(document.getElementById(elementId).style.left);
+      let imgTop = parseInt(document.getElementById(elementId).style.top);
+      let randomLeft = Math.floor(Math.random() * 10) + 1; // generate random number between 1 and 10 for horizontal movement
+      let randomTop = Math.floor(Math.random() * 10) + 1; // generate random number between 1 and 10 for vertical movement
 
-    // Update the new position
-    let newLeft = imgLeft + horizontalMove;
-    let newTop = imgTop + verticalMove;
+      // Calculate new position
+      let newLeft = imgLeft + randomLeft;
+      let newTop = imgTop + randomTop;
 
-    // Set the new position
-    document.getElementById(elementId).style.left = newLeft + 'px';
-    document.getElementById(elementId).style.top = newTop + 'px';
+      // Set the new position
+      document.getElementById(elementId).style.left = newLeft + 'px';
+      document.getElementById(elementId).style.top = newTop + 'px';
+    }
 
-    myCheckHit();
-  }
-
-  function moveImages() {
-    randomMovement('myImg02');
-    randomMovement('myImg03');
-  }
-
-  setInterval(moveImages, 1000); // Call moveImages every 1 second
-
-  // Event listener for keydown events
-  document.addEventListener('keydown', function (event) {
-    // Check if the focus is on an input element
-    if (event.target.tagName.toLowerCase() !== 'input') {
+    // Add event listener for keydown events
+    document.addEventListener('keydown', function(event) {
       let imgLeft = parseInt(document.getElementById('myImg01').style.left);
       let imgTop = parseInt(document.getElementById('myImg01').style.top);
 
-      if (event.key === 'd' || event.key === 'ArrowRight') {
-        imgLeft += 10;
+      // Prevent the image from going past myWall01
+      if (event.key === 'w' && imgTop > 20) {
+        document.getElementById('myImg01').style.top = imgTop - 10 + 'px';
+      } else if (event.key === 'a' && imgLeft > 20) {
+        document.getElementById('myImg01').style.left = imgLeft - 10 + 'px';
+      } else if (event.key === 's' && imgTop < 370) {
+        document.getElementById('myImg01').style.top = imgTop + 10 + 'px';
+      } else if (event.key === 'd' && imgLeft < 570) {
+        document.getElementById('myImg01').style.left = imgLeft + 10 + 'px';
       }
-      if (event.key === 'a' || event.key === 'ArrowLeft') {
-        imgLeft -= 10;
-      }
-      if (event.key === 's' || event.key === 'ArrowDown') {
-        imgTop += 10;
-      }
-      if (event.key === 'w' || event.key === 'ArrowUp') {
-        imgTop -= 10;
-      }
+    });
 
-      document.getElementById('myImg01').style.left = imgLeft + 'px';
-      document.getElementById('myImg01').style.top = imgTop + 'px';
-
+    // Game loop
+    setInterval(function() {
+      randomMovement('myImg02');
+      randomMovement('myImg03');
       myCheckHit();
-    }
-  });
-</script>
+    }, 100);
+  </script>
 <body id="myBody" style="background-repeat: repeat; background-size: 80%" background="myBackground01.jpg" onkeydown="{
   let imgLeft = parseInt(document.getElementById('myImg01').style.left);
   let imgTop = parseInt(document.getElementById('myImg01').style.top);
