@@ -69,40 +69,57 @@
 
   function randomMovement(elementId) {
     let imgLeft = parseInt(document.getElementById(elementId).style.left);
-     let imgTop = parseInt(document.getElementById(elementId).style.top);
+    let imgTop = parseInt(document.getElementById(elementId).style.top);
 
     // Generate random values for horizontal and vertical movement
-    let moveX = Math.floor(Math.random() * 21) - 10; // Random number between -10 and 10
-    let moveY = Math.floor(Math.random() * 21) - 10; // Random number between -10 and 10
+    let horizontalMove = Math.floor(Math.random() * 10) - 5;
+    let verticalMove = Math.floor(Math.random() * 10) - 5;
 
-    let newLeft = imgLeft + moveX;
-    let newTop = imgTop + moveY;
+    // Update the new position
+    let newLeft = imgLeft + horizontalMove;
+    let newTop = imgTop + verticalMove;
 
-    // Check if the new position is within the visible area
-    if (
-      newLeft >= 0 &&
-      newLeft + parseInt(document.getElementById(elementId).style.width) <= window.innerWidth &&
-      newTop >= 0 &&
-      newTop + parseInt(document.getElementById(elementId).style.height) <= window.innerHeight
-    ) {
-      // Update the element's position
-      document.getElementById(elementId).style.left = newLeft + 'px';
-      document.getElementById(elementId).style.top = newTop + 'px';
-    }
+    // Set the new position
+    document.getElementById(elementId).style.left = newLeft + 'px';
+    document.getElementById(elementId).style.top = newTop + 'px';
+
+    myCheckHit();
   }
 
   function moveImages() {
     randomMovement('myImg02');
     randomMovement('myImg03');
-
-    // Move myImg04 to the rightmost visible area
-    let imgWidth = parseInt(document.getElementById('myImg04').style.width);
-    document.getElementById('myImg04').style.left = window.innerWidth - imgWidth + 'px';
   }
 
   setInterval(moveImages, 1000); // Call moveImages every 1 second
 
- </script>
+  // Event listener for keydown events
+  document.addEventListener('keydown', function (event) {
+    // Check if the focus is on an input element
+    if (event.target.tagName.toLowerCase() !== 'input') {
+      let imgLeft = parseInt(document.getElementById('myImg01').style.left);
+      let imgTop = parseInt(document.getElementById('myImg01').style.top);
+
+      if (event.key === 'd' || event.key === 'ArrowRight') {
+        imgLeft += 10;
+      }
+      if (event.key === 'a' || event.key === 'ArrowLeft') {
+        imgLeft -= 10;
+      }
+      if (event.key === 's' || event.key === 'ArrowDown') {
+        imgTop += 10;
+      }
+      if (event.key === 'w' || event.key === 'ArrowUp') {
+        imgTop -= 10;
+      }
+
+      document.getElementById('myImg01').style.left = imgLeft + 'px';
+      document.getElementById('myImg01').style.top = imgTop + 'px';
+
+      myCheckHit();
+    }
+  });
+</script>
 <body id="myBody" style="background-repeat: repeat; background-size: 80%" background="myBackground01.jpg" onkeydown="{
   let imgLeft = parseInt(document.getElementById('myImg01').style.left);
   let imgTop = parseInt(document.getElementById('myImg01').style.top);
