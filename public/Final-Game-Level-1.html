@@ -100,52 +100,7 @@
         document.getElementById('myImg01').style.left = imgLeft + 10 + 'px';
       }
     });
-  document.addEventListener('keydown', function(event) {
-    let imgLeft = parseInt(document.getElementById('myImg01').style.left);
-    let imgTop = parseInt(document.getElementById('myImg01').style.top);
-    let wallLeft = parseInt(document.getElementById('myWall01').style.left);
-    let wallRight = wallLeft + parseInt(document.getElementById('myWall01').style.width);
-    let imgWidth = parseInt(document.getElementById('myImg01').style.width);
 
-    if (event.key === 'd' || event.key === 'ArrowRight') {
-      // d or ArrowRight = go right
-      let maxRight = wallRight - imgWidth;
-
-      if (imgLeft < maxRight) {
-        document.getElementById('myImg01').style.left = (imgLeft + 10) + 'px';
-        myCheckHit();
-      }
-    }
-    if (event.key === 'a' || event.key === 'ArrowLeft') {
-      // a or ArrowLeft = go left
-      let maxLeft = wallLeft;
-
-      if (imgLeft > maxLeft) {
-        document.getElementById('myImg01').style.left = (imgLeft - 10) + 'px';
-        myCheckHit();
-      }
-    }
-    if (event.key === 's' || event.key === 'ArrowDown') {
-      // s or ArrowDown = go down
-      let maxBottom = parseInt(document.getElementById('myBody').style.height) - parseInt(document.getElementById('myImg01').style.height);
-
-      if (imgTop < maxBottom) {
-        document.getElementById('myImg01').style.top = (imgTop + 10) + 'px';
-        myCheckHit();
-      }
-    }
-    if (event.key === 'w' || event.key === 'ArrowUp') {
-      // w or ArrowUp = go up
-      let maxTop = 0;
-
-      if (imgTop > maxTop) {
-        document.getElementById('myImg01').style.top = (imgTop - 10) + 'px';
-        myCheckHit();
-      }
-    }
-    randomMovement('myImg02');
-    randomMovement('myImg03');
-  });
 
     // Game loop
     setInterval(function() {
@@ -187,8 +142,8 @@
   }
   if (event.key === 'w' || event.key === 'ArrowUp') {
     // w or ArrowUp = go up
-    if (imgTop > 0) {
-      document.getElementById('myImg01').style.top = (imgTop - 10) + 'px';
+     if (imgLeft < maxRight) {
+      document.getElementById('myImg01').style.left = (imgLeft + 10) + 'px';
       myCheckHit();
     }
   }
