@@ -67,6 +67,7 @@ function myCheckHit() {
 
   // more if statements here
 }
+
 let verticalDirection = 1; // 1 for moving down, -1 for moving up
 
 // Function to update the positions of the elements
@@ -82,16 +83,24 @@ function updatePositions() {
 
   // Update the top positions based on the vertical direction
   top02 += 5 * verticalDirection;
-  top03 += 5 * verticalDirection;
-  top04 += 5 * verticalDirection;
+  top03 -= 5 * verticalDirection;
+  top04 -= 5 * verticalDirection;
 
   // Check if the elements have reached the top or bottom boundaries
   // Reverse the direction if they have reached the boundaries
-  if (top02 <= 0 || top04 >= window.innerHeight) {
+  if (top02 <= 0 || top02 >= window.innerHeight - img02.offsetHeight) {
     verticalDirection *= -1;
   }
 
-  // Update the style of the elements with the new positions
+  if (top03 <= 0 || top03 >= window.innerHeight - img03.offsetHeight) {
+    verticalDirection *= -1;
+  }
+
+  if (top04 <= 0 || top04 >= window.innerHeight - img04.offsetHeight) {
+    verticalDirection *= -1;
+  }
+
+  // Update the top positions of the elements
   img02.style.top = top02 + 'px';
   img03.style.top = top03 + 'px';
   img04.style.top = top04 + 'px';
@@ -100,52 +109,84 @@ function updatePositions() {
   myCheckHit();
 }
 
-// Start updating the positions every 100 milliseconds (adjust the interval as needed)
+// Start updating the positions every 100 milliseconds
 setInterval(updatePositions, 16);
 </script>
 <body id="myBody" style="background-repeat: repeat; background-size: 80%" background="myBackground01.jpg" onkeydown="{
-  document.all.myText01.value = event.key;
-  if (event.key == 'd') {  // d = go right
-    let imgLeft = parseInt(document.getElementById('myImg01').style.left);
-    let wallLeft = parseInt(document.getElementById('myWall01').style.left) + parseInt(document.getElementById('myWall01').style.width);
-    if (imgLeft < wallLeft) {
-      document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px';
+  let imgLeft = parseInt(document.getElementById('myImg01').style.left);
+  let wallLeft = parseInt(document.getElementById('myWall01').style.left) + parseInt(document.getElementById('myWall01').style.width);
+
+  if (event.keyCode === 39 && imgLeft < wallLeft - 10) { // Right arrow key
+    document.getElementById('myImg01').style.left = imgLeft + 10 + 'px';
+  }
+
+  if (event.keyCode === 68 && imgLeft < wallLeft - 10) { // 'd' key
+    document.getElementById('myImg01').style.left = imgLeft + 10 + 'px';
+  }
+
+  if (event.keyCode === 87) { // 'w' key
+    let imgTop = parseInt(document.getElementById('myImg01').style.top);
+    let wallTop = parseInt(document.getElementById('myWall01').style.top) + parseInt(document.getElementById('myWall01').style.height);
+
+    if (imgTop > wallTop) {
+      document.getElementById('myImg01').style.top = imgTop - 10 + 'px';
     }
   }
-  if (event.key == 's') {   // s = go down
+
+  if (event.keyCode === 83) { // 's' key
     let imgTop = parseInt(document.getElementById('myImg01').style.top);
     let wallTop = parseInt(document.getElementById('myWall02').style.top) + parseInt(document.getElementById('myWall02').style.height);
+
     if (imgTop < wallTop) {
-      document.getElementById('myImg01').style.top = parseInt(document.getElementById('myImg01').style.top) + 10 + 'px';
+      document.getElementById('myImg01').style.top = imgTop + 10 + 'px';
     }
   }
-  myCheckHit();     // checks for all collisions
+
+  myCheckHit(); // Check for collisions
 }">
-
-
 
 <h1 align=center><font color=Yellow>Final Game Level 1</font></h1>
 
 <input id="myText01" type="text" value="" size="50" placeholder="Feedback here"><br>
 
 <input type="button" value="Auto Background Left" onclick="{
-  clearInterval(myClock);
-  let myTemp = '100px 0px';
-  myClock = setInterval(function(){
-      myGlobalX -= 5;
-      myTemp =  myGlobalX + 'px 0px';
-      document.getElementById('myBody').style.backgroundPosition = myTemp;
-  }, 100);
-}">
-    
-<input type="button" value="Right" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
-  document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px';
-  myCheckHit();     // checks for all collisions
+  document.getElementById('myBody').style.backgroundPositionX = '0px';
+  myGlobalX = 0;
+  myClock = setInterval(myBackgroundScroll, 50);
 }">
 
-<input type="button" value="Down" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
-  document.getElementById('myImg01').style.top = parseInt(document.getElementById('myImg01').style.top) + 10 + 'px';
-  myCheckHit();     // checks for all collisions
+<input type="button" value="Right" onclick="{
+  let imgLeft = parseInt(document.getElementById('myImg01').style.left);
+  let wallLeft = parseInt(document.getElementById('myWall01').style.left) + parseInt(document.getElementById('myWall01').style.width);
+
+  if (imgLeft < wallLeft - 10) { // Subtract 10 to account for myImg01 width
+    document.getElementById('myImg01').style.left = imgLeft + 10 + 'px';
+  }
+
+  myCheckHit(); // Check for collisions
+}">
+
+<!-- Add WASD buttons -->
+<input type="button" value="Up" onclick="{
+  let imgTop = parseInt(document.getElementById('myImg01').style.top);
+  let wallTop = parseInt(document.getElementById('myWall01').style.top) + parseInt(document.getElementById('myWall01').style.height);
+
+  if (imgTop > wallTop) {
+    document.getElementById('myImg01').style.top = imgTop - 10 + 'px';
+  }
+
+  myCheckHit(); // Check for collisions
+}">
+
+<input type="button" value="Down" onclick="{
+  let imgTop = parseInt(document.getElementById('myImg01').style.top);
+  let wallTop = parseInt(document.getElementById('myWall02').style.top) + parseInt(document.getElementById('myWall02').style.height);
+
+  if (imgTop < wallTop) {
+    document.getElementById('myImg01').style.top = imgTop + 10 + 'px';
+  }
+
+  myCheckHit(); // Check for collisions
 }">
 
 
