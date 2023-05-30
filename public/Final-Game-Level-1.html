@@ -1,4 +1,3 @@
-
 <script>
 
    // global variables here
@@ -114,6 +113,33 @@ function myCheckHit(){
 
 <input id="myText01" type=text value="" size=50 placeholder="Feedback here"><br>
 
+<body id="myBody" style="background-repeat:repeat; background-size: 80%" background="myBackground01.jpg"  onkeydown="{
+
+   document.all.myText01.value = event.key
+
+   if (event.key == 'd') {  // d = go right
+     document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px'
+   }   
+
+   if (event.key == 's') {   // s = go down
+      document.getElementById('myImg01').style.top = parseInt(document.getElementById('myImg01').style.top) + 10 + 'px'
+   }  
+
+   // put more here
+
+
+
+  myCheckHit()     // checks for all collisions
+}">
+
+
+
+
+
+<h1 align=center><font color=Yellow>T4A05 Template with WASD by Fred</font></h1>
+
+<input id="myText01" type=text value="" size=50 placeholder="Feedback here"><br>
+
 <input type=button value="Auto Background Left" onclick="{
   clearInterval(myClock)
   let myTemp = '100px 0px'
@@ -134,7 +160,7 @@ function myCheckHit(){
 <input type=button value="Down" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
   document.getElementById('myImg01').style.top = parseInt(document.getElementById('myImg01').style.top) + 10 + 'px'
   myCheckHit()     // checks for all collisions
-}">
+}"><br><br>
 
 
 
