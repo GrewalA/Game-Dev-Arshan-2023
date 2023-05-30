@@ -71,23 +71,23 @@ function myCheckHit(){
       myScore += 1
    }   
    
-   if ( myHitOther('myImg01','myImg05') ){
+   if ( myHitOther('myImg01','myImg04') ){
       document.getElementById('myImg01').style.left = '20px'
-      document.all.myText01.value = 'You hit myImg03'  
+      document.all.myText01.value = 'You hit myImg04'  
       myScore -= 1
    }   
    
-   if ( myHitOther('myBullet01','myImg05') ){
+   if ( myHitOther('myBullet01','myImg04') ){
       clearInterval(myGun01)
       document.getElementById('myBullet01').style.left = '-200px'
-      document.all.myText01.value = 'You shot myImg03'  
+      document.all.myText01.value = 'You shot myImg04'  
       myScore += 1
    }   
    
-   if ( myHitOther('myBullet02','myImg05') ){
+   if ( myHitOther('myBullet02','myImg04') ){
       clearInterval(myGun02)
       document.getElementById('myBullet02').style.left = '-200px'
-      document.all.myText01.value = 'You shot myImg03'  
+      document.all.myText01.value = 'You shot myImg04'  
       myScore += 1
    }   
    
@@ -102,22 +102,22 @@ function myCheckHit(){
 
    // YOU WIN and go to next level!
 
-   if ( myHitOther('myImg01','myImg04') ){
-      document.all.myText01.value = 'You hit myImg04 and you win the game!'  
+   if ( myHitOther('myImg01','myImg05') ){
+      document.all.myText01.value = 'You hit myImg05 and you win the game!'  
        alert('You Win, now go to the next level')
       document.getElementById('myImg01').style.left = '20px'
       location = 'https://www.google.ca'
    }
    
-   if ( myHitOther('myBullet01','myImg04') ){
-      document.all.myText01.value = 'You hit myImg04 and you win the game!'  
+   if ( myHitOther('myBullet01','myImg05') ){
+      document.all.myText01.value = 'You hit myImg05 and you win the game!'  
        alert('You Win, now go to the next level')
       document.getElementById('myBullet01').style.left = '20px'
       location = 'https://www.google.ca'
    }
    
-   if ( myHitOther('myBullet02','myImg04') ){
-      document.all.myText01.value = 'You hit myImg04 and you win the game!'  
+   if ( myHitOther('myBullet02','myImg05') ){
+      document.all.myText01.value = 'You hit myImg05 and you win the game!'  
        alert('You Win, now go to the next level')
       document.getElementById('myBullet02').style.left = '20px'
       location = 'https://www.google.ca'
@@ -232,8 +232,8 @@ if (myShooting == 1){
 <img id="myImg01" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left: 10px; top:190px;">
 <img id="myImg02" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:500px; top:190px;">
 <img id="myImg03" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:750px; top:190px;">
-<img id="myImg04" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:1500px; top:400px;">
-<img id="myImg05" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:850px; top:190px;">
+<img id="myImg04" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:850px; top:190px;">
+<img id="myImg05" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:1500px; top:400px;">
 
 <img id="myBullet01" src="myImgNew.jpg"  style="position:absolute; width:10px; height:10px; left: 130px; top:190px;">
 <img id="myBullet02" src="myImgNew.jpg"  style="position:absolute; width:10px; height:10px; left: 150px; top:190px;">
