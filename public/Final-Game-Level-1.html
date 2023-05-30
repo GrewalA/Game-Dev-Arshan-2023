@@ -57,13 +57,6 @@ function myCheckHit(){
       myScore -= 1
    }   
    
-   if ( myHitOther('myImg01','myImg03') ){
-       //alert('you lose')
-      document.getElementById('myImg01').style.left = '20px'
-      document.all.myText01.value = 'You hit myImg03'  
-      myScore -= 1
-   }   
-
    if ( myHitOther('myBullet01','myImg03') ){
       clearInterval(myGun01)
       document.getElementById('myBullet01').style.left = '-200px'
@@ -72,6 +65,26 @@ function myCheckHit(){
    }   
    
    if ( myHitOther('myBullet02','myImg03') ){
+      clearInterval(myGun02)
+      document.getElementById('myBullet02').style.left = '-200px'
+      document.all.myText01.value = 'You shot myImg03'  
+      myScore += 1
+   }   
+   
+   if ( myHitOther('myImg01','myImg05') ){
+      document.getElementById('myImg01').style.left = '20px'
+      document.all.myText01.value = 'You hit myImg03'  
+      myScore -= 1
+   }   
+   
+   if ( myHitOther('myBullet01','myImg05') ){
+      clearInterval(myGun01)
+      document.getElementById('myBullet01').style.left = '-200px'
+      document.all.myText01.value = 'You shot myImg03'  
+      myScore += 1
+   }   
+   
+   if ( myHitOther('myBullet02','myImg05') ){
       clearInterval(myGun02)
       document.getElementById('myBullet02').style.left = '-200px'
       document.all.myText01.value = 'You shot myImg03'  
@@ -220,7 +233,7 @@ if (myShooting == 1){
 <img id="myImg02" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:500px; top:190px;">
 <img id="myImg03" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:750px; top:190px;">
 <img id="myImg04" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:1500px; top:400px;">
-
+<img id="myImg05" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:850px; top:190px;">
 
 <img id="myBullet01" src="myImgNew.jpg"  style="position:absolute; width:10px; height:10px; left: 130px; top:190px;">
 <img id="myBullet02" src="myImgNew.jpg"  style="position:absolute; width:10px; height:10px; left: 150px; top:190px;">
