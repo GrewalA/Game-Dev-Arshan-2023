@@ -11,6 +11,10 @@
    let myVerticalSpeed = 5
    let myTimer01
    let myTimer02
+   let myTimer03
+   let myTimer04
+   let myTimer05
+   let myTimer06
 
    // global functions here
 function myHitOther(my1,my2){
@@ -252,13 +256,13 @@ if (myShooting == 1){
   }, 50);
 }">
 <img id="myImg03" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:750px; top:190px;" onload="{
-  clearInterval(myTimer01);
-  clearInterval(myTimer02);
+  clearInterval(myTimer03);
+  clearInterval(myTimer04);
   let isMovingDown = true;
   let bouncePoint1 = 300;
   let bouncePoint2 = 100;
   
-  myTimer01 = setInterval(function(){
+  myTimer03 = setInterval(function(){
     let currentTop = parseInt(document.getElementById('myImg03').style.top);
     let newTop = isMovingDown ? currentTop + myVerticalSpeed : currentTop - myVerticalSpeed;
     
@@ -273,13 +277,13 @@ if (myShooting == 1){
   }, 50);
 }">
 <img id="myImg04" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:850px; top:190px;" onload="{
-  clearInterval(myTimer01);
-  clearInterval(myTimer02);
+  clearInterval(myTimer05);
+  clearInterval(myTimer06);
   let isMovingDown = true;
   let bouncePoint1 = 300;
   let bouncePoint2 = 100;
   
-  myTimer01 = setInterval(function(){
+  myTimer05 = setInterval(function(){
     let currentTop = parseInt(document.getElementById('myImg04').style.top);
     let newTop = isMovingDown ? currentTop + myVerticalSpeed : currentTop - myVerticalSpeed;
     
