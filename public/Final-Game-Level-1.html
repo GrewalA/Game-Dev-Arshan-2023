@@ -233,12 +233,21 @@ if (myShooting == 1){
 <img id="myImg02" src="myImgNew.jpg" style="position:absolute; width:100px; height:80px; left:500px; top:190px;" onload="{
   clearInterval(myTimer01);
   clearInterval(myTimer02);
+  let isMovingDown = true;
+  let bouncePoint1 = 300;
+  let bouncePoint2 = 100;
+  
   myTimer01 = setInterval(function(){
     let currentTop = parseInt(document.getElementById('myImg02').style.top);
-    let newTop = currentTop + myVerticalSpeed;
-    if (newTop >= 100 && newTop <= 300) {
-      document.getElementById('myImg02').style.top = newTop + 'px';
+    let newTop = isMovingDown ? currentTop + myVerticalSpeed : currentTop - myVerticalSpeed;
+    
+    if (isMovingDown && newTop >= bouncePoint1) {
+      isMovingDown = false;
+    } else if (!isMovingDown && newTop <= bouncePoint2) {
+      isMovingDown = true;
     }
+    
+    document.getElementById('myImg02').style.top = newTop + 'px';
     myCheckHit(); // checks for all collisions
   }, 50);
 }">
