@@ -251,8 +251,48 @@ if (myShooting == 1){
     myCheckHit(); // checks for all collisions
   }, 50);
 }">
-<img id="myImg03" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:750px; top:190px;">
-<img id="myImg04" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:850px; top:190px;">
+<img id="myImg03" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:750px; top:190px;" onload="{
+  clearInterval(myTimer01);
+  clearInterval(myTimer02);
+  let isMovingDown = true;
+  let bouncePoint1 = 300;
+  let bouncePoint2 = 100;
+  
+  myTimer01 = setInterval(function(){
+    let currentTop = parseInt(document.getElementById('myImg03').style.top);
+    let newTop = isMovingDown ? currentTop + myVerticalSpeed : currentTop - myVerticalSpeed;
+    
+    if (isMovingDown && newTop >= bouncePoint1) {
+      isMovingDown = false;
+    } else if (!isMovingDown && newTop <= bouncePoint2) {
+      isMovingDown = true;
+    }
+    
+    document.getElementById('myImg03').style.top = newTop + 'px';
+    myCheckHit(); // checks for all collisions
+  }, 50);
+}">
+<img id="myImg04" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:850px; top:190px;" onload="{
+  clearInterval(myTimer01);
+  clearInterval(myTimer02);
+  let isMovingDown = true;
+  let bouncePoint1 = 300;
+  let bouncePoint2 = 100;
+  
+  myTimer01 = setInterval(function(){
+    let currentTop = parseInt(document.getElementById('myImg04').style.top);
+    let newTop = isMovingDown ? currentTop + myVerticalSpeed : currentTop - myVerticalSpeed;
+    
+    if (isMovingDown && newTop >= bouncePoint1) {
+      isMovingDown = false;
+    } else if (!isMovingDown && newTop <= bouncePoint2) {
+      isMovingDown = true;
+    }
+    
+    document.getElementById('myImg04').style.top = newTop + 'px';
+    myCheckHit(); // checks for all collisions
+  }, 50);
+}"> 
 <img id="myImg05" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:1500px; top:400px;">
 
 <img id="myBullet01" src="myImgNew.jpg"  style="position:absolute; width:10px; height:10px; left: 130px; top:190px;">
