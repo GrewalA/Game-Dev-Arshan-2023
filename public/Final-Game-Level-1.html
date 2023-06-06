@@ -8,6 +8,9 @@
    let myGun01
    let myGun02
    let myShooting = 1
+   let myVerticalSpeed = 5
+   let myTimer01
+   let myTimer02
 
    // global functions here
 function myHitOther(my1,my2){
@@ -126,26 +129,7 @@ function myCheckHit(){
 
 }
 
-   function moveMyImg02Vertically() {
-  const myImg02 = document.getElementById('myImg02');
-  let currentTop = parseInt(myImg02.style.top);
-
-  // check if myImg02 reaches the top or bottom of the screen
-  if (currentTop <= 0 || currentTop >= window.innerHeight - myImg02.offsetHeight) {
-    // reverse the vertical direction
-    myImg02VerticalDirection *= -1;
-  }
-
-  // move myImg02 vertically
-  myImg02.style.top = currentTop + myImg02VerticalDirection * myImg02VerticalStep + 'px';
-
-  // check for collisions
-  myCheckHit();
-}
-
-// additional code to start moving myImg02 vertically
-myClock = setInterval(moveMyImg02Vertically, 100); // adjust the interval as needed
-
+   
 </script>
 
 <h1 align=center><font color=Yellow>T4A05 Template with WASD by Fred</font></h1>
@@ -246,7 +230,15 @@ if (myShooting == 1){
 
                                                                                                                                                                                    
 <img id="myImg01" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left: 10px; top:190px;">
-<img id="myImg02" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:500px; top:190px;">
+<img id="myImg02" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:500px; top:190px;"onLoad="{
+  clearInterval(myTimer01)
+  clearInterval(myTimer02)
+  myTimer01 = setInterval(function(){
+     document.getElementById('myBlock01').style.top = parseInt(document.getElementById('myBlock01').style.top) + myVerticalSpeed + 'px'
+                                                                                                                 
+     myCheckHit()     // checks for all collisions
+  }, 50) 
+                                                                                                                        }">
 <img id="myImg03" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:750px; top:190px;">
 <img id="myImg04" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:850px; top:190px;">
 <img id="myImg05" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:1500px; top:400px;">
