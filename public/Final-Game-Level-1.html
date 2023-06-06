@@ -230,15 +230,18 @@ if (myShooting == 1){
 
                                                                                                                                                                                    
 <img id="myImg01" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left: 10px; top:190px;">
-<img id="myImg02" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:500px; top:190px;"onLoad="{
-  clearInterval(myTimer01)
-  clearInterval(myTimer02)
+<img id="myImg02" src="myImgNew.jpg" style="position:absolute; width:100px; height:80px; left:500px; top:190px;" onload="{
+  clearInterval(myTimer01);
+  clearInterval(myTimer02);
   myTimer01 = setInterval(function(){
-     document.getElementById('myImg02').style.top = parseInt(document.getElementById('myImg02').style.top) + myVerticalSpeed + 'px'
-                                                                                                                 
-     myCheckHit()     // checks for all collisions
-  }, 50) 
-                                                                                                                        }">
+    let currentTop = parseInt(document.getElementById('myImg02').style.top);
+    let newTop = currentTop + myVerticalSpeed;
+    if (newTop >= 100 && newTop <= 300) {
+      document.getElementById('myImg02').style.top = newTop + 'px';
+    }
+    myCheckHit(); // checks for all collisions
+  }, 50);
+}">
 <img id="myImg03" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:750px; top:190px;">
 <img id="myImg04" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:850px; top:190px;">
 <img id="myImg05" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:1500px; top:400px;">
