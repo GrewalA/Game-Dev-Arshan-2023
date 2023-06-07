@@ -255,21 +255,21 @@ if (myShooting == 1){
     myCheckHit(); // checks for all collisions
   }, 50);
 }">
-<img id="myImg03" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:700px; top:190px;" onload="{
+<img id="myImg03" src="myImgNew.jpg" style="position:absolute; width:100px; height:80px; left:700px; top:190px;" onload="{
   clearInterval(myTimer03);
   clearInterval(myTimer04);
-  let isMovingDown = true;
-  let bouncePoint1 = 700;
+  let isMovingUp = true;
+  let bouncePoint1 = 50;
   let bouncePoint2 = 100;
   
   myTimer03 = setInterval(function(){
     let currentTop = parseInt(document.getElementById('myImg03').style.top);
-    let newTop = isMovingDown ? currentTop + myVerticalSpeed : currentTop - myVerticalSpeed;
+    let newTop = isMovingUp ? currentTop - myVerticalSpeed : currentTop + myVerticalSpeed;
     
-    if (isMovingDown && newTop >= bouncePoint1) {
-      isMovingDown = false;
-    } else if (!isMovingDown && newTop <= bouncePoint2) {
-      isMovingDown = true;
+    if (isMovingUp && newTop <= bouncePoint1) {
+      isMovingUp = false;
+    } else if (!isMovingUp && newTop >= bouncePoint2) {
+      isMovingUp = true;
     }
     
     document.getElementById('myImg03').style.top = newTop + 'px';
