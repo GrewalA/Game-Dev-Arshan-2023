@@ -116,130 +116,85 @@
     // Fire a bullet from the player's position
     function fireBullet() {
       if (bullets.length < maxBullets) {
-        bullets.push({ x: playerX, y: playerY });
+        bullets.push({ x: playerX,.bullets.push({ x: playerX, y: playerY });
         bulletCount++;
-
-        if (bulletCount >= maxBullets) {
-          canvas.removeEventListener('click', fireBullet);
-        }
       }
     }
 
     // Update the player's position based on mouse movement
     function updatePlayerPosition(event) {
       const rect = canvas.getBoundingClientRect();
-      playerX = event.clientX - rect.left;
-      playerY = event.clientY - rect.top;
+      const mouseX = event.clientX - rect.left;
+      const mouseY = event.clientY - rect.top;
+
+      playerX = mouseX;
+      playerY = mouseY;
     }
 
-    // Check for collisions between bullets and enemy dots
+    // Check for collisions between bullets and enemies
     function checkBulletEnemyCollision(bullet) {
-      const enemies = document.querySelectorAll('canvas[width="400"] + canvas circle:not([fill="blue"])');
+      // Loop through all enemy dots and check for collisions
+      const dotCount = 10; // Adjust the number of dots here
+      const spacing = canvas.width / (dotCount + 1);
 
-      enemies.forEach(enemy => {
-        const enemyX = parseFloat(enemy.getAttribute('cx'));
-        const enemyY = parseFloat(enemy.getAttribute('cy'));
-        const distance = Math.sqrt((bullet.x - enemyX) ** 2 + (bullet.y - enemyY) ** 2);
+      for (let i = 1; i <= dotCount; i++) {
+        const enemyX = i * spacing;
+        const enemyY = Math.random() * canvas.height;
 
+        // Calculate the distance between the bullet and the enemy
+        const dx = bullet.x - enemyX;
+        const dy = bullet.y - enemyY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        // If the distance is less than the sum of the radii, it's a collision
         if (distance < bulletRadius + dotRadius) {
-          enemy.setAttribute('fill', 'blue');
-          bulletCount--;
+          // Remove the bullet and the enemy dot
+          bullets = bullets.filter(b => b !== bullet);
+          drawDot(enemyX, enemyY, dotRadius, targetColor);
+          spawnEnemy();
+          break; // Exit the loop to avoid checking other enemies
         }
-      });
+      }
     }
 
-    // Check for collision between player dot and enemy dots
+    // Check for collisions between the player and enemies
     function checkPlayerEnemyCollision() {
-      const enemies = document.querySelectorAll('canvas[width="400"] + canvas circle:not([fill="blue"])');
+      // Loop through all enemy dots and check for collisions
+      const dotCount = 10; // Adjust the number of dots here
+      const spacing = canvas.width / (dotCount + 1);
 
-      enemies.forEach(enemy => {
-        const enemyX = parseFloat(enemy.getAttribute('cx'));
-        const enemyY = parseFloat(enemy.getAttribute('cy'));
-        const distance = Math.sqrt((playerX - enemyX) ** 2 + (playerY - enemyY) ** 2);
+      for (let i = 1; i <= dotCount; i++) {
+        const enemyX = i * spacing;
+        const enemyY = Math.random() * canvas.height;
 
-        if (distance < dotRadius) {
+        // Calculate the distance between the player and the enemy
+        const dx = playerX - enemyX;
+        const dy = playerY - enemyY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        // If the distance is less than the sum of the radii, it's a collision
+        if (distance < dotRadius + dotRadius) {
+          // Game over
           gameOver = true;
-          alert('Game Over!');
+          alert('Game Over');
+          break; // Exit the loop to avoid checking other enemies
         }
-      });
+      }
     }
 
-    // Start the game loop
-    gameLoop();
+    // Spawn a new enemy dot at a random position
     function spawnEnemy() {
-    enemyTimeout = setTimeout(() => {
-        enemyCount += 1;
-        deadzone = 150;
-        tempColor = 'red';
-        x = Math.floor(Math.random() * canvas.width);
-        y = Math.floor(Math.random() * canvas.height);
-        x1 = Math.floor(Math.random() * canvas.width);
-        y1 = Math.floor(Math.random() * canvas.height);
-        evadeRand = Math.floor(Math.random() * 6);
-        if (evadeRand == 1) {
-            canEvade = true;
-            tempColor = 'maroon';
-        } else {
-            canEvade = false;
-            tempColor = 'red';
-        }
+      const dotCount = 10; // Adjust the number of dots here
+      const spacing = canvas.width / (dotCount + 1);
 
-        dx = block0.x - x;
-        dy = block0.y - y;
-        distance = Math.sqrt(dx*dx + dy*dy);
+      const enemyX = Math.floor(Math.random() * dotCount) * spacing + spacing;
+      const enemyY = canvas.height;
 
-        if (distance <= deadzone) {
-            spawnEnemy();
-        } else {
-            if (timer >= 0) {
-                persueDist = 0;
-                if (enemyCount % 30 == 0) {
-                    Enemies.push(new Enemy(x, y, 0, 0, 0.9, tempColor, 15, 3, canEvade));
-                    spawnEnemy();
-                } else {
-                    Enemies.push(new Enemy(x, y, 0, 0, 0.9, tempColor, 7.5, 1, canEvade));
-                    spawnEnemy();
-                }
-            } else if (timer >= 50) {
-                persueDist = 15;
-                if (enemyCount % 15 == 0) {
-                    Enemies.push(new Enemy(x, y, 0, 0, 0.9, tempColor, 15, 3, canEvade));
-                    spawnEnemy();
-                } else {
-                    Enemies.push(new Enemy(x, y, 0, 0, 0.9, tempColor, 7.5, 1, canEvade));
-                    spawnEnemy();
-                }
-            } else if (timer >= 100) {
-                persueDist = 30;
-                if (enemyCount % 7.5 == 0) {
-                    Enemies.push(new Enemy(x, y, 0, 0, 0.9, tempColor, 15, 3, canEvade));
-                    spawnEnemy();
-                } else {
-                    Enemies.push(new Enemy(x, y, 0, 0, 0.9, tempColor, 7.5, 1, canEvade));
-                    spawnEnemy();
-                }
-            } else if (timer >= 150) {
-                persueDist = 30;
-                if (enemyCount % 7.5 == 0) {
-                    Enemies.push(new Enemy(x, y, 0, 0, 0.9, tempColor, 15, 3, canEvade));
-                    spawnEnemy();
-                } else {
-                    Enemies.push(new Enemy(x, y, 0, 0, 0.9, tempColor, 7.5, 1, canEvade));
-                    Enemies.push(new Enemy(x1, y1, 0, 0, 0.9, tempColor, 7.5, 1, canEvade));
-                    spawnEnemy();
-                }
-            }
-            
-        }
-        tempColor = 'red';
-        canEvade = false;
-        evadeRand = 0;
-        if (died == true) {
-            clearTimeout(enemyTimeout);
-        }
-    }, 500)
-}
+      drawDot(enemyX, enemyY, dotRadius, enemyColor);
+    }
 
+    // Start the game
+    gameLoop();
   </script>
 </body>
 </html>
