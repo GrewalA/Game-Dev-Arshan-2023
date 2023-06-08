@@ -1,7 +1,6 @@
-<!DOCTYPE html>
 <html>
 <head>
-  <title>Canvas Example</title>
+  <title>Dot Game</title>
   <style>
     canvas {
       border: 1px solid black;
@@ -9,31 +8,156 @@
   </style>
 </head>
 <body>
-  <canvas id="myCanvas"></canvas>
+  <canvas id="gameCanvas" width="400" height="400"></canvas>
 
   <script>
-    window.addEventListener('load', () => {
-      const canvas = document.getElementById('myCanvas');
-      const ctx = canvas.getContext('2d');
+    // Get the canvas element and its 2D context
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
 
-      // Set canvas dimensions
-      canvas.width = 800;
-      canvas.height = 600;
+    // Set the initial position of the player dot
+    let playerX = canvas.width / 2;
+    let playerY = canvas.height / 2;
 
-      // Draw on the canvas
-      ctx.fillStyle = 'red';
-      ctx.fillRect(100, 100, 200, 150);
+    // Set the initial position and properties of the bullets
+    let bullets = [];
+    const maxBullets = 3;
+    const bulletRadius = 5;
+    let bulletCount = 0;
 
-      ctx.strokeStyle = 'blue';
-      ctx.lineWidth = 5;
-      ctx.strokeRect(300, 200, 150, 100);
+    // Set the properties of the dots
+    const dotRadius = 10;
+    const playerColor = 'blue';
+    const enemyColor = 'red';
+    const targetColor = 'white';
 
+    // Set the game over flag
+    let gameOver = false;
+
+    // Add event listener for mouse click to fire bullets
+    canvas.addEventListener('click', fireBullet);
+
+    // Add event listener to track mouse movement and update player position
+    canvas.addEventListener('mousemove', updatePlayerPosition);
+
+    // Game loop
+    function gameLoop() {
+      if (!gameOver) {
+        update();
+        render();
+        requestAnimationFrame(gameLoop);
+      }
+    }
+
+    // Update game state
+    function update() {
+      // Update bullet positions
+      bullets.forEach(bullet => {
+        bullet.y -= 5; // Adjust bullet speed here
+
+        // Check for bullet-enemy collisions
+        checkBulletEnemyCollision(bullet);
+      });
+
+      // Remove bullets that have left the canvas
+      bullets = bullets.filter(bullet => bullet.y >= 0);
+
+      // Check for player-enemy collisions
+      checkPlayerEnemyCollision();
+    }
+
+    // Render game objects on the canvas
+    function render() {
+      // Clear the canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw player dot
+      drawDot(playerX, playerY, dotRadius, playerColor);
+
+      // Draw bullets
+      bullets.forEach(bullet => {
+        drawDot(bullet.x, bullet.y, bulletRadius, targetColor);
+      });
+
+      // Draw enemy dots
+      drawDots(canvas.width, canvas.height, dotRadius, enemyColor);
+    }
+
+    // Draw a single dot on the canvas
+    function drawDot(x, y, radius, color) {
       ctx.beginPath();
-      ctx.arc(500, 300, 50, 0, Math.PI * 2);
-      ctx.fillStyle = 'green';
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fillStyle = color;
       ctx.fill();
       ctx.closePath();
-    });
+    }
+
+    // Draw multiple enemy dots on the canvas
+    function drawDots(width, height, radius, color) {
+      const dotCount = 10; // Adjust the number of dots here
+      const spacing = width / (dotCount + 1);
+
+      for (let i = 1; i <= dotCount; i++) {
+        const x = i * spacing;
+        const y = Math.random() * height;
+
+        drawDot(x, y, radius, color);
+      }
+    }
+
+    // Fire a bullet from the player's position
+    function fireBullet() {
+      if (bullets.length < maxBullets) {
+        bullets.push({ x: playerX, y: playerY });
+        bulletCount++;
+
+        if (bulletCount >= maxBullets) {
+          canvas.removeEventListener('click', fireBullet);
+        }
+      }
+    }
+
+    // Update the player's position based on mouse movement
+    function updatePlayerPosition(event) {
+      const rect = canvas.getBoundingClientRect();
+      playerX = event.clientX - rect.left;
+      playerY = event.clientY - rect.top;
+    }
+
+    // Check for collisions between bullets and enemy dots
+    function checkBulletEnemyCollision(bullet) {
+      const enemies = document.querySelectorAll('canvas[width="400"] + canvas circle:not([fill="blue"])');
+
+      enemies.forEach(enemy => {
+        const enemyX = parseFloat(enemy.getAttribute('cx'));
+        const enemyY = parseFloat(enemy.getAttribute('cy'));
+        const distance = Math.sqrt((bullet.x - enemyX) ** 2 + (bullet.y - enemyY) ** 2);
+
+        if (distance < bulletRadius + dotRadius) {
+          enemy.parentNode.removeChild(enemy);
+          bulletCount--;
+        }
+      });
+    }
+
+    // Check for collision between player dot and enemy dots
+    function checkPlayerEnemyCollision() {
+      const enemies = document.querySelectorAll('canvas[width="400"] + canvas circle:not([fill="blue"])');
+
+      enemies.forEach(enemy => {
+        const enemyX = parseFloat(enemy.getAttribute('cx'));
+        const enemyY = parseFloat(enemy.getAttribute('cy'));
+        const distance = Math.sqrt((playerX - enemyX) ** 2 + (playerY - enemyY) ** 2);
+
+        if (distance < dotRadius) {
+          gameOver = true;
+          alert('Game Over!');
+        }
+      });
+    }
+
+    // Start the game loop
+    gameLoop();
   </script>
 </body>
 </html>
