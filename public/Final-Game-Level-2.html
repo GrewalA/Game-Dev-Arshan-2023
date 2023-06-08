@@ -35,7 +35,7 @@
 
     // Set the properties of the dots
     const dotRadius = 10;
-    const playerColor = 'blue';
+    const playerColor = 'white';
     const enemyColor = 'red';
     const targetColor = 'white';
 
@@ -72,6 +72,9 @@
 
       // Check for player-enemy collisions
       checkPlayerEnemyCollision();
+
+      // Spawn new enemy dots
+      spawnEnemy();
     }
 
     // Render game objects on the canvas
@@ -151,7 +154,6 @@
           // Remove the bullet and the enemy dot
           bullets = bullets.filter(b => b !== bullet);
           drawDot(enemyX, enemyY, dotRadius, targetColor);
-          spawnEnemy();
           break; // Exit the loop to avoid checking other enemies
         }
       }
@@ -187,8 +189,8 @@
       const dotCount = 10; // Adjust the number of dots here
       const spacing = canvas.width / (dotCount + 1);
 
-      const enemyX = Math.floor(Math.random() * dotCount) * spacing + spacing;
-      const enemyY = canvas.height;
+      const enemyX = Math.random() < 0.5 ? 0 : canvas.width;
+      const enemyY = Math.random() * canvas.height;
 
       drawDot(enemyX, enemyY, dotRadius, enemyColor);
     }
