@@ -255,12 +255,12 @@ if (myShooting == 1){
     myCheckHit(); // checks for all collisions
   }, 50);
 }">
-<img id="myImg03" src="myImgNew.jpg" style="position:absolute; width:100px; height:80px; left:700px; top:190px;" onload="{
+<img id="myImg03" src="myImgNew.jpg" style="position:absolute; width:100px; height:80px; left:700px; top:700px;" onload="{
   clearInterval(myTimer03);
   clearInterval(myTimer04);
   let isMovingUp = true;
-  let bouncePoint1 = 50;
-  let bouncePoint2 = 300;
+  let bouncePoint1 = 100;
+  let bouncePoint2 = 700;
   
   myTimer03 = setInterval(function(){
     let currentTop = parseInt(document.getElementById('myImg03').style.top);
