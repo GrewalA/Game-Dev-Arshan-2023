@@ -2,15 +2,21 @@
 <head>
   <title>Dot Game</title>
   <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
     canvas {
       border: 1px solid black;
-      display: block;
-      margin: 0 auto;
     }
   </style>
 </head>
 <body>
-  <canvas id="gameCanvas" width="800" height="800"></canvas>
+  <canvas id="gameCanvas" width="400" height="400"></canvas>
 
   <script>
     // Get the canvas element and its 2D context
@@ -128,7 +134,7 @@
 
     // Check for collisions between bullets and enemy dots
     function checkBulletEnemyCollision(bullet) {
-      const enemies = document.querySelectorAll('canvas[width="800"] + canvas circle:not([fill="blue"])');
+      const enemies = document.querySelectorAll('canvas[width="400"] + canvas circle:not([fill="blue"])');
 
       enemies.forEach(enemy => {
         const enemyX = parseFloat(enemy.getAttribute('cx'));
@@ -136,7 +142,7 @@
         const distance = Math.sqrt((bullet.x - enemyX) ** 2 + (bullet.y - enemyY) ** 2);
 
         if (distance < bulletRadius + dotRadius) {
-          enemy.parentNode.removeChild(enemy);
+          enemy.setAttribute('fill', 'blue');
           bulletCount--;
         }
       });
@@ -144,7 +150,7 @@
 
     // Check for collision between player dot and enemy dots
     function checkPlayerEnemyCollision() {
-      const enemies = document.querySelectorAll('canvas[width="800"] + canvas circle:not([fill="blue"])');
+      const enemies = document.querySelectorAll('canvas[width="400"] + canvas circle:not([fill="blue"])');
 
       enemies.forEach(enemy => {
         const enemyX = parseFloat(enemy.getAttribute('cx'));
