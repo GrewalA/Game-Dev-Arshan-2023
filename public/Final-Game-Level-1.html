@@ -198,34 +198,7 @@ function myCheckHit(){
 <input type=button value="shoot" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
 
 if (myShooting > 2 ){myShooting = 1}
-if (myShooting == 2) {
-    myShooting += 1
-    document.getElementById('myBullet02').style.left = document.getElementById('myImg01').style.left
-    document.getElementById('myBullet02').style.top = document.getElementById('myImg01').style.top
-    clearInterval(myGun02)
-    myGun02 = setInterval(function () {
-      document.getElementById('myBullet02').style.left = parseInt(document.getElementById('myBullet02').style.left) + 10 + 'px'
-      myCheckHit()
-    }, 20)   // speed of bullet faster lower number
-  }
-  
-  // Bullet Number 1
-  if (myShooting == 1) {
-    myShooting += 1
-    document.getElementById('myBullet01').style.left = document.getElementById('myImg01').style.left
-    document.getElementById('myBullet01').style.top = document.getElementById('myImg01').style.top
-    clearInterval(myGun01)
-    myGun01 = setInterval(function () {
-      document.getElementById('myBullet01').style.left = parseInt(document.getElementById('myBullet01').style.left) + 10 + 'px'
-      myCheckHit()
-    }, 20)   // speed of bullet faster lower number
-  }
-}">                                                                                                 
-
-
-
-
-  // Bullet Number 2
+// Bullet Number 2
 if (myShooting == 2){
   myShooting += 1
   document.getElementById('myBullet02').style.left = document.getElementById('myImg01').style.left
@@ -236,11 +209,7 @@ if (myShooting == 2){
      myCheckHit() 
   }, 20)   // speed of bullet faster lower number
 }
-
-
-
-
-  // Bullet Number 1
+// Bullet Number 1
 if (myShooting == 1){
   myShooting += 1
   document.getElementById('myBullet01').style.left = document.getElementById('myImg01').style.left
@@ -250,11 +219,8 @@ if (myShooting == 1){
      document.getElementById('myBullet01').style.left = parseInt(document.getElementById('myBullet01').style.left) + 10 + 'px'
      myCheckHit() 
   }, 20)   // speed of bullet faster lower number
-}
-
-
+}                                                                                           
 }"><br><br>
-
                                                                                                                                                                                    
 <img id="myImg01" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left: 10px; top:190px;">
 <img id="myImg02" src="myImgNew.jpg" style="position:absolute; width:100px; height:80px; left:500px; top:190px;" onload="{
