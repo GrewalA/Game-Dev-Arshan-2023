@@ -67,163 +67,212 @@ code: {
     const targetColor = 'white';
 
     // Set the game over flag
-    let gameOver = false;
-
-    // Add event listener for mouse click to fire bullets
-    canvas.addEventListener('click', fireBullet);
-
-    // Add event listener to track mouse movement and update player position
-    canvas.addEventListener('mousemove', updatePlayerPosition);
-
-    // Game loop
-    function gameLoop() {
-      if (!gameOver) {
-        update();
-        render();
-        requestAnimationFrame(gameLoop);
-      }
-    }
-
-    // Update game state
-    function update() {
-      // Update bullet positions
-      bullets.forEach(bullet => {
-        bullet.y -= 5; // Adjust bullet speed here
-
-        // Check for bullet-enemy collisions
-        checkBulletEnemyCollision(bullet);
-      });
-
-      // Remove bullets that have left the canvas
-      bullets = bullets.filter(bullet => bullet.y >= 0);
-
-      // Check for player-enemy collisions
-      checkPlayerEnemyCollision();
-
-      // Spawn new enemy dots
-      spawnEnemy();
-    }
-
-    // Render game objects on the canvas
-    function render() {
-      // Clear the canvas
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Draw player dot
-      drawDot(playerX, playerY, dotRadius, playerColor);
-
-      // Draw bullets
-      bullets.forEach(bullet => {
-        drawDot(bullet.x, bullet.y, bulletRadius, targetColor);
-      });
-
-      // Draw enemy dots
-      drawDots(canvas.width, canvas.height, dotRadius, enemyColor);
-    }
-
-    // Draw a single dot on the canvas
-    function drawDot(x, y, radius, color) {
-      ctx.beginPath();
-      ctx.arc(x, y, radius, 0, Math.PI * 2);
-      ctx.fillStyle = color;
-      ctx.fill();
-      ctx.closePath();
-    }
-
-    // Draw multiple enemy dots on the canvas
-    function drawDots(width, height, radius, color) {
-      const dotCount = 10; // Adjust the number of dots here
-      const spacing = width / (dotCount + 1);
-
-      for (let i = 1; i <= dotCount; i++) {
-        const x = i * spacing;
-        const y = Math.random() * height;
-
-        drawDot(x, y, radius, color);
-      }
-    }
-
-    // Fire a bullet from the player's position
-    function fireBullet() {
-      if (bullets.length < maxBullets) {
-        bullets.push({ x: playerX, y: playerY });
-        bulletCount++;
-      }
-    }
-
-    // Update the player's position based on mouse movement
-    function updatePlayerPosition(event) {
-      const rect = canvas.getBoundingClientRect();
-      const mouseX = event.clientX - rect.left;
-      const mouseY = event.clientY - rect.top;
-
-      playerX = mouseX;
-      playerY = mouseY;
-    }
-
-    // Check for collisions between bullets and enemies
-    function checkBulletEnemyCollision(bullet) {
-      // Loop through all enemy dots and check for collisions
-      const dotCount = 10; // Adjust the number of dots here
-      const spacing = canvas.width / (dotCount + 1);
-
-      for (let i = 1; i <= dotCount; i++) {
-        const enemyX = i * spacing;
-        const enemyY = Math.random() * canvas.height;
-
-        // Calculate the distance between the bullet and the enemy
-        const dx = bullet.x - enemyX;
-        const dy = bullet.y - enemyY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        // If the distance is less than the sum of the radii, it's a collision
-        if (distance < bulletRadius + dotRadius) {
-          // Remove the bullet and the enemy dot
-          bullets = bullets.filter(b => b !== bullet);
-          drawDot(enemyX, enemyY, dotRadius, targetColor);
-          break; // Exit the loop to avoid checking other enemies
+   const Enemies = [];
+    class Enemy {
+        constructor(x, y, xSpeed, ySpeed, Speed, enemyColor, radius, health, canEvade) {
+            this.x = x;
+            this.y = y;
+            this.xSpeed = xSpeed;
+            this.ySpeed = ySpeed;
+            this.Speed = Speed;
+            this.enemyColor = enemyColor;
+            this.radius = radius;
+            this.health = health;
+            this.canEvade = canEvade;
         }
-      }
-    }
+        update() {
+            let bulletDistance;
+            let avoidDist = 20;
+            let bulletDistanceTemp = [];
+            let loggedBullet = [];
+            let bulletFinal = {x:null, y: null};
+            if (this.canEvade == true) {
+                Bullets.forEach(bullet => {
+                    bulletDistance = Math.sqrt((bullet.x - this.x)*(bullet.y - this.y)+(bullet.y- this.y)*(bullet.y - this.y))                
+                    bulletDistance = (isNaN(bulletDistance) ? 0 : bulletDistance);
+                    loggedBullet.push(bullet);
+                    bulletDistanceTemp.push(bulletDistance);
+                    bulletFinal = loggedBullet[bulletDistanceTemp.indexOf(Math.max(...bulletDistanceTemp))]
+                });
 
-    // Check for collisions between the player and enemies
-    function checkPlayerEnemyCollision() {
-      // Loop through all enemy dots and check for collisions
-      const dotCount = 10; // Adjust the number of dots here
-      const spacing = canvas.width / (dotCount + 1);
+                if (bulletDistance < 50 && (bulletFinal.x > 0 || bulletFinal.y) > 0) {
+                    let targetBlt = {x: bulletFinal.x, y: bulletFinal.y}
+                    let predictionBlt = {x: bulletFinal.x*avoidDist, y: bulletFinal.x*avoidDist}
+                    targetBlt.x += predictionBlt.x;
+                    targetBlt.y += predictionBlt.y;
 
-      for (let i = 1; i <= dotCount; i++) {
-        const enemyX = i * spacing;
-        const enemyY = Math.random() * canvas.height;
+                    let forceBlt = {x: targetBlt.x - this.x, y: targetBlt.y - this.y};
+                    let forceBltMag = Math.sqrt((forceBlt.x * forceBlt.x) + (forceBlt.y * forceBlt.y));
+                    forceBlt = {x: (forceBlt.x / forceBltMag), y: (forceBlt.y / forceBltMag)};
+                    this.xSpeed = -forceBlt.x;
+                    this.ySpeed = -forceBlt.y;
+                    this.x += this.xSpeed;
+                    this.y += this.ySpeed;
+                } else {
+                
+                    let distance = Math.sqrt((block0.x - this.x)*(block0.x - this.x) + (block0.y - this.y)*(block0.y - this.y));
+                    let canvas_diagonal = Math.sqrt((canvas.height * canvas.height) + (canvas.width * canvas.width))
 
-        // Calculate the distance between the player and the enemy
-        const dx = playerX - enemyX;
-        const dy = playerY - enemyY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
+                    let target = {x: block0.x, y: block0.y};
+                    let prediction = {x: block0.xSpeed*persueDist, y: block0.ySpeed*persueDist};
+                    target.x += prediction.x;
+                    target.y += prediction.y;
 
-        // If the distance is less than the sum of the radii, it's a collision
-        if (distance < dotRadius + dotRadius) {
-          // Game over
-          gameOver = true;
-          alert('Game Over');
-          break; // Exit the loop to avoid checking other enemies
+                    let force = {x: target.x - this.x, y: target.y - this.y};//get diff
+                    let forceMag = Math.sqrt((force.x * force.x) + (force.y * force.y));//find magnitude
+                    force = {x: (force.x / forceMag), y: (force.y / forceMag)};//normalize and mult by maxspeed
+                    if (distance >= canvas_diagonal/2) {
+                        this.xSpeed = -force.x;
+                        this.ySpeed = -force.y;
+                        this.x += this.xSpeed;
+                        this.y += this.ySpeed;
+                    } else {
+                        this.xSpeed = force.x;
+                        this.ySpeed = force.y;
+                        this.x += this.xSpeed;
+                        this.y += this.ySpeed;
+                    }
+                }
+                
+            } else {
+                let distance = Math.sqrt((block0.x - this.x)*(block0.x - this.x) + (block0.y - this.y)*(block0.y - this.y));
+                let canvas_diagonal = Math.sqrt((canvas.height * canvas.height) + (canvas.width * canvas.width))
+
+                let target = {x: block0.x, y: block0.y};
+                let prediction = {x: block0.xSpeed*persueDist, y: block0.ySpeed*persueDist};
+                target.x += prediction.x;
+                target.y += prediction.y;
+
+                let force = {x: target.x - this.x, y: target.y - this.y};//get diff
+                let forceMag = Math.sqrt((force.x * force.x) + (force.y * force.y));//find magnitude
+                force = {x: (force.x / forceMag) * this.Speed, y: (force.y / forceMag) * this.Speed};//normalize and mult by maxspeed
+                if (distance >= canvas_diagonal/2) {
+                    this.xSpeed = -force.x;
+                    this.ySpeed = -force.y;
+                    this.x += this.xSpeed;
+                    this.y += this.ySpeed;
+                } else {
+                    this.xSpeed = force.x;
+                    this.ySpeed = force.y;
+                    this.x += this.xSpeed;
+                    this.y += this.ySpeed;
+                }
+            }
         }
-      }
+        draw() {
+            ctx.beginPath();
+            ctx.fillStyle = this.enemyColor;
+            ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, true);
+            ctx.fill(); 
+        }
+        collision() {
+            if (this.x < 0){
+                this.x = canvas.width;
+            } 
+            if (this.x > canvas.width){
+                this.x = 0
+            }  
+            if (this.y < 0){
+                this.y = canvas.height;
+            } 
+            if (this.y > canvas.height){
+                this.y = 0
+            } 
+        }
+        enemyCollide() {
+            let G = 2;
+            let player_detect_radius = 10;
+            let detect_radius = 25;
+            Enemies.forEach((enemy) => {
+
+                dx = block0.x - this.x;
+                dy = block0.y - this.y;
+                distance = Math.sqrt(dx*dx + dy*dy);
+
+                let Edx = enemy.x - this.x;
+                let Edy = enemy.y - this.y;               
+                let enemyDistance = Math.sqrt(Edx*Edx + Edy*Edy);
+                let theta = Math.acos(this.x/10000);
+
+                if (this.x > enemy.x && this.y > enemy.y) {
+                    theta = theta
+                }else if (this.x > enemy.x && this.y < enemy.y) {
+                    theta = 2 * Math.PI - theta
+                }else if (this.x < enemy.x && this.y > enemy.y) {
+                    theta = Math.PI + theta
+                }else if (this.x < enemy.x && this.y < enemy.y) {
+                    theta = Math.PI - theta
+                }
+                //Credit goes to Caleb Janzen'd for math to code translating and mr.gill's(chump) mind. because mrgill invented theta and math and cos. shoutout newton 4 gravity
+
+                let force = G / enemyDistance
+                let xforce = Math.cos(theta) * force
+                let yforce = Math.sin(theta) * force
+
+                if (enemyDistance <= detect_radius && enemyDistance != 0) {
+                    this.x += xforce;
+                    this.y += yforce;
+                } 
+
+                if (distance <= player_detect_radius && distance != 0) {
+                    died = true;
+                }
+            })
+        }
+
     }
 
-    // Spawn a new enemy dot at a random position
-    function spawnEnemy() {
-      const dotCount = 10; // Adjust the number of dots here
-      const spacing = canvas.width / (dotCount + 1);
-
-      const enemyX = Math.random() < 0.5 ? 0 : canvas.width;
-      const enemyY = Math.random() * canvas.height;
-
-      drawDot(enemyX, enemyY, dotRadius, enemyColor);
+    const Bullets = []
+    class Bullet {
+        constructor(x, y, xSpeed, ySpeed, Speed, bulletColor, radius) {
+            this.x = x;
+            this.y = y;
+            this.xSpeed = xSpeed;
+            this.ySpeed = ySpeed;
+            this.Speed = Speed;
+            this.bulletColor = bulletColor;
+            this.radius = radius;
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.fillStyle = this.bulletColor;
+            ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, true);
+            ctx.fill(); 
+            this.x += this.xSpeed * 3;
+            this.y += this.ySpeed * 3; 
+        }
+        collision() {
+            if (this.x < 0){
+                Bullets.splice(Bullets.indexOf(this), 1)
+            } 
+            if (this.x > canvas.width){
+                Bullets.splice(Bullets.indexOf(this), 1)
+            }  
+            if (this.y < 0){
+                Bullets.splice(Bullets.indexOf(this), 1)
+            } 
+            if (this.y > canvas.height){
+                Bullets.splice(Bullets.indexOf(this), 1)
+            } 
+        }
+        bulletCollide() {
+            Enemies.forEach((enemy) => {
+                dx = enemy.x - this.x;
+                dy = enemy.y - this.y;
+                distance = Math.sqrt(dx*dx + dy*dy);
+                    if (gunType == 3 && distance < 10) {
+                        enemy.health -= 10;
+                    } else if (distance < 5 && gunType !== 3) {
+                        Bullets.splice(Bullets.indexOf(this), 1);
+                        enemy.health -= 1;
+                    }
+                    if (enemy.health < 1) {
+                        Enemies.splice(Enemies.indexOf(enemy), 1);       
+                    }
+                
+            })
+        }
     }
-
-    // Start the game
-    gameLoop();
   </script>
 </body>
 </html>
