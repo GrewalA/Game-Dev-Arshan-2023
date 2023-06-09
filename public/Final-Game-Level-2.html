@@ -19,7 +19,34 @@
   <canvas id="gameCanvas" width="400" height="400"></canvas>
 
   <script>
-    // Get the canvas element and its 2D context
+   <script>
+code: {
+    let disableType = false;
+    let GameRunning = false;
+    let bulletSpeed = 500;
+    let bulletTemp = 0;
+    let minigunBool = false;
+    let minigunTimer = 0;
+    let mouseDown = false;
+    let gunType = 1;
+    let canFire = true;
+    let enemyCount = 0;
+    let died = false;
+    let timer = 0;
+    let dx;
+    let dy;
+    let persueDist = 0;
+    let sniperX;
+    let sniperY;
+    let distance;
+    let factor;
+    let mouseX;
+    let mouseY;
+    let key = [];
+    let color = 'white';
+    let Speed = 1;
+    let canvas = document.getElementById("myCanvas");
+    let ctx = canvas.getContext("2d");
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
 
