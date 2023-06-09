@@ -273,6 +273,127 @@ code: {
             })
         }
     }
+  function main() {
+    GameRunning = true;
+    document.getElementById('myCanvas').width = 600;
+    document.getElementById('myCanvas').height = 600;
+    document.getElementById('myCanvas').style.cursor = 'none';
+    spawnEnemy();
+    update();
+}
+canvas.addEventListener('click', function (e) {
+    if (!GameRunning) {
+        var getMousePos = mousePos(canvas, e);
+        if (isInside(getMousePos,button1)){
+            gunType = 1;
+            main();
+            button1 = button2 = button3 = button4 = 0;
+          
+          
+ } else {
+        spawnBullet();
+    }
+})
+
+function spawnEnemy() {
+    enemyTimeout = setTimeout(() => {
+        enemyCount += 1;
+        deadzone = 150;
+        tempColor = 'red';
+        x = Math.floor(Math.random() * canvas.width);
+        y = Math.floor(Math.random() * canvas.height);
+        x1 = Math.floor(Math.random() * canvas.width);
+        y1 = Math.floor(Math.random() * canvas.height);
+        evadeRand = Math.floor(Math.random() * 6);
+        if (evadeRand == 1) {
+            canEvade = true;
+            tempColor = 'maroon';
+        } else {
+            canEvade = false;
+            tempColor = 'red';
+        }
+
+        dx = block0.x - x;
+        dy = block0.y - y;
+        distance = Math.sqrt(dx*dx + dy*dy);
+
+        if (distance <= deadzone) {
+            spawnEnemy();
+        } else {
+            if (timer >= 0) {
+                persueDist = 0;
+                if (enemyCount % 30 == 0) {
+                    Enemies.push(new Enemy(x, y, 0, 0, 0.9, tempColor, 15, 3, canEvade));
+                    spawnEnemy();
+                } else {
+                    Enemies.push(new Enemy(x, y, 0, 0, 0.9, tempColor, 7.5, 1, canEvade));
+                    spawnEnemy();
+                }
+            } else if (timer >= 50) {
+                persueDist = 15;
+                if (enemyCount % 15 == 0) {
+                    Enemies.push(new Enemy(x, y, 0, 0, 0.9, tempColor, 15, 3, canEvade));
+                    spawnEnemy();
+                } else {
+                    Enemies.push(new Enemy(x, y, 0, 0, 0.9, tempColor, 7.5, 1, canEvade));
+                    spawnEnemy();
+                }
+            } else if (timer >= 100) {
+                persueDist = 30;
+                if (enemyCount % 7.5 == 0) {
+                    Enemies.push(new Enemy(x, y, 0, 0, 0.9, tempColor, 15, 3, canEvade));
+                    spawnEnemy();
+                } else {
+                    Enemies.push(new Enemy(x, y, 0, 0, 0.9, tempColor, 7.5, 1, canEvade));
+                    spawnEnemy();
+                }
+            } else if (timer >= 150) {
+                persueDist = 30;
+                if (enemyCount % 7.5 == 0) {
+                    Enemies.push(new Enemy(x, y, 0, 0, 0.9, tempColor, 15, 3, canEvade));
+                    spawnEnemy();
+                } else {
+                    Enemies.push(new Enemy(x, y, 0, 0, 0.9, tempColor, 7.5, 1, canEvade));
+                    Enemies.push(new Enemy(x1, y1, 0, 0, 0.9, tempColor, 7.5, 1, canEvade));
+                    spawnEnemy();
+                }
+            }
+            
+        }
+        tempColor = 'red';
+        canEvade = false;
+        evadeRand = 0;
+        if (died == true) {
+            clearTimeout(enemyTimeout);
+        }
+    }, 500)
+}
+
+function spawnBullet() {
+    let bulletSpeed;
+    x = block0.x;
+    y = block0.y;
+    
+    switch(gunType) {
+        case 1:
+            bulletSpeed = 500;
+            if (canFire == true) {
+                canFire = false
+
+                let Cursordx = mouseX - block0.x;
+                let Cursordy = mouseY - block0.y;
+                distance = Math.sqrt(Cursordx*Cursordx + Cursordy*Cursordy);
+                factor = distance / 1;
+                xSpeed = Cursordx / factor;
+                ySpeed = Cursordy / factor;
+
+                Bullets.push(new Bullet(x, y, xSpeed, ySpeed, 1, 'goldenrod', 5));
+                setTimeout(function () {canFire = true},bulletSpeed);
+            }
+        break;
+    
+
+}
   </script>
 </body>
 </html>
