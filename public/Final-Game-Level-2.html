@@ -18,10 +18,10 @@
   </style>
 </head>
 <body>
-  <canvas id="gameCanvas" width="700" height="600"></canvas>
+  <canvas id="gameCanvas" width="800" height="600"></canvas>
+
   <script>
     const canvas = document.getElementById("gameCanvas");
-    const restartButton = document.getElementById("restartButton");
     const ctx = canvas.getContext("2d");
 
     // Player variables
@@ -46,7 +46,6 @@
     document.addEventListener("keydown", handleKeyDown);
     document.addEventListener("keyup", handleKeyUp);
     canvas.addEventListener("mousedown", handleMouseDown);
-    restartButton.addEventListener("click", restartGame);
 
     // Movement variables
     let moveUp = false;
@@ -164,7 +163,6 @@
         const distance = Math.sqrt(dx ** 2 + dy ** 2);
         if (distance < playerRadius + enemyRadius) {
           isGameOver = true;
-          restartButton.style.display = "block";
         }
 
         bullets.forEach((bullet, bulletIndex) => {
@@ -197,12 +195,6 @@
       moveEnemies();
       checkCollision();
 
-      // Add the missing function calls to update the canvas
-      drawBullets();
-      moveBullets();
-      drawEnemies();
-      moveEnemies();
-
       requestAnimationFrame(draw);
     }
 
@@ -210,17 +202,7 @@
       if (!isGameOver) {
         enemies.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height });
       }
-    }, 1000);
-
-    function restartGame() {
-      playerX = canvas.width / 2;
-      playerY = canvas.height / 2;
-      bullets = [];
-      enemies = [];
-      isGameOver = false;
-      restartButton.style.display = "none";
-      draw();
-    }
+    }, 2000);
 
     draw();
   </script>
