@@ -50,17 +50,16 @@
     // Set the initial position and properties of the bullets
     let bullets = [];
     const maxBullets = 3;
-    const bulletRadius = 5;
-    let bulletCount = 0;
+    const bulletRadius = 3; // Smaller bullet size
 
     // Set the properties of the dots
-    const dotRadius = 10;
+    const dotRadius = 5; // Smaller dot size
     const playerColor = 'black'; // Changed the player dot color to black
     const enemyColor = 'red';
     const targetColor = 'green';
 
     // Set the properties of the enemy dots
-    const enemyRadius = 15;
+    const enemyRadius = 5; // Smaller enemy dot size
     let enemies = [];
 
     // Function to handle mouse movement
@@ -76,6 +75,34 @@
       // Normalize the direction vector
       dx /= distance;
       dy /= distance;
+    }
+
+    // Function to handle key down event
+    function handleKeyDown(event) {
+      if (event.key === 'w' || event.key === 'W') {
+        dy = -1;
+      } else if (event.key === 's' || event.key === 'S') {
+        dy = 1;
+      } else if (event.key === 'a' || event.key === 'A') {
+        dx = -1;
+      } else if (event.key === 'd' || event.key === 'D') {
+        dx = 1;
+      }
+    }
+
+    // Function to handle key up event
+    function handleKeyUp(event) {
+      if (
+        (event.key === 'w' || event.key === 'W') &&
+        (event.key === 's' || event.key === 'S')
+      ) {
+        dy = 0;
+      } else if (
+        (event.key === 'a' || event.key === 'A') &&
+        (event.key === 'd' || event.key === 'D')
+      ) {
+        dx = 0;
+      }
     }
 
     // Function to handle mouse down event
@@ -181,14 +208,20 @@
     function updateEnemies() {
       for (let i = 0; i < enemies.length; i++) {
         if (enemies[i].isAlive) {
-          enemies[i].x += enemies[i].dx;
-          enemies[i].y += enemies[i].dy;
+          const playerDistX = playerX - enemies[i].x;
+          const playerDistY = playerY - enemies[i].y;
+          const playerDistance = Math.sqrt(playerDistX * playerDistX + playerDistY * playerDistY);
+          enemies[i].dx = playerDistX / playerDistance;
+          enemies[i].dy = playerDistY / playerDistance;
+
+          enemies[i].x += enemies[i].dx * Speed;
+          enemies[i].y += enemies[i].dy * Speed;
 
           // Check for collision with player
           if (isCollision(playerX, playerY, dotRadius, enemies[i].x, enemies[i].y, enemies[i].radius)) {
             // Handle player-enemy collision
             // For example, you can end the game or reduce player's health
-            console.log('Player collided with an enemy!');
+            gameOver();
           }
 
           // Check for collision with bullets
@@ -216,43 +249,57 @@
     }
 
     // Function to draw the game
-   function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawPlayer();
-  drawBullets();
-  drawEnemies();
-  updateBullets();
-  updateEnemies();
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawPlayer();
+      drawBullets();
+      drawEnemies();
+      updateBullets();
+      updateEnemies();
 
-  if (mouseDown) {
-    fireBullet();
-  }
-  
-  // Spawn new enemy every 2 seconds
-  if (timer % 120 === 0) {
-    const randomX = Math.random() * canvas.width;
-    const randomY = Math.random() * canvas.height;
-    const randomDX = Math.random() * 2 - 1;
-    const randomDY = Math.random() * 2 - 1;
-    createEnemy(randomX, randomY, randomDX, randomDY);
-  }
-  
-  timer++;
+      if (mouseDown) {
+        fireBullet();
+      }
 
-  requestAnimationFrame(draw);
-}
+      requestAnimationFrame(draw);
+    }
+
+    // Function to handle key down events
+    function handleKeyDown(event) {
+      if (event.key === 'w') {
+        playerY -= Speed;
+      } else if (event.key === 'a') {
+        playerX -= Speed;
+      } else if (event.key === 's') {
+        playerY += Speed;
+      } else if (event.key === 'd') {
+        playerX += Speed;
+      }
+    }
+
+    // Function to handle game over
+    function gameOver() {
+      GameRunning = false;
+      alert('Game Over!');
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mousedown', handleMouseDown);
+      document.removeEventListener('mouseup', handleMouseUp);
+    }
 
     // Initialize the game
     function startGame() {
+      document.addEventListener('keydown', handleKeyDown);
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mousedown', handleMouseDown);
       document.addEventListener('mouseup', handleMouseUp);
 
       // Create some enemies
-      createEnemy(100, 100, 1, 1);
-      createEnemy(200, 200, -1, 1);
-      createEnemy(300, 300, 1, -1);
+      createEnemy(100, 100, 0, 0);
+      createEnemy(200, 200, 0, 0);
+      createEnemy(300, 300, 0, 0);
 
+      GameRunning = true;
       draw();
     }
 
