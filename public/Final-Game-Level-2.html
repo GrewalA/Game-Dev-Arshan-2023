@@ -1,92 +1,109 @@
-<!DOCTYPE html>
 <html>
 <head>
-  <title>Canvas Game</title>
+  <title>Dot Game</title>
   <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
     canvas {
       border: 1px solid black;
-      display: block;
-      margin: 0 auto;
     }
   </style>
 </head>
 <body>
-  <canvas id="myCanvas" width="480" height="320"></canvas>
+  <canvas id="gameCanvas" width="600" height="600"></canvas>
 
   <script>
-    const canvas = document.getElementById('myCanvas');
-    const ctx = canvas.getContext('2d');
-
-    // Game variables
-    let GameRunning = false;
     let disableType = false;
-    let died = false;
-    let timer = 0;
+    let GameRunning = false;
+    let bulletSpeed = 500; // Decreased bullet reload time to fire more quickly
+    let bulletTemp = 0;
     let minigunBool = false;
     let minigunTimer = 0;
     let mouseDown = false;
     let canFire = true;
-
-    // Player variables
-    let playerX = canvas.width / 2;
-    let playerY = canvas.height / 2;
-    const dotRadius = 10;
-    const playerColor = 'green';
+    let enemyCount = 0;
+    let died = false;
+    let timer = 0;
     let dx = 0;
     let dy = 0;
-    const playerSpeed = 5;
+    let persueDist = 0;
+    let distance;
+    let factor;
+    let mouseX;
+    let mouseY;
+    let key = [];
+    let color = 'white';
+    let playerSpeed = 5; // Increased player speed to be faster than enemies
+    let canvas = document.getElementById("gameCanvas");
+    let ctx = canvas.getContext("2d");
 
-    // Bullet variables
+    // Set the initial position of the player dot
+    let playerX = canvas.width / 2;
+    let playerY = canvas.height / 2;
+
+    // Set the initial position and properties of the bullets
     let bullets = [];
-    const bulletRadius = 5;
-    let bulletTemp = 0;
-    const bulletSpeed = 500; // Decreased bullet reload time
+    const maxBullets = 3;
+    const bulletRadius = 3; // Smaller bullet size
 
-    // Enemy variables
-    let enemies = [];
-    const enemyRadius = 10;
+    // Set the properties of the dots
+    const dotRadius = 8; // Larger dot size
+    const playerColor = 'black'; // Changed the player dot color to black
     const enemyColor = 'red';
-    let enemyCount = 0;
-    const enemySpeed = 3;
+    const targetColor = 'green';
 
-    // Event listeners for player movement
-    document.addEventListener('keydown', handleKeyDown);
-    document.addEventListener('keyup', handleKeyUp);
-
-    // Function to handle key down event
-    function handleKeyDown(event) {
-      if (!disableType) {
-        if (event.key === 'w') {
-          dy = -playerSpeed;
-        } else if (event.key === 'a') {
-          dx = -playerSpeed;
-        } else if (event.key === 's') {
-          dy = playerSpeed;
-        } else if (event.key === 'd') {
-          dx = playerSpeed;
-        }
-      }
-    }
-
-    // Function to handle key up event
-    function handleKeyUp(event) {
-      if (!disableType) {
-        if (event.key === 'w' || event.key === 's') {
-          dy = 0;
-        } else if (event.key === 'a' || event.key === 'd') {
-          dx = 0;
-        }
-      }
-    }
-
-    // Function to handle mouse move event
+    // Function to handle mouse movement
     function handleMouseMove(event) {
-      if (mouseDown) {
-        const rect = canvas.getBoundingClientRect();
-        playerX = event.clientX - rect.left;
-        playerY = event.clientY - rect.top;
-      }
+      mouseX = event.clientX - canvas.getBoundingClientRect().left;
+      mouseY = event.clientY - canvas.getBoundingClientRect().top;
+
+      dx = mouseX - playerX;
+      dy = mouseY - playerY;
+
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      // Normalize the direction vector
+      dx /= distance;
+      dy /= distance;
     }
+
+   // Function to handle key down event
+function handleKeyDown(event) {
+  if (event.key === 'w' || event.key === 'ArrowUp') {
+    playerY -= playerSpeed;
+  } else if (event.key === 'a' || event.key === 'ArrowLeft') {
+    playerX -= playerSpeed;
+  } else if (event.key === 's' || event.key === 'ArrowDown') {
+    playerY += playerSpeed;
+  } else if (event.key === 'd' || event.key === 'ArrowRight') {
+    playerX += playerSpeed;
+  }
+}
+
+// Function to handle key up event
+function handleKeyUp(event) {
+  if (
+    (event.key === 'w' || event.key === 'W' || event.key === 'ArrowUp') &&
+    (event.key === 's' || event.key === 'S' || event.key === 'ArrowDown')
+  ) {
+    dy = 0;
+  } else if (
+    (event.key === 'a' || event.key === 'A' || event.key === 'ArrowLeft') &&
+    (event.key === 'd' || event.key === 'D' || event.key === 'ArrowRight')
+  ) {
+    dx = 0;
+  }
+}
+
+// Add event listeners for arrow keys
+document.addEventListener('keydown', handleKeyDown);
+document.addEventListener('keyup', handleKeyUp);
 
     // Function to handle mouse down event
     function handleMouseDown(event) {
@@ -98,6 +115,7 @@
       mouseDown = false;
     }
 
+    // Function to handle
     // Function to handle mouse click event
     function handleMouseClick(event) {
       if (canFire) {
@@ -109,76 +127,95 @@
 
     // Function to handle enemy dot creation
     function createEnemy() {
-      const x = Math.random() < 0.5 ? -enemyRadius : canvas.width + enemyRadius;
+      const x = Math.random() * canvas.width;
       const y = Math.random() * canvas.height;
-      const dx = Math.random() < 0.5 ? enemySpeed : -enemySpeed;
-      const dy = Math.random() * enemySpeed - enemySpeed / 2;
       enemies.push({ x: x, y: y, dx: dx, dy: dy });
       enemyCount++;
     }
 
-    // Function to update the game state
+    // Function to update the positions of the dots
     function update() {
-      // Clear the canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Update player position
-      playerX += dx;
-      playerY += dy;
-
-      // Draw player
+      // Draw the player dot
       ctx.beginPath();
       ctx.arc(playerX, playerY, dotRadius, 0, Math.PI * 2);
       ctx.fillStyle = playerColor;
       ctx.fill();
       ctx.closePath();
 
-      // Update and draw bullets
+      // Draw the bullets
       for (let i = 0; i < bullets.length; i++) {
-        bullets[i].x += bullets[i].dx;
-        bullets[i].y += bullets[i].dy;
         ctx.beginPath();
         ctx.arc(bullets[i].x, bullets[i].y, bulletRadius, 0, Math.PI * 2);
-        ctx.fillStyle = 'black';
+        ctx.fillStyle = 'blue';
         ctx.fill();
         ctx.closePath();
       }
 
-      // Remove bullets outside the canvas
-      bullets = bullets.filter((bullet) => {
-        return bullet.x > 0 && bullet.x < canvas.width && bullet.y > 0 && bullet.y < canvas.height;
+      // Move the bullets
+      for (let i = 0; i < bullets.length; i++) {
+        bullets[i].x += bullets[i].dx * playerSpeed * 2;
+        bullets[i].y += bullets[i].dy * playerSpeed * 2;
+      }
+
+      // Remove bullets that are outside the canvas
+      bullets = bullets.filter(bullet => {
+        return (
+          bullet.x >= 0 &&
+          bullet.x <= canvas.width &&
+          bullet.y >= 0 &&
+          bullet.y <= canvas.height
+        );
       });
 
-      // Update and draw enemies
+      // Draw the enemy dots
       for (let i = 0; i < enemies.length; i++) {
-        enemies[i].x += enemies[i].dx;
-        enemies[i].y += enemies[i].dy;
         ctx.beginPath();
         ctx.arc(enemies[i].x, enemies[i].y, enemyRadius, 0, Math.PI * 2);
         ctx.fillStyle = enemyColor;
         ctx.fill();
         ctx.closePath();
+      }
 
-        // Check for collision between enemies and bullets
-        for (let j = 0; j < bullets.length; j++) {
-          const distance = Math.sqrt(
-            Math.pow(enemies[i].x - bullets[j].x, 2) + Math.pow(enemies[i].y - bullets[j].y, 2)
+      // Move the enemy dots
+      for (let i = 0; i < enemies.length; i++) {
+        enemies[i].x += enemies[i].dx * playerSpeed;
+        enemies[i].y += enemies[i].dy * playerSpeed;
+      }
+
+      // Remove enemies that are outside the canvas
+      enemies = enemies.filter(enemy => {
+        return (
+          enemy.x >= 0 &&
+          enemy.x <= canvas.width &&
+          enemy.y >= 0 &&
+          enemy.y <= canvas.height
+        );
+      });
+
+      // Check for collisions between bullets and enemies
+      for (let i = 0; i < bullets.length; i++) {
+        for (let j = 0; j < enemies.length; j++) {
+          distance = Math.sqrt(
+            Math.pow(enemies[j].x - bullets[i].x, 2) +
+              Math.pow(enemies[j].y - bullets[i].y, 2)
           );
+
           if (distance < enemyRadius + bulletRadius) {
-            // Remove enemy and bullet on collision
-            enemies.splice(i, 1);
-            i--;
-            bullets.splice(j, 1);
+            enemies.splice(j, 1);
+            bullets.splice(i, 1);
+            enemyCount--;
             break;
           }
         }
+      }
 
-        // Check for collision between player and enemies
-        const distance = Math.sqrt(
+      // Check for collisions between player and enemies
+      for (let i = 0; i < enemies.length; i++) {
+        distance = Math.sqrt(
           Math.pow(enemies[i].x - playerX, 2) +
-            Math.pow(enemies[i].y - playerY, 2)
-        );
-
+            Math.pow(enemies[i].y - playerY, 2
         if (distance < enemyRadius + dotRadius) {
           GameRunning = false;
           disableType = false;
@@ -220,29 +257,29 @@
       bullets = [];
       playerX = canvas.width / 2;
       playerY = canvas.height / 2;
+      timer = 0;
+      minigunBool = false;
+      minigunTimer = 0;
+      mouseDown = false;
+      canFire = true;
 
       // Add event listeners
       document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('keydown', handleKeyDown);
+      document.addEventListener('keyup', handleKeyUp);
       document.addEventListener('mousedown', handleMouseDown);
       document.addEventListener('mouseup', handleMouseUp);
       document.addEventListener('click', handleMouseClick);
 
-      // Create initial enemies after 2 seconds
-      setTimeout(() => {
-        if (GameRunning) {
-          createEnemy();
-          createEnemy();
-        }
-      }, 2000);
+      // Initial enemy spawn
+      setTimeout(createEnemy, 0); // Spawn enemy immediately
 
-      // Create additional enemy after 4 seconds
-      setTimeout(() => {
-        if (GameRunning) {
-          createEnemy();
-        }
-      }, 4000);
-
-      // Start the game loop
+      // Regular enemy spawn after 3 seconds
+      setTimeout(function spawnEnemy() {
+        createEnemy();
+        setTimeout(spawnEnemy, 3000); // Change delay to 3000 milliseconds (3 seconds)
+      }, 3000);
+      
       update();
     }
 
