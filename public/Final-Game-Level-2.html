@@ -197,6 +197,12 @@
       moveEnemies();
       checkCollision();
 
+      // Add the missing function calls to update the canvas
+      drawBullets();
+      moveBullets();
+      drawEnemies();
+      moveEnemies();
+
       requestAnimationFrame(draw);
     }
 
