@@ -59,6 +59,10 @@
     const enemyColor = 'red';
     const targetColor = 'green';
 
+    // Set the properties of the enemy dots
+    const enemyRadius = 15;
+    let enemies = [];
+
     // Function to handle mouse movement
     function handleMouseMove(event) {
       mouseX = event.clientX - canvas.getBoundingClientRect().left;
@@ -97,6 +101,21 @@
       }
     }
 
+    // Function to create an enemy
+    function createEnemy(x, y, dx, dy) {
+      let enemy = {
+        x: x,
+        y: y,
+        dx: dx,
+        dy: dy,
+        radius: enemyRadius,
+        color: enemyColor
+      };
+
+      enemies.push(enemy);
+      enemyCount++;
+    }
+
     // Function to draw the player dot
     function drawPlayer() {
       ctx.beginPath();
@@ -112,6 +131,17 @@
         ctx.beginPath();
         ctx.arc(bullets[i].x, bullets[i].y, bullets[i].radius, 0, Math.PI * 2);
         ctx.fillStyle = bullets[i].color;
+        ctx.fill();
+        ctx.closePath();
+      }
+    }
+
+    // Function to draw the enemies
+    function drawEnemies() {
+      for (let i = 0; i < enemies.length; i++) {
+        ctx.beginPath();
+        ctx.arc(enemies[i].x, enemies[i].y, enemies[i].radius, 0, Math.PI * 2);
+        ctx.fillStyle = enemies[i].color;
         ctx.fill();
         ctx.closePath();
       }
@@ -135,12 +165,50 @@
       }
     }
 
+    // Function to update the position of the enemies
+    function updateEnemies() {
+      for (let i = 0; i < enemies.length; i++) {
+        enemies[i].x += enemies[i].dx;
+        enemies[i].y += enemies[i].dy;
+
+        // Check for collision with player
+        if (isCollision(playerX, playerY, dotRadius, enemies[i].x, enemies[i].y, enemies[i].radius)) {
+          // Handle player-enemy collision
+          // For example, you can end the game or reduce player's health
+          console.log('Player collided with an enemy!');
+        }
+
+        // Check for collision with bullets
+        for (let j = 0; j < bullets.length; j++) {
+          if (isCollision(bullets[j].x, bullets[j].y, bullets[j].radius, enemies[i].x, enemies[i].y, enemies[i].radius)) {
+            // Handle bullet-enemy collision
+            // For example, you can remove the enemy and the bullet
+            bullets.splice(j, 1);
+            bulletCount--;
+            enemies.splice(i, 1);
+            enemyCount--;
+            break;
+          }
+        }
+      }
+    }
+
+    // Function to check for collision between two circles
+    function isCollision(x1, y1, r1, x2, y2, r2) {
+      const dx = x2 - x1;
+      const dy = y2 - y1;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      return distance < r1 + r2;
+    }
+
     // Function to draw the game
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawPlayer();
       drawBullets();
+      drawEnemies();
       updateBullets();
+      updateEnemies();
 
       if (mouseDown) {
         fireBullet();
@@ -157,6 +225,11 @@
 
       dx = 0;
       dy = 0;
+
+      // Create some enemies
+      createEnemy(100, 100, 1, 1);
+      createEnemy(200, 200, -1, 1);
+      createEnemy(300, 300, 1, -1);
 
       draw();
     }
