@@ -55,7 +55,7 @@
 
     // Set the properties of the dots
     const dotRadius = 10;
-    const playerColor = 'white';
+    const playerColor = 'black'; // Changed the player dot color to black
     const enemyColor = 'red';
     const targetColor = 'green';
 
@@ -109,7 +109,8 @@
         dx: dx,
         dy: dy,
         radius: enemyRadius,
-        color: enemyColor
+        color: enemyColor,
+        isAlive: true
       };
 
       enemies.push(enemy);
@@ -139,11 +140,13 @@
     // Function to draw the enemies
     function drawEnemies() {
       for (let i = 0; i < enemies.length; i++) {
-        ctx.beginPath();
-        ctx.arc(enemies[i].x, enemies[i].y, enemies[i].radius, 0, Math.PI * 2);
-        ctx.fillStyle = enemies[i].color;
-        ctx.fill();
-        ctx.closePath();
+        if (enemies[i].isAlive) {
+          ctx.beginPath();
+          ctx.arc(enemies[i].x, enemies[i].y, enemies[i].radius, 0, Math.PI * 2);
+          ctx.fillStyle = enemies[i].color;
+          ctx.fill();
+          ctx.closePath();
+        }
       }
     }
 
@@ -168,26 +171,28 @@
     // Function to update the position of the enemies
     function updateEnemies() {
       for (let i = 0; i < enemies.length; i++) {
-        enemies[i].x += enemies[i].dx;
-        enemies[i].y += enemies[i].dy;
+        if (enemies[i].isAlive) {
+          enemies[i].x += enemies[i].dx;
+          enemies[i].y += enemies[i].dy;
 
-        // Check for collision with player
-        if (isCollision(playerX, playerY, dotRadius, enemies[i].x, enemies[i].y, enemies[i].radius)) {
-          // Handle player-enemy collision
-          // For example, you can end the game or reduce player's health
-          console.log('Player collided with an enemy!');
-        }
+          // Check for collision with player
+          if (isCollision(playerX, playerY, dotRadius, enemies[i].x, enemies[i].y, enemies[i].radius)) {
+            // Handle player-enemy collision
+            // For example, you can end the game or reduce player's health
+            console.log('Player collided with an enemy!');
+          }
 
-        // Check for collision with bullets
-        for (let j = 0; j < bullets.length; j++) {
-          if (isCollision(bullets[j].x, bullets[j].y, bullets[j].radius, enemies[i].x, enemies[i].y, enemies[i].radius)) {
-            // Handle bullet-enemy collision
-            // For example, you can remove the enemy and the bullet
-            bullets.splice(j, 1);
-            bulletCount--;
-            enemies.splice(i, 1);
-            enemyCount--;
-            break;
+          // Check for collision with bullets
+          for (let j = 0; j < bullets.length; j++) {
+            if (isCollision(bullets[j].x, bullets[j].y, bullets[j].radius, enemies[i].x, enemies[i].y, enemies[i].radius)) {
+              // Handle bullet-enemy collision
+              // For example, you can remove the enemy and the bullet
+              bullets.splice(j, 1);
+              bulletCount--;
+              enemies[i].isAlive = false;
+              enemyCount--;
+              break;
+            }
           }
         }
       }
