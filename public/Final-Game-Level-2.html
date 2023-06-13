@@ -3,15 +3,19 @@
 <head>
   <style>
     body {
-      background-color: black;
+      background-color: white;
+      margin: 0;
+      padding: 0;
     }
   </style>
 </head>
 <body>
   <canvas id="gameCanvas" width="800" height="600"></canvas>
+  <button id="restartButton" style="display: none;">Restart</button>
 
   <script>
     const canvas = document.getElementById("gameCanvas");
+    const restartButton = document.getElementById("restartButton");
     const ctx = canvas.getContext("2d");
 
     // Player variables
@@ -36,6 +40,7 @@
     document.addEventListener("keydown", handleKeyDown);
     document.addEventListener("keyup", handleKeyUp);
     canvas.addEventListener("mousedown", handleMouseDown);
+    restartButton.addEventListener("click", restartGame);
 
     // Movement variables
     let moveUp = false;
@@ -153,6 +158,7 @@
         const distance = Math.sqrt(dx ** 2 + dy ** 2);
         if (distance < playerRadius + enemyRadius) {
           isGameOver = true;
+          restartButton.style.display = "block";
         }
 
         bullets.forEach((bullet, bulletIndex) => {
@@ -192,7 +198,17 @@
       if (!isGameOver) {
         enemies.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height });
       }
-    }, 2000);
+    }, 1000);
+
+    function restartGame() {
+      playerX = canvas.width / 2;
+      playerY = canvas.height / 2;
+      bullets = [];
+      enemies = [];
+      isGameOver = false;
+      restartButton.style.display = "none";
+      draw();
+    }
 
     draw();
   </script>
