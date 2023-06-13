@@ -6,6 +6,10 @@
       background-color: white;
       margin: 0;
       padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
 
     #gameCanvas {
@@ -15,9 +19,6 @@
 </head>
 <body>
   <canvas id="gameCanvas" width="800" height="600"></canvas>
-  <button id="restartButton" style="display: none;">Restart</button>
-
-
   <script>
     const canvas = document.getElementById("gameCanvas");
     const restartButton = document.getElementById("restartButton");
