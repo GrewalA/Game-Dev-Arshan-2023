@@ -39,7 +39,7 @@
     let mouseY;
     let key = [];
     let color = 'white';
-    let Speed = 1;
+    let Speed = 2; // Updated player speed to 2
     let canvas = document.getElementById("gameCanvas");
     let ctx = canvas.getContext("2d");
 
@@ -66,12 +66,12 @@
     function handleMouseMove(event) {
       mouseX = event.clientX - canvas.getBoundingClientRect().left;
       mouseY = event.clientY - canvas.getBoundingClientRect().top;
-      
+
       dx = mouseX - playerX;
       dy = mouseY - playerY;
-      
+
       const distance = Math.sqrt(dx * dx + dy * dy);
-      
+
       // Normalize the direction vector
       dx /= distance;
       dy /= distance;
@@ -79,14 +79,14 @@
 
     // Function to handle key down event
     function handleKeyDown(event) {
-      if (event.key === 'w' || event.key === 'W') {
-        dy = -1;
-      } else if (event.key === 's' || event.key === 'S') {
-        dy = 1;
-      } else if (event.key === 'a' || event.key === 'A') {
-        dx = -1;
-      } else if (event.key === 'd' || event.key === 'D') {
-        dx = 1;
+      if (event.key === 'w') {
+        playerY -= Speed;
+      } else if (event.key === 'a') {
+        playerX -= Speed;
+      } else if (event.key === 's') {
+        playerY += Speed;
+      } else if (event.key === 'd') {
+        playerX += Speed;
       }
     }
 
@@ -117,7 +117,7 @@
 
     // Function to fire a bullet
     function fireBullet() {
-      if (bulletCount < maxBullets && canFire) {
+      if (bullets.length < maxBullets && canFire) { // Fixed bulletCount variable name
         let bullet = {
           x: playerX,
           y: playerY,
@@ -128,7 +128,6 @@
         };
 
         bullets.push(bullet);
-        bulletCount++;
 
         canFire = false;
         setTimeout(() => {
@@ -199,7 +198,6 @@
           bullets[i].y - bullets[i].radius > canvas.height
         ) {
           bullets.splice(i, 1);
-          bulletCount--;
         }
       }
     }
@@ -230,9 +228,7 @@
               // Handle bullet-enemy collision
               // For example, you can remove the enemy and the bullet
               bullets.splice(j, 1);
-              bulletCount--;
               enemies[i].isAlive = false;
-              enemyCount--;
               break;
             }
           }
@@ -261,7 +257,9 @@
         fireBullet();
       }
 
-      requestAnimationFrame(draw);
+      if (GameRunning) {
+        requestAnimationFrame(draw);
+      }
     }
 
     // Function to handle key down events
@@ -281,10 +279,7 @@
     function gameOver() {
       GameRunning = false;
       alert('Game Over!');
-      document.removeEventListener('keydown', handleKeyDown);
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mousedown', handleMouseDown);
-      document.removeEventListener('mouseup', handleMouseUp);
+      location.reload(); // Reload the page to restart the game
     }
 
     // Initialize the game
