@@ -25,15 +25,6 @@
       color: white;
     }
 
-    #leaderboard {
-      position: absolute;
-      top: 60px;
-      right: 20px;
-      font-family: Arial, sans-serif;
-      font-size: 18px;
-      color: white;
-    }
-
     #gameOver {
       position: absolute;
       top: 50%;
@@ -76,9 +67,8 @@
 <body>
   <canvas id="gameCanvas" width="800" height="600"></canvas>
   <div id="timer"></div>
-  <div id="leaderboard"></div>
 
-  <div id="gameOver">
+  <div id="gameOver" style="display: none;">
     <div id="gameOverText">Game Over</div>
     <div id="nameInput">
       <input type="text" id="playerName" placeholder="Enter your name">
@@ -150,213 +140,217 @@
     }
 
     function handleMouseDown(event) {
-      if (isGameOver) {
-        restartGame();
-        return;
+      if (event.button === 0) {
+        const angle = Math.atan2(event.clientY - playerY, event.clientX - playerX);
+        const bullet = {
+          x: playerX,
+          y: playerY,
+          dx: Math.cos(angle) * bulletSpeed,
+          dy: Math.sin(angle) * bulletSpeed
+        };
+        bullets.push(bullet);
       }
-
-      const rect = canvas.getBoundingClientRect();
-      const mouseX = event.clientX - rect.left;
-      const mouseY = event.clientY - rect.top;
-
-      const angle = Math.atan2(mouseY - playerY, mouseX - playerX);
-
-      const bullet = {
-        x: playerX,
-        y: playerY,
-        dx: Math.cos(angle) * bulletSpeed,
-        dy: Math.sin(angle) * bulletSpeed
-      };
-
-      bullets.push(bullet);
     }
 
-    function updatePlayer() {
-      if (moveUp && playerY - playerSpeed - playerRadius > 0) {
+    function movePlayer() {
+      if (moveUp && playerY > playerRadius) {
         playerY -= playerSpeed;
       }
-
-      if (moveDown && playerY + playerSpeed + playerRadius < canvas.height) {
+      if (moveDown && playerY < canvas.height - playerRadius) {
         playerY += playerSpeed;
       }
-
-      if (moveLeft && playerX - playerSpeed - playerRadius > 0) {
+      if (moveLeft && playerX > playerRadius) {
         playerX -= playerSpeed;
       }
-
-      if (moveRight && playerX + playerSpeed + playerRadius < canvas.width) {
+      if (moveRight && playerX < canvas.width - playerRadius) {
         playerX += playerSpeed;
       }
     }
 
-    function updateBullets() {
-      bullets.forEach(bullet => {
-        bullet.x += bullet.dx;
-        bullet.y += bullet.dy;
-      });
+    function moveBullets() {
+      for (let i = bullets.length - 1; i >= 0; i--) {
+        bullets[i].x += bullets[i].dx;
+        bullets[i].y += bullets[i].dy;
 
-      bullets = bullets.filter(bullet => {
-        return bullet.x > -bulletSpeed &&
-          bullet.x < canvas.width + bulletSpeed &&
-          bullet.y > -bulletSpeed &&
-          bullet.y < canvas.height + bulletSpeed;
-      });
-    }
-
-    function updateEnemies() {
-      enemies.forEach(enemy => {
-        enemy.x += enemy.dx;
-        enemy.y += enemy.dy;
-
-        const dx = playerX - enemy.x;
-        const dy = playerY - enemy.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        if (distance < playerRadius + enemyRadius) {
-          isGameOver = true;
+        if (
+          bullets[i].x < 0 ||
+          bullets[i].x > canvas.width ||
+          bullets[i].y < 0 ||
+          bullets[i].y > canvas.height
+        ) {
+          bullets.splice(i, 1);
         }
-      });
-
-      enemies = enemies.filter(enemy => {
-        return enemy.x > -enemyRadius &&
-          enemy.x < canvas.width + enemyRadius &&
-          enemy.y > -enemyRadius &&
-          enemy.y < canvas.height + enemyRadius;
-      });
+      }
     }
 
-    function spawnEnemy() {
-      const side = Math.floor(Math.random() * 4);
-      let x, y, dx, dy;
+    function moveEnemies() {
+      for (let i = enemies.length - 1; i >= 0; i--) {
+        const angle = Math.atan2(playerY - enemies[i].y, playerX - enemies[i].x);
+        enemies[i].x += Math.cos(angle) * enemySpeed;
+        enemies[i].y += Math.sin(angle) * enemySpeed;
 
-      if (side === 0) {
-        // Top side
-        x = Math.random() * canvas.width;
-        y = -enemyRadius;
-        dx = 0;
-        dy = enemySpeed;
-      } else if (side === 1) {
-        // Right side
-        x = canvas.width + enemyRadius;
-        y = Math.random() * canvas.height;
-        dx = -enemySpeed;
-        dy = 0;
-      } else if (side === 2) {
-        // Bottom side
-        x = Math.random() * canvas.width;
-        y = canvas.height + enemyRadius;
-        dx = 0;
-        dy = -enemySpeed;
-      } else if (side === 3) {
-        // Left side
-        x = -enemyRadius;
-        y = Math.random() * canvas.height;
-        dx = enemySpeed;
-        dy = 0;
+        if (
+          enemies[i].x < 0 ||
+          enemies[i].x > canvas.width ||
+          enemies[i].y < 0 ||
+          enemies[i].y > canvas.height
+        ) {
+          enemies.splice(i, 1);
+        }
+
+        if (
+          Math.sqrt(Math.pow(playerX - enemies[i].x, 2) + Math.pow(playerY - enemies[i].y, 2)) <
+          playerRadius + enemyRadius
+        ) {
+          endGame();
+        }
       }
-
-      const enemy = { x, y, dx, dy };
-      enemies.push(enemy);
     }
 
-    function updateGame() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      if (isGameOver) {
-        displayGameOver();
-        return;
+    function handleCollisions() {
+      for (let i = bullets.length - 1; i >= 0; i--) {
+        for (let j = enemies.length - 1; j >= 0; j--) {
+          if (
+            Math.sqrt(Math.pow(bullets[i].x - enemies[j].x, 2) + Math.pow(bullets[i].y - enemies[j].y, 2)) <
+            bulletSpeed + enemyRadius
+          ) {
+            bullets.splice(i, 1);
+            enemies.splice(j, 1);
+            break;
+          }
+        }
       }
-
-      const currentTime = Date.now();
-      if (!startTime) startTime = currentTime;
-
-      elapsedTime = Math.floor((currentTime - startTime) / 1000);
-      displayTimer();
-
-      updatePlayer();
-      updateBullets();
-      updateEnemies();
-
-      drawPlayer();
-      drawBullets();
-      drawEnemies();
-
-      if (Math.random() < 0.02) {
-        spawnEnemy();
-      }
-
-      requestAnimationFrame(updateGame);
     }
 
     function drawPlayer() {
       ctx.beginPath();
       ctx.arc(playerX, playerY, playerRadius, 0, Math.PI * 2);
-      ctx.fillStyle = "blue";
+      ctx.fillStyle = "white";
       ctx.fill();
       ctx.closePath();
     }
 
     function drawBullets() {
-      bullets.forEach(bullet => {
+      for (let i = 0; i < bullets.length; i++) {
         ctx.beginPath();
-        ctx.arc(bullet.x, bullet.y, 2, 0, Math.PI * 2);
-        ctx.fillStyle = "red";
+        ctx.arc(bullets[i].x, bullets[i].y, 3, 0, Math.PI * 2);
+        ctx.fillStyle = "white";
         ctx.fill();
         ctx.closePath();
-      });
+      }
     }
 
     function drawEnemies() {
-      enemies.forEach(enemy => {
+      for (let i = 0; i < enemies.length; i++) {
         ctx.beginPath();
-        ctx.arc(enemy.x, enemy.y, enemyRadius, 0, Math.PI * 2);
-        ctx.fillStyle = "green";
+        ctx.arc(enemies[i].x, enemies[i].y, enemyRadius, 0, Math.PI * 2);
+        ctx.fillStyle = "red";
         ctx.fill();
         ctx.closePath();
-      });
+      }
     }
 
-    function displayTimer() {
-      document.getElementById("timer").textContent = `Time: ${elapsedTime}s`;
+    function drawTimer() {
+      ctx.font = "24px Arial";
+      ctx.fillStyle = "white";
+      ctx.fillText("Time: " + formatTime(elapsedTime), canvas.width - 120, 30);
     }
 
-    function displayGameOver() {
-      document.getElementById("gameOver").style.display = "block";
-      document.getElementById("gameOverText").textContent = "Game Over";
+    function drawLeaderboard() {
+      ctx.font = "18px Arial";
+      ctx.fillStyle = "white";
+      ctx.fillText("Leaderboard:", 20, 30);
+
+      for (let i = 0; i < leaderboard.length; i++) {
+        ctx.fillText((i + 1) + ". " + leaderboard[i].name + " - " + formatTime(leaderboard[i].time), 20, 60 + i * 30);
+      }
     }
 
-    function restartGame() {
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (!isGameOver) {
+        movePlayer();
+        moveBullets();
+        moveEnemies();
+        handleCollisions();
+        drawPlayer();
+        drawBullets();
+        drawEnemies();
+        drawTimer();
+      } else {
+        drawLeaderboard();
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    function formatTime(time) {
+      const minutes = Math.floor(time / 60);
+      const seconds = time % 60;
+      return minutes.toString().padStart(2, "0") + ":" + seconds.toString().padStart(2, "0");
+    }
+
+    function startGame() {
       isGameOver = false;
-      startTime = null;
-      elapsedTime = 0;
+      startTime = new Date().getTime();
       leaderboard = [];
+      elapsedTime = 0;
       playerX = canvas.width / 2;
       playerY = canvas.height / 2;
       bullets = [];
       enemies = [];
+      draw();
+      spawnEnemies();
+      updateTimer();
+    }
 
-      document.getElementById("gameOver").style.display = "none";
+    function endGame() {
+      isGameOver = true;
+      const currentTime = new Date().getTime();
+      elapsedTime = Math.floor((currentTime - startTime) / 1000);
+      setTimeout(() => {
+        document.getElementById("gameOver").style.display = "block";
+        document.getElementById("playerName").focus();
+      }, 1000);
     }
 
     function saveScore() {
-      const playerName = document.getElementById("playerName").value;
-      const score = elapsedTime;
-
-      leaderboard.push({ name: playerName, score });
-      leaderboard.sort((a, b) => b.score - a.score);
-
-      displayLeaderboard();
-    }
-
-    function displayLeaderboard() {
-      let leaderboardText = "<strong>Leaderboard</strong><br>";
-      for (let i = 0; i < leaderboard.length; i++) {
-        leaderboardText += `${i + 1}. ${leaderboard[i].name}: ${leaderboard[i].score}s<br>`;
+      const playerName = document.getElementById("playerName").value.trim();
+      if (playerName) {
+        const score = { name: playerName, time: elapsedTime };
+        leaderboard.push(score);
+        leaderboard.sort((a, b) => a.time - b.time);
+        leaderboard = leaderboard.slice(0, 10);
+        document.getElementById("gameOver").style.display = "none";
       }
-      document.getElementById("leaderboard").innerHTML = leaderboardText;
     }
 
-    updateGame();
+    function restartGame() {
+      document.getElementById("gameOver").style.display = "none";
+      startGame();
+    }
+
+    function spawnEnemies() {
+      setInterval(() => {
+        if (!isGameOver) {
+          const enemyX = Math.random() * canvas.width;
+          const enemyY = Math.random() * canvas.height;
+          enemies.push({ x: enemyX, y: enemyY });
+        }
+      }, 1000);
+    }
+
+    function updateTimer() {
+      setInterval(() => {
+        if (!isGameOver) {
+          const currentTime = new Date().getTime();
+          elapsedTime = Math.floor((currentTime - startTime) / 1000);
+        }
+      }, 1000);
+    }
+
+    startGame();
   </script>
 </body>
 </html>
