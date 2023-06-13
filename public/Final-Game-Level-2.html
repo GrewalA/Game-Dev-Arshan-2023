@@ -21,7 +21,7 @@
   <script>
     let disableType = false;
     let GameRunning = false;
-    let bulletSpeed = 500; // Decreased bullet reload time to fire more quickly
+    let bulletSpeed = 1000; // Increased bullet reload time
     let bulletTemp = 0;
     let minigunBool = false;
     let minigunTimer = 0;
@@ -39,7 +39,7 @@
     let mouseY;
     let key = [];
     let color = 'white';
-    let playerSpeed = 5; // Increased player speed to be faster than enemies
+    let Speed = 3; // Updated player speed to 2
     let canvas = document.getElementById("gameCanvas");
     let ctx = canvas.getContext("2d");
 
@@ -58,6 +58,10 @@
     const enemyColor = 'red';
     const targetColor = 'green';
 
+    // Set the properties of the enemy dots
+    const enemyRadius = 8; // Larger enemy dot size
+    let enemies = [];
+
     // Function to handle mouse movement
     function handleMouseMove(event) {
       mouseX = event.clientX - canvas.getBoundingClientRect().left;
@@ -73,37 +77,33 @@
       dy /= distance;
     }
 
-   // Function to handle key down event
-function handleKeyDown(event) {
-  if (event.key === 'w' || event.key === 'ArrowUp') {
-    playerY -= playerSpeed;
-  } else if (event.key === 'a' || event.key === 'ArrowLeft') {
-    playerX -= playerSpeed;
-  } else if (event.key === 's' || event.key === 'ArrowDown') {
-    playerY += playerSpeed;
-  } else if (event.key === 'd' || event.key === 'ArrowRight') {
-    playerX += playerSpeed;
-  }
-}
+    // Function to handle key down event
+    function handleKeyDown(event) {
+      if (event.key === 'w') {
+        playerY -= Speed;
+      } else if (event.key === 'a') {
+        playerX -= Speed;
+      } else if (event.key === 's') {
+        playerY += Speed;
+      } else if (event.key === 'd') {
+        playerX += Speed;
+      }
+    }
 
-// Function to handle key up event
-function handleKeyUp(event) {
-  if (
-    (event.key === 'w' || event.key === 'W' || event.key === 'ArrowUp') &&
-    (event.key === 's' || event.key === 'S' || event.key === 'ArrowDown')
-  ) {
-    dy = 0;
-  } else if (
-    (event.key === 'a' || event.key === 'A' || event.key === 'ArrowLeft') &&
-    (event.key === 'd' || event.key === 'D' || event.key === 'ArrowRight')
-  ) {
-    dx = 0;
-  }
-}
-
-// Add event listeners for arrow keys
-document.addEventListener('keydown', handleKeyDown);
-document.addEventListener('keyup', handleKeyUp);
+    // Function to handle key up event
+    function handleKeyUp(event) {
+      if (
+        (event.key === 'w' || event.key === 'W') &&
+        (event.key === 's' || event.key === 'S')
+      ) {
+        dy = 0;
+      } else if (
+        (event.key === 'a' || event.key === 'A') &&
+        (event.key === 'd' || event.key === 'D')
+      ) {
+        dx = 0;
+      }
+    }
 
     // Function to handle mouse down event
     function handleMouseDown(event) {
@@ -115,7 +115,6 @@ document.addEventListener('keyup', handleKeyUp);
       mouseDown = false;
     }
 
-    // Function to handle
     // Function to handle mouse click event
     function handleMouseClick(event) {
       if (canFire) {
@@ -155,8 +154,8 @@ document.addEventListener('keyup', handleKeyUp);
 
       // Move the bullets
       for (let i = 0; i < bullets.length; i++) {
-        bullets[i].x += bullets[i].dx * playerSpeed * 2;
-        bullets[i].y += bullets[i].dy * playerSpeed * 2;
+        bullets[i].x += bullets[i].dx * Speed * 2;
+        bullets[i].y += bullets[i].dy * Speed * 2;
       }
 
       // Remove bullets that are outside the canvas
@@ -180,8 +179,8 @@ document.addEventListener('keyup', handleKeyUp);
 
       // Move the enemy dots
       for (let i = 0; i < enemies.length; i++) {
-        enemies[i].x += enemies[i].dx * playerSpeed;
-        enemies[i].y += enemies[i].dy * playerSpeed;
+        enemies[i].x += enemies[i].dx * Speed;
+        enemies[i].y += enemies[i].dy * Speed;
       }
 
       // Remove enemies that are outside the canvas
@@ -215,7 +214,9 @@ document.addEventListener('keyup', handleKeyUp);
       for (let i = 0; i < enemies.length; i++) {
         distance = Math.sqrt(
           Math.pow(enemies[i].x - playerX, 2) +
-            Math.pow(enemies[i].y - playerY, 2
+            Math.pow(enemies[i].y - playerY, 2)
+        );
+
         if (distance < enemyRadius + dotRadius) {
           GameRunning = false;
           disableType = false;
