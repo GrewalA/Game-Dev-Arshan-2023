@@ -16,12 +16,12 @@
   </style>
 </head>
 <body>
-  <canvas id="gameCanvas" width="600" height="600"></canvas>
+  <canvas id="gameCanvas" width="400" height="400"></canvas>
 
   <script>
     let disableType = false;
     let GameRunning = false;
-    let bulletSpeed = 500;
+    let bulletSpeed = 300; // Increased bullet speed to 300ms
     let bulletTemp = 0;
     let minigunBool = false;
     let minigunTimer = 0;
@@ -39,7 +39,7 @@
     let mouseY;
     let key = [];
     let color = 'white';
-    let Speed = 1;
+    let Speed = 2; // Increased player movement speed to 2 pixels per frame
     let canvas = document.getElementById("gameCanvas");
     let ctx = canvas.getContext("2d");
 
@@ -50,17 +50,17 @@
     // Set the initial position and properties of the bullets
     let bullets = [];
     const maxBullets = 3;
-    const bulletRadius = 5;
+    const bulletRadius = 3; // Reduced bullet size to 3 pixels
     let bulletCount = 0;
 
     // Set the properties of the dots
-    const dotRadius = 10;
+    const dotRadius = 5; // Reduced dot size to 5 pixels
     const playerColor = 'black'; // Changed the player dot color to black
     const enemyColor = 'red';
     const targetColor = 'green';
 
     // Set the properties of the enemy dots
-    const enemyRadius = 15;
+    const enemyRadius = 7; // Reduced enemy dot size to 7 pixels
     let enemies = [];
 
     // Function to handle mouse movement
@@ -94,8 +94,8 @@
         let bullet = {
           x: playerX,
           y: playerY,
-          dx: dx,
-          dy: dy,
+          dx: dx * 5, // Increased bullet speed by multiplying dx and dy by 5
+          dy: dy * 5,
           radius: bulletRadius,
           color: playerColor
         };
@@ -189,6 +189,7 @@
             // Handle player-enemy collision
             // For example, you can end the game or reduce player's health
             console.log('Player collided with an enemy!');
+            died = true;
           }
 
           // Check for collision with bullets
@@ -224,12 +225,12 @@
   updateBullets();
   updateEnemies();
 
-  if (mouseDown) {
+  if (mouseDown && !died) {
     fireBullet();
   }
   
   // Spawn new enemy every 2 seconds
-  if (timer % 120 === 0) {
+  if (timer % 120 === 0 && !died) {
     const randomX = Math.random() * canvas.width;
     const randomY = Math.random() * canvas.height;
     const randomDX = Math.random() * 2 - 1;
