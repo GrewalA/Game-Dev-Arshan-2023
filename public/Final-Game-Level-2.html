@@ -140,217 +140,159 @@
     }
 
     function handleMouseDown(event) {
-      if (event.button === 0) {
-        const angle = Math.atan2(event.clientY - playerY, event.clientX - playerX);
-        const bullet = {
-          x: playerX,
-          y: playerY,
-          dx: Math.cos(angle) * bulletSpeed,
-          dy: Math.sin(angle) * bulletSpeed
-        };
-        bullets.push(bullet);
-      }
+      if (isGameOver) return;
+      const angle = Math.atan2(event.clientY - playerY, event.clientX - playerX);
+      const velocity = {
+        x: Math.cos(angle) * bulletSpeed,
+        y: Math.sin(angle) * bulletSpeed
+      };
+      bullets.push({ x: playerX, y: playerY, velocity });
     }
 
-    function movePlayer() {
-      if (moveUp && playerY > playerRadius) {
+    function updatePlayer() {
+      if (moveUp && playerY - playerSpeed >= playerRadius) {
         playerY -= playerSpeed;
       }
-      if (moveDown && playerY < canvas.height - playerRadius) {
+      if (moveDown && playerY + playerSpeed <= canvas.height - playerRadius) {
         playerY += playerSpeed;
       }
-      if (moveLeft && playerX > playerRadius) {
+      if (moveLeft && playerX - playerSpeed >= playerRadius) {
         playerX -= playerSpeed;
       }
-      if (moveRight && playerX < canvas.width - playerRadius) {
+      if (moveRight && playerX + playerSpeed <= canvas.width - playerRadius) {
         playerX += playerSpeed;
       }
     }
 
-    function moveBullets() {
-      for (let i = bullets.length - 1; i >= 0; i--) {
-        bullets[i].x += bullets[i].dx;
-        bullets[i].y += bullets[i].dy;
-
-        if (
-          bullets[i].x < 0 ||
-          bullets[i].x > canvas.width ||
-          bullets[i].y < 0 ||
-          bullets[i].y > canvas.height
-        ) {
-          bullets.splice(i, 1);
-        }
-      }
+    function updateBullets() {
+      bullets = bullets.filter(bullet => {
+        bullet.x += bullet.velocity.x;
+        bullet.y += bullet.velocity.y;
+        return (
+          bullet.x > -bulletSpeed &&
+          bullet.x < canvas.width + bulletSpeed &&
+          bullet.y > -bulletSpeed &&
+          bullet.y < canvas.height + bulletSpeed
+        );
+      });
     }
 
-    function moveEnemies() {
-      for (let i = enemies.length - 1; i >= 0; i--) {
-        const angle = Math.atan2(playerY - enemies[i].y, playerX - enemies[i].x);
-        enemies[i].x += Math.cos(angle) * enemySpeed;
-        enemies[i].y += Math.sin(angle) * enemySpeed;
-
-        if (
-          enemies[i].x < 0 ||
-          enemies[i].x > canvas.width ||
-          enemies[i].y < 0 ||
-          enemies[i].y > canvas.height
-        ) {
-          enemies.splice(i, 1);
+    function updateEnemies() {
+      enemies.forEach(enemy => {
+        const angle = Math.atan2(playerY - enemy.y, playerX - enemy.x);
+        enemy.x += Math.cos(angle) * enemySpeed;
+        enemy.y += Math.sin(angle) * enemySpeed;
+        const dx = playerX - enemy.x;
+        const dy = playerY - enemy.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance < playerRadius + enemyRadius) {
+          gameOver();
         }
-
-        if (
-          Math.sqrt(Math.pow(playerX - enemies[i].x, 2) + Math.pow(playerY - enemies[i].y, 2)) <
-          playerRadius + enemyRadius
-        ) {
-          endGame();
-        }
-      }
-    }
-
-    function handleCollisions() {
-      for (let i = bullets.length - 1; i >= 0; i--) {
-        for (let j = enemies.length - 1; j >= 0; j--) {
-          if (
-            Math.sqrt(Math.pow(bullets[i].x - enemies[j].x, 2) + Math.pow(bullets[i].y - enemies[j].y, 2)) <
-            bulletSpeed + enemyRadius
-          ) {
-            bullets.splice(i, 1);
-            enemies.splice(j, 1);
-            break;
-          }
-        }
-      }
+      });
     }
 
     function drawPlayer() {
       ctx.beginPath();
       ctx.arc(playerX, playerY, playerRadius, 0, Math.PI * 2);
-      ctx.fillStyle = "white";
+      ctx.fillStyle = "blue";
       ctx.fill();
       ctx.closePath();
     }
 
     function drawBullets() {
-      for (let i = 0; i < bullets.length; i++) {
+      bullets.forEach(bullet => {
         ctx.beginPath();
-        ctx.arc(bullets[i].x, bullets[i].y, 3, 0, Math.PI * 2);
-        ctx.fillStyle = "white";
-        ctx.fill();
-        ctx.closePath();
-      }
-    }
-
-    function drawEnemies() {
-      for (let i = 0; i < enemies.length; i++) {
-        ctx.beginPath();
-        ctx.arc(enemies[i].x, enemies[i].y, enemyRadius, 0, Math.PI * 2);
+        ctx.arc(bullet.x, bullet.y, 2, 0, Math.PI * 2);
         ctx.fillStyle = "red";
         ctx.fill();
         ctx.closePath();
-      }
+      });
+    }
+
+    function drawEnemies() {
+      enemies.forEach(enemy => {
+        ctx.beginPath();
+        ctx.arc(enemy.x, enemy.y, enemyRadius, 0, Math.PI * 2);
+        ctx.fillStyle = "black";
+        ctx.fill();
+        ctx.closePath();
+      });
     }
 
     function drawTimer() {
       ctx.font = "24px Arial";
       ctx.fillStyle = "white";
-      ctx.fillText("Time: " + formatTime(elapsedTime), canvas.width - 120, 30);
-    }
-
-    function drawLeaderboard() {
-      ctx.font = "18px Arial";
-      ctx.fillStyle = "white";
-      ctx.fillText("Leaderboard:", 20, 30);
-
-      for (let i = 0; i < leaderboard.length; i++) {
-        ctx.fillText((i + 1) + ". " + leaderboard[i].name + " - " + formatTime(leaderboard[i].time), 20, 60 + i * 30);
-      }
+      ctx.fillText(`Time: ${elapsedTime.toFixed(1)}s`, 20, 40);
     }
 
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawPlayer();
+      drawBullets();
+      drawEnemies();
+      drawTimer();
+    }
 
-      if (!isGameOver) {
-        movePlayer();
-        moveBullets();
-        moveEnemies();
-        handleCollisions();
-        drawPlayer();
-        drawBullets();
-        drawEnemies();
-        drawTimer();
-      } else {
-        drawLeaderboard();
+    function spawnEnemy() {
+      const x = Math.random() * canvas.width;
+      const y = Math.random() * canvas.height;
+      enemies.push({ x, y });
+    }
+
+    function update() {
+      if (isGameOver) return;
+      const currentTime = Date.now();
+      if (startTime === null) {
+        startTime = currentTime;
+      }
+      elapsedTime = (currentTime - startTime) / 1000;
+      updatePlayer();
+      updateBullets();
+      updateEnemies();
+      draw();
+
+      if (elapsedTime % 2 < 0.02) {
+        spawnEnemy();
       }
 
-      requestAnimationFrame(draw);
+      requestAnimationFrame(update);
     }
 
-    function formatTime(time) {
-      const minutes = Math.floor(time / 60);
-      const seconds = time % 60;
-      return minutes.toString().padStart(2, "0") + ":" + seconds.toString().padStart(2, "0");
+    function gameOver() {
+      isGameOver = true;
+      startTime = null;
+      document.getElementById("gameOver").style.display = "block";
     }
 
-    function startGame() {
+    function restartGame() {
       isGameOver = false;
-      startTime = new Date().getTime();
-      leaderboard = [];
-      elapsedTime = 0;
       playerX = canvas.width / 2;
       playerY = canvas.height / 2;
       bullets = [];
       enemies = [];
-      draw();
-      spawnEnemies();
-      updateTimer();
-    }
-
-    function endGame() {
-      isGameOver = true;
-      const currentTime = new Date().getTime();
-      elapsedTime = Math.floor((currentTime - startTime) / 1000);
-      setTimeout(() => {
-        document.getElementById("gameOver").style.display = "block";
-        document.getElementById("playerName").focus();
-      }, 1000);
+      startTime = null;
+      elapsedTime = 0;
+      document.getElementById("gameOver").style.display = "none";
+      requestAnimationFrame(update);
     }
 
     function saveScore() {
-      const playerName = document.getElementById("playerName").value.trim();
-      if (playerName) {
-        const score = { name: playerName, time: elapsedTime };
-        leaderboard.push(score);
-        leaderboard.sort((a, b) => a.time - b.time);
-        leaderboard = leaderboard.slice(0, 10);
-        document.getElementById("gameOver").style.display = "none";
+      const playerName = document.getElementById("playerName").value;
+      leaderboard.push({ name: playerName, score: elapsedTime });
+      leaderboard.sort((a, b) => a.score - b.score);
+      localStorage.setItem("leaderboard", JSON.stringify(leaderboard));
+      restartGame();
+    }
+
+    function loadLeaderboard() {
+      const leaderboardData = localStorage.getItem("leaderboard");
+      if (leaderboardData) {
+        leaderboard = JSON.parse(leaderboardData);
       }
     }
 
-    function restartGame() {
-      document.getElementById("gameOver").style.display = "none";
-      startGame();
-    }
-
-    function spawnEnemies() {
-      setInterval(() => {
-        if (!isGameOver) {
-          const enemyX = Math.random() * canvas.width;
-          const enemyY = Math.random() * canvas.height;
-          enemies.push({ x: enemyX, y: enemyY });
-        }
-      }, 1000);
-    }
-
-    function updateTimer() {
-      setInterval(() => {
-        if (!isGameOver) {
-          const currentTime = new Date().getTime();
-          elapsedTime = Math.floor((currentTime - startTime) / 1000);
-        }
-      }, 1000);
-    }
-
-    startGame();
+    loadLeaderboard();
+    restartGame();
   </script>
 </body>
 </html>
