@@ -323,22 +323,29 @@ function handleKeyUp(event) {
         leaderboard.sort((a, b) => a.time - b.time);
         leaderboard = leaderboard.slice(0, 10);
         document.getElementById("gameOver").style.display = "none";
+        document.getElementById("restartButton").style.display = "block";
       }
     }
 
     function restartGame() {
       document.getElementById("gameOver").style.display = "none";
+      document.getElementById("restartButton").style.display = "none";
       startGame();
     }
 
     function spawnEnemies() {
       setInterval(() => {
-        if (!isGameOver) {
-          const enemyX = Math.random() * canvas.width;
-          const enemyY = Math.random() * canvas.height;
-          enemies.push({ x: enemyX, y: enemyY });
-        }
-      }, 1000);
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        const angle = Math.atan2(playerY - y, playerX - x);
+        const enemy = {
+          x: x,
+          y: y,
+          dx: Math.cos(angle) * enemySpeed,
+          dy: Math.sin(angle) * enemySpeed
+        };
+        enemies.push(enemy);
+      }, 1000); // Spawn delay in milliseconds
     }
 
     function updateTimer() {
@@ -347,7 +354,7 @@ function handleKeyUp(event) {
           const currentTime = new Date().getTime();
           elapsedTime = Math.floor((currentTime - startTime) / 1000);
         }
-      }, 1000);
+      }, 1000); // Update interval in milliseconds
     }
 
     startGame();
