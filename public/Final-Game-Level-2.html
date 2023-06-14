@@ -12,6 +12,10 @@
       height: 100vh;
     }
 
+    #gameContainer {
+      position: relative;
+    }
+
     #gameCanvas {
       background-color: black;
     }
@@ -65,11 +69,14 @@
   </style>
 </head>
 <body>
-  <canvas id="gameCanvas" width="800" height="600"></canvas>
-  <div id="timer"></div>
+  <div id="gameContainer">
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <div id="timer"></div>
+  </div>
 
   <div id="gameOver" style="display: none;">
     <div id="gameOverText">Game Over</div>
+    <div id="timerGameOver"></div>
     <div id="nameInput">
       <input type="text" id="playerName" placeholder="Enter your name">
       <button onclick="saveScore()">Submit</button>
@@ -115,29 +122,29 @@
     let moveLeft = false;
     let moveRight = false;
 
-   function handleKeyDown(event) {
-  if (event.key === "w" || event.key === "W") {
-    moveUp = true;
-  } else if (event.key === "s" || event.key === "S") {
-    moveDown = true;
-  } else if (event.key === "a" || event.key === "A") {
-    moveLeft = true;
-  } else if (event.key === "d" || event.key === "D") {
-    moveRight = true;
-  }
-}
+    function handleKeyDown(event) {
+      if (event.key === "w" || event.key === "W") {
+        moveUp = true;
+      } else if (event.key === "s" || event.key === "S") {
+        moveDown = true;
+      } else if (event.key === "a" || event.key === "A") {
+        moveLeft = true;
+      } else if (event.key === "d" || event.key === "D") {
+        moveRight = true;
+      }
+    }
 
-function handleKeyUp(event) {
-  if (event.key === "w" || event.key === "W") {
-    moveUp = false;
-  } else if (event.key === "s" || event.key === "S") {
-    moveDown = false;
-  } else if (event.key === "a" || event.key === "A") {
-    moveLeft = false;
-  } else if (event.key === "d" || event.key === "D") {
-    moveRight = false;
-  }
-}
+    function handleKeyUp(event) {
+      if (event.key === "w" || event.key === "W") {
+        moveUp = false;
+      } else if (event.key === "s" || event.key === "S") {
+        moveDown = false;
+      } else if (event.key === "a" || event.key === "A") {
+        moveLeft = false;
+      } else if (event.key === "d" || event.key === "D") {
+        moveRight = false;
+      }
+    }
 
     function handleMouseDown(event) {
       if (event.button === 0) {
@@ -251,9 +258,8 @@ function handleKeyUp(event) {
     }
 
     function drawTimer() {
-      ctx.font = "24px Arial";
-      ctx.fillStyle = "white";
-      ctx.fillText("Time: " + formatTime(elapsedTime), canvas.width - 120, 30);
+      const timerElement = document.getElementById("timer");
+      timerElement.textContent = "Time: " + formatTime(elapsedTime);
     }
 
     function drawLeaderboard() {
@@ -344,8 +350,7 @@ function handleKeyUp(event) {
     function updateTimer() {
       setInterval(() => {
         if (!isGameOver) {
-          const currentTime = new Date().getTime();
-          elapsedTime = Math.floor((currentTime - startTime) / 1000);
+          elapsedTime++;
         }
       }, 1000);
     }
