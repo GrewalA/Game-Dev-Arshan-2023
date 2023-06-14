@@ -62,6 +62,24 @@
       font-family: Arial, sans-serif;
       font-size: 16px;
     }
+
+    #leaderboard {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-family: Arial, sans-serif;
+      font-size: 18px;
+      color: white;
+    }
+
+    #leaderboard h2 {
+      margin-bottom: 5px;
+    }
+
+    #leaderboardList {
+      padding-left: 20px;
+      list-style-type: decimal;
+    }
   </style>
 </head>
 <body>
@@ -77,6 +95,11 @@
     <div id="restartButton">
       <button onclick="restartGame()">Restart</button>
     </div>
+  </div>
+
+  <div id="leaderboard">
+    <h2>Leaderboard</h2>
+    <ol id="leaderboardList"></ol>
   </div>
 
   <script>
@@ -109,58 +132,64 @@
     document.addEventListener("keyup", handleKeyUp);
     canvas.addEventListener("mousedown", handleMouseDown);
 
-    // Movement variables
-    let moveUp = false;
-    let moveDown = false;
-    let moveLeft = false;
-    let moveRight = false;
-
     function handleKeyDown(event) {
-      if (event.key === "w" || event.key === "W") {
-        moveUp = true;
-      } else if (event.key === "s" || event.key === "S") {
-        moveDown = true;
-      } else if (event.key === "a" || event.key === "A") {
-        moveLeft = true;
-      } else if (event.key === "d" || event.key === "D") {
-        moveRight = true;
+      if (event.key === "ArrowLeft" || event.key === "Left") {
+        playerX -= playerSpeed;
+      } else if (event.key === "ArrowRight" || event.key === "Right") {
+        playerX += playerSpeed;
+      } else if (event.key === "ArrowUp" || event.key === "Up") {
+        playerY -= playerSpeed;
+      } else if (event.key === "ArrowDown" || event.key === "Down") {
+        playerY += playerSpeed;
       }
     }
 
     function handleKeyUp(event) {
-      if (event.key === "w" || event.key === "W") {
-        moveUp = false;
-      } else if (event.key === "s" || event.key === "S") {
-        moveDown = false;
-      } else if (event.key === "a" || event.key === "A") {
-        moveLeft = false;
-      } else if (event.key === "d" || event.key === "D") {
-        moveRight = false;
+      if (
+        event.key === "ArrowLeft" ||
+        event.key === "Left" ||
+        event.key === "ArrowRight" ||
+        event.key === "Right" ||
+        event.key === "ArrowUp" ||
+        event.key === "Up" ||
+        event.key === "ArrowDown" ||
+        event.key === "Down"
+      ) {
+        event.preventDefault();
       }
     }
 
     function handleMouseDown(event) {
-      if (isGameOver) return;
-      const angle = Math.atan2(event.clientY - playerY, event.clientX - playerX);
-      const velocity = {
-        x: Math.cos(angle) * bulletSpeed,
-        y: Math.sin(angle) * bulletSpeed
+      const bullet = {
+        x: playerX,
+        y: playerY,
+        velocity: getBulletVelocity(event.clientX, event.clientY),
       };
-      bullets.push({ x: playerX, y: playerY, velocity });
+      bullets.push(bullet);
+    }
+
+    function getBulletVelocity(targetX, targetY) {
+      const dx = targetX - playerX;
+      const dy = targetY - playerY;
+      const magnitude = Math.sqrt(dx * dx + dy * dy);
+      const velocityX = (dx / magnitude) * bulletSpeed;
+      const velocityY = (dy / magnitude) * bulletSpeed;
+      return { x: velocityX, y: velocityY };
     }
 
     function updatePlayer() {
-      if (moveUp && playerY - playerSpeed >= playerRadius) {
-        playerY -= playerSpeed;
+      // Keep the player within the canvas bounds
+      if (playerX < playerRadius) {
+        playerX = playerRadius;
       }
-      if (moveDown && playerY + playerSpeed <= canvas.height - playerRadius) {
-        playerY += playerSpeed;
+      if (playerX > canvas.width - playerRadius) {
+        playerX = canvas.width - playerRadius;
       }
-      if (moveLeft && playerX - playerSpeed >= playerRadius) {
-        playerX -= playerSpeed;
+      if (playerY < playerRadius) {
+        playerY = playerRadius;
       }
-      if (moveRight && playerX + playerSpeed <= canvas.width - playerRadius) {
-        playerX += playerSpeed;
+      if (playerY > canvas.height - playerRadius) {
+        playerY = canvas.height - playerRadius;
       }
     }
 
@@ -168,6 +197,20 @@
       bullets = bullets.filter(bullet => {
         bullet.x += bullet.velocity.x;
         bullet.y += bullet.velocity.y;
+
+        // Check collision with enemies
+        for (let i = 0; i < enemies.length; i++) {
+          const enemy = enemies[i];
+          const dx = bullet.x - enemy.x;
+          const dy = bullet.y - enemy.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < enemyRadius) {
+            // Bullet hit an enemy, remove both the bullet and the enemy
+            enemies.splice(i, 1);
+            return false;
+          }
+        }
+
         return (
           bullet.x > -bulletSpeed &&
           bullet.x < canvas.width + bulletSpeed &&
@@ -179,11 +222,15 @@
 
     function updateEnemies() {
       enemies.forEach(enemy => {
-        const angle = Math.atan2(playerY - enemy.y, playerX - enemy.x);
-        enemy.x += Math.cos(angle) * enemySpeed;
-        enemy.y += Math.sin(angle) * enemySpeed;
         const dx = playerX - enemy.x;
         const dy = playerY - enemy.y;
+        const magnitude = Math.sqrt(dx * dx + dy * dy);
+        enemy.velocity.x = (dx / magnitude) * enemySpeed;
+        enemy.velocity.y = (dy / magnitude) * enemySpeed;
+
+        enemy.x += enemy.velocity.x;
+        enemy.y += enemy.velocity.y;
+
         const distance = Math.sqrt(dx * dx + dy * dy);
         if (distance < playerRadius + enemyRadius) {
           gameOver();
@@ -194,7 +241,7 @@
     function drawPlayer() {
       ctx.beginPath();
       ctx.arc(playerX, playerY, playerRadius, 0, Math.PI * 2);
-      ctx.fillStyle = "white"; // Set player color to white
+      ctx.fillStyle = "blue";
       ctx.fill();
       ctx.closePath();
     }
@@ -203,7 +250,7 @@
       bullets.forEach(bullet => {
         ctx.beginPath();
         ctx.arc(bullet.x, bullet.y, 2, 0, Math.PI * 2);
-        ctx.fillStyle = "red"; // Set bullet color to red
+        ctx.fillStyle = "red";
         ctx.fill();
         ctx.closePath();
       });
@@ -213,7 +260,7 @@
       enemies.forEach(enemy => {
         ctx.beginPath();
         ctx.arc(enemy.x, enemy.y, enemyRadius, 0, Math.PI * 2);
-        ctx.fillStyle = "red"; // Set enemy color to red
+        ctx.fillStyle = "black";
         ctx.fill();
         ctx.closePath();
       });
@@ -222,7 +269,7 @@
     function drawTimer() {
       ctx.font = "24px Arial";
       ctx.fillStyle = "white";
-      ctx.fillText(`Time: ${elapsedTime.toFixed(1)}s`, 20, 40);
+      ctx.fillText(`Time: ${elapsedTime.toFixed(2)}s`, canvas.width - 140, 30);
     }
 
     function draw() {
@@ -231,67 +278,93 @@
       drawBullets();
       drawEnemies();
       drawTimer();
-    }
 
-    function spawnEnemy() {
-      const x = Math.random() * canvas.width;
-      const y = Math.random() * canvas.height;
-      enemies.push({ x, y });
-    }
-
-    function update() {
-      if (isGameOver) return;
-      const currentTime = Date.now();
-      if (startTime === null) {
-        startTime = currentTime;
+      if (isGameOver) {
+        showGameOverScreen();
+      } else {
+        requestAnimationFrame(draw);
       }
-      elapsedTime = (currentTime - startTime) / 1000;
-      updatePlayer();
-      updateBullets();
-      updateEnemies();
-      draw();
-
-      if (elapsedTime % 2 < 0.02) {
-        spawnEnemy();
-      }
-
-      requestAnimationFrame(update);
     }
 
     function gameOver() {
       isGameOver = true;
-      startTime = null;
-      document.getElementById("gameOver").style.display = "block";
+    }
+
+    function showGameOverScreen() {
+      const gameOverText = document.getElementById("gameOverText");
+      gameOverText.innerHTML = `Game Over<br>Your time: ${elapsedTime.toFixed(
+        2
+      )}s`;
+
+      const gameOverScreen = document.getElementById("gameOver");
+      gameOverScreen.style.display = "block";
     }
 
     function restartGame() {
       isGameOver = false;
+      startTime = null;
+      elapsedTime = 0;
+      leaderboard = [];
       playerX = canvas.width / 2;
       playerY = canvas.height / 2;
       bullets = [];
       enemies = [];
-      startTime = null;
-      elapsedTime = 0;
-      document.getElementById("gameOver").style.display = "none";
-      requestAnimationFrame(update);
+
+      const gameOverScreen = document.getElementById("gameOver");
+      gameOverScreen.style.display = "none";
+
+      draw();
+      startTimer();
     }
 
-    function saveScore() {
-      const playerName = document.getElementById("playerName").value;
-      leaderboard.push({ name: playerName, score: elapsedTime });
-      leaderboard.sort((a, b) => a.score - b.score);
-      localStorage.setItem("leaderboard", JSON.stringify(leaderboard));
-      restartGame();
+    function startTimer() {
+      startTime = new Date().getTime();
+      updateTimer();
     }
 
-    function loadLeaderboard() {
-      const leaderboardData = localStorage.getItem("leaderboard");
-      if (leaderboardData) {
-        leaderboard = JSON.parse(leaderboardData);
+    function updateTimer() {
+      const currentTime = new Date().getTime();
+      elapsedTime = (currentTime - startTime) / 1000;
+
+      if (!isGameOver) {
+        requestAnimationFrame(updateTimer);
       }
     }
 
-    loadLeaderboard();
+    function saveScore() {
+      const playerNameInput = document.getElementById("playerName");
+      const playerName = playerNameInput.value.trim();
+
+      if (playerName !== "") {
+        leaderboard.push({
+          name: playerName,
+          time: elapsedTime.toFixed(2),
+        });
+
+        leaderboard.sort((a, b) => a.time - b.time);
+
+        playerNameInput.value = "";
+
+        updateLeaderboard();
+      }
+    }
+
+    function updateLeaderboard() {
+      const leaderboardList = document.getElementById("leaderboardList");
+      leaderboardList.innerHTML = "";
+
+      leaderboard.forEach((entry, index) => {
+        if (index >= 5) {
+          return;
+        }
+
+        const listItem = document.createElement("li");
+        listItem.innerText = `${index + 1}. ${entry.name} - ${entry.time}s`;
+        leaderboardList.appendChild(listItem);
+      });
+    }
+
+    // Initialize game
     restartGame();
   </script>
 </body>
