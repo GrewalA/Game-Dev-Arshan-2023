@@ -85,7 +85,6 @@
     </div>
   </div>
 
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
@@ -98,6 +97,7 @@
 
     // Bullet variables
     const bulletSpeed = 8;
+    const bulletRadius = 3;
     let bullets = [];
 
     // Enemy variables
@@ -220,21 +220,20 @@
       );
     }
 
-  function detectBulletCollision() {
-  bullets.forEach((bullet, bulletIndex) => {
-    enemies.forEach((enemy, enemyIndex) => {
-      const dx = bullet.x - enemy.x;
-      const dy = bullet.y - enemy.y;
-      const distance = Math.sqrt(dx * dx + dy * dy);
+    function detectBulletCollision() {
+      bullets.forEach((bullet, bulletIndex) => {
+        enemies.forEach((enemy, enemyIndex) => {
+          const dx = bullet.x - enemy.x;
+          const dy = bullet.y - enemy.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
 
-      if (distance < bulletRadius + enemyRadius) {
-        bullets.splice(bulletIndex, 1);
-        enemies.splice(enemyIndex, 1);
-      }
-    });
-  });
-}
-
+          if (distance < bulletRadius + enemyRadius) {
+            bullets.splice(bulletIndex, 1);
+            enemies.splice(enemyIndex, 1);
+          }
+        });
+      });
+    }
 
     function drawPlayer() {
       ctx.beginPath();
@@ -267,98 +266,83 @@
     function drawTimer() {
       ctx.font = "24px Arial";
       ctx.fillStyle = "white";
-      ctx.fillText("Time: " + Math.floor(elapsedTime / 1000) + "s", 20, 40);
+      ctx.fillText(`Time: ${elapsedTime.toFixed(1)}s`, canvas.width - 150, 30);
     }
 
     function drawGameOver() {
       ctx.font = "30px Arial";
       ctx.fillStyle = "white";
-      ctx.textAlign = "center";
-      ctx.fillText("Game Over", canvas.width / 2, canvas.height / 2);
+      ctx.fillText("Game Over", canvas.width / 2, canvas.height / 2 - 30);
+      ctx.font = "16px Arial";
+      ctx.fillText("Enter your name:", canvas.width / 2, canvas.height / 2 + 20);
+    }
 
+    function drawLeaderboard() {
+      ctx.font = "16px Arial";
+      ctx.fillStyle = "white";
+      ctx.fillText("Leaderboard", 20, 30);
+
+      leaderboard.forEach((score, index) => {
+        ctx.fillText(`${index + 1}. ${score.name}: ${score.time.toFixed(1)}s`, 20, 60 + index * 20);
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      drawPlayer();
+      drawBullets();
+      drawEnemies();
+      drawTimer();
+      if (isGameOver) {
+        drawGameOver();
+        drawLeaderboard();
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    function updateTimer() {
+      if (!isGameOver) {
+        elapsedTime = (Date.now() - startTime) / 1000;
+      }
+    }
+
+    function endGame() {
+      isGameOver = true;
+      clearInterval(spawnInterval);
+      leaderboard.push({ name: "", time: elapsedTime });
+      leaderboard.sort((a, b) => a.time - b.time);
+      leaderboard = leaderboard.slice(0, 10);
       document.getElementById("gameOver").style.display = "block";
     }
 
     function saveScore() {
       const playerName = document.getElementById("playerName").value;
-      const score = Math.floor(elapsedTime / 1000);
-
-      if (playerName !== "" && score > 0) {
-        const sendData = { playerName, score };
-
-        $.ajax({
-          type: "POST",
-          url: "http://scoreboardphp.rf.gd/index.php",
-          data: sendData,
-          success: function(response) {
-            console.log("Score saved successfully!");
-          }
-        });
+      if (playerName) {
+        leaderboard[leaderboard.length - 1].name = playerName;
+        document.getElementById("playerName").value = "";
+        document.getElementById("gameOver").style.display = "none";
+        restartGame();
       }
     }
 
     function restartGame() {
-      document.getElementById("gameOver").style.display = "none";
-      resetGame();
-      startGame();
-    }
-
-    function resetGame() {
       playerX = canvas.width / 2;
       playerY = canvas.height / 2;
       bullets = [];
       enemies = [];
       isGameOver = false;
-      startTime = null;
-      elapsedTime = 0;
-    }
-
-    function endGame() {
-      isGameOver = true;
-      clearInterval(enemySpawnInterval);
-
-      drawGameOver();
-    }
-
-    function updateGame() {
-      if (!isGameOver) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        updatePlayerPosition();
-        updateBullets();
-        updateEnemies();
-        detectBulletCollision();
-
-        drawPlayer();
-        drawBullets();
-        drawEnemies();
-        drawTimer();
-
-        elapsedTime = Date.now() - startTime;
-      }
-    }
-
-    function startGame() {
       startTime = Date.now();
-
-      const enemySpawnInterval = setInterval(() => {
-        if (!isGameOver) {
-          spawnEnemy();
-        }
-      }, 1000);
-
-      requestAnimationFrame(gameLoop);
+      leaderboard = [];
+      spawnInterval = setInterval(spawnEnemy, 1000);
     }
 
-    function gameLoop() {
-      updateGame();
+    let spawnInterval = setInterval(spawnEnemy, 1000);
+    startTime = Date.now();
+    setInterval(updateTimer, 100);
 
-      if (!isGameOver) {
-        requestAnimationFrame(gameLoop);
-      }
-    }
-
-    startGame();
+    draw();
   </script>
 </body>
 </html>
