@@ -14,10 +14,32 @@
     canvas {
       background-color: black;
     }
+
+    #gameOver {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    #gameOver input {
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
   <canvas id="gameCanvas" width="600" height="400"></canvas>
+
+  <div id="gameOver">
+    <h1>Game Over</h1>
+    <input type="text" id="playerName" placeholder="Enter your name">
+    <button onclick="saveScoreAndRestart()">Submit</button>
+  </div>
 
   <script>
     const canvas = document.getElementById("gameCanvas");
@@ -203,6 +225,30 @@
       ctx.font = "30px Arial";
       ctx.fillStyle = "white";
       ctx.fillText("Game Over", canvas.width / 2, canvas.height / 2);
+    }
+
+    function endGame() {
+      isGameOver = true;
+      clearInterval(spawnInterval);
+      document.getElementById("gameOver").style.display = "flex";
+    }
+
+    function restartGame() {
+      isGameOver = false;
+      startTime = Date.now();
+      elapsedTime = 0;
+      playerX = canvas.width / 2;
+      playerY = canvas.height / 2;
+      bullets = [];
+      enemies = [];
+      spawnInterval = setInterval(spawnEnemy, 1000);
+      document.getElementById("gameOver").style.display = "none";
+    }
+
+    function saveScoreAndRestart() {
+      const playerName = document.getElementById("playerName").value;
+      // Save the score and player name here
+      restartGame();
     }
 
     function draw() {
