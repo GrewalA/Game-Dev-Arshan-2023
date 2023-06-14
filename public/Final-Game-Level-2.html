@@ -194,7 +194,7 @@
     function drawPlayer() {
       ctx.beginPath();
       ctx.arc(playerX, playerY, playerRadius, 0, Math.PI * 2);
-      ctx.fillStyle = "blue";
+      ctx.fillStyle = "white"; // Set player color to white
       ctx.fill();
       ctx.closePath();
     }
@@ -203,7 +203,7 @@
       bullets.forEach(bullet => {
         ctx.beginPath();
         ctx.arc(bullet.x, bullet.y, 2, 0, Math.PI * 2);
-        ctx.fillStyle = "red";
+        ctx.fillStyle = "red"; // Set bullet color to red
         ctx.fill();
         ctx.closePath();
       });
@@ -213,7 +213,7 @@
       enemies.forEach(enemy => {
         ctx.beginPath();
         ctx.arc(enemy.x, enemy.y, enemyRadius, 0, Math.PI * 2);
-        ctx.fillStyle = "black";
+        ctx.fillStyle = "red"; // Set enemy color to red
         ctx.fill();
         ctx.closePath();
       });
