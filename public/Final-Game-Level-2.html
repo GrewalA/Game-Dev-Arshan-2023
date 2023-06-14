@@ -12,10 +12,6 @@
       height: 100vh;
     }
 
-    #gameContainer {
-      position: relative;
-    }
-
     #gameCanvas {
       background-color: black;
     }
@@ -69,14 +65,11 @@
   </style>
 </head>
 <body>
-  <div id="gameContainer">
-    <canvas id="gameCanvas" width="800" height="600"></canvas>
-    <div id="timer"></div>
-  </div>
+  <canvas id="gameCanvas" width="800" height="600"></canvas>
+  <div id="timer"></div>
 
   <div id="gameOver" style="display: none;">
     <div id="gameOverText">Game Over</div>
-    <div id="timerGameOver"></div>
     <div id="nameInput">
       <input type="text" id="playerName" placeholder="Enter your name">
       <button onclick="saveScore()">Submit</button>
@@ -258,8 +251,9 @@
     }
 
     function drawTimer() {
-      const timerElement = document.getElementById("timer");
-      timerElement.textContent = "Time: " + formatTime(elapsedTime);
+      ctx.font = "24px Arial";
+      ctx.fillStyle = "white";
+      ctx.fillText("Time: " + formatTime(elapsedTime), canvas.width - 120, 30);
     }
 
     function drawLeaderboard() {
@@ -329,6 +323,7 @@
         leaderboard.sort((a, b) => a.time - b.time);
         leaderboard = leaderboard.slice(0, 10);
         document.getElementById("gameOver").style.display = "none";
+        window.location.reload(); // Reload the page after saving the score
       }
     }
 
