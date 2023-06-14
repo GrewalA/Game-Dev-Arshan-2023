@@ -4,123 +4,49 @@
   <style>
     body {
       background-color: white;
-      margin: 0;
-      padding: 0;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
+      margin: 0;
     }
 
-    #gameContainer {
-      position: relative;
-    }
-
-    #gameCanvas {
+    canvas {
       background-color: black;
-    }
-
-    #timer {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      font-family: Arial, sans-serif;
-      font-size: 24px;
-      color: white;
-    }
-
-    #gameOver {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-family: Arial, sans-serif;
-      font-size: 30px;
-      color: white;
-      text-align: center;
-    }
-
-    #nameInput {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-top: 20px;
-    }
-
-    #nameInput input {
-      margin-right: 10px;
-      padding: 5px;
-      font-family: Arial, sans-serif;
-      font-size: 16px;
-    }
-
-    #restartButton {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-top: 20px;
-    }
-
-    #restartButton button {
-      padding: 8px 16px;
-      font-family: Arial, sans-serif;
-      font-size: 16px;
     }
   </style>
 </head>
 <body>
-  <div id="gameContainer">
-    <canvas id="gameCanvas" width="800" height="600"></canvas>
-    <div id="timer"></div>
-
-    <div id="gameOver" style="display: none;">
-      <div id="gameOverText">Game Over</div>
-      <div id="nameInput">
-        <input type="text" id="playerName" placeholder="Enter your name">
-        <button onclick="saveScore()">Submit</button>
-      </div>
-      <div id="restartButton">
-        <button onclick="restartGame()">Restart</button>
-      </div>
-    </div>
-  </div>
+  <canvas id="gameCanvas" width="600" height="400"></canvas>
 
   <script>
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
 
-    // Player variables
-    let playerX = canvas.width / 2;
-    let playerY = canvas.height / 2;
     const playerRadius = 10;
     const playerSpeed = 5;
-
-    // Bullet variables
-    const bulletSpeed = 8;
-    const bulletRadius = 3;
-    let bullets = [];
-
-    // Enemy variables
-    const enemyRadius = 10;
-    const enemySpeed = 2;
-    let enemies = [];
-
-    // Game variables
-    let isGameOver = false;
-    let startTime = null;
-    let elapsedTime = 0;
-    let leaderboard = [];
-
-    // Event listeners
-    document.addEventListener("keydown", handleKeyDown);
-    document.addEventListener("keyup", handleKeyUp);
-    canvas.addEventListener("mousedown", handleMouseDown);
-
-    // Movement variables
+    let playerX = canvas.width / 2;
+    let playerY = canvas.height / 2;
     let moveUp = false;
     let moveDown = false;
     let moveLeft = false;
     let moveRight = false;
+
+    const bulletRadius = 5;
+    const bulletSpeed = 7;
+    let bullets = [];
+
+    const enemyRadius = 10;
+    const enemySpeed = 3;
+    let enemies = [];
+
+    let isGameOver = false;
+    let startTime = Date.now();
+    let elapsedTime = 0;
+
+    canvas.addEventListener("mousedown", handleMouseDown);
+    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("keyup", handleKeyUp);
 
     function handleKeyDown(event) {
       if (event.key === "w" || event.key === "W") {
@@ -146,7 +72,7 @@
       }
     }
 
-    function handleMouseDown() {
+    function handleMouseDown(event) {
       shootBullet();
     }
 
@@ -216,11 +142,15 @@
       });
 
       enemies = enemies.filter(
-        enemy => enemy.x > 0 && enemy.x < canvas.width && enemy.y < canvas.height
+        enemy =>
+          enemy.x > -enemyRadius &&
+          enemy.x < canvas.width + enemyRadius &&
+          enemy.y > -enemyRadius &&
+          enemy.y < canvas.height + enemyRadius
       );
     }
 
-    function detectBulletCollision() {
+    function checkBulletEnemyCollision() {
       bullets.forEach((bullet, bulletIndex) => {
         enemies.forEach((enemy, enemyIndex) => {
           const dx = bullet.x - enemy.x;
@@ -272,19 +202,7 @@
     function drawGameOver() {
       ctx.font = "30px Arial";
       ctx.fillStyle = "white";
-      ctx.fillText("Game Over", canvas.width / 2, canvas.height / 2 - 30);
-      ctx.font = "16px Arial";
-      ctx.fillText("Enter your name:", canvas.width / 2, canvas.height / 2 + 20);
-    }
-
-    function drawLeaderboard() {
-      ctx.font = "16px Arial";
-      ctx.fillStyle = "white";
-      ctx.fillText("Leaderboard", 20, 30);
-
-      leaderboard.forEach((score, index) => {
-        ctx.fillText(`${index + 1}. ${score.name}: ${score.time.toFixed(1)}s`, 20, 60 + index * 20);
-      });
+      ctx.fillText("Game Over", canvas.width / 2, canvas.height / 2);
     }
 
     function draw() {
@@ -294,53 +212,21 @@
       drawBullets();
       drawEnemies();
       drawTimer();
+
       if (isGameOver) {
         drawGameOver();
-        drawLeaderboard();
+      } else {
+        updatePlayerPosition();
+        updateBullets();
+        updateEnemies();
+        checkBulletEnemyCollision();
+        elapsedTime = (Date.now() - startTime) / 1000;
       }
 
       requestAnimationFrame(draw);
     }
 
-    function updateTimer() {
-      if (!isGameOver) {
-        elapsedTime = (Date.now() - startTime) / 1000;
-      }
-    }
-
-    function endGame() {
-      isGameOver = true;
-      clearInterval(spawnInterval);
-      leaderboard.push({ name: "", time: elapsedTime });
-      leaderboard.sort((a, b) => a.time - b.time);
-      leaderboard = leaderboard.slice(0, 10);
-      document.getElementById("gameOver").style.display = "block";
-    }
-
-    function saveScore() {
-      const playerName = document.getElementById("playerName").value;
-      if (playerName) {
-        leaderboard[leaderboard.length - 1].name = playerName;
-        document.getElementById("playerName").value = "";
-        document.getElementById("gameOver").style.display = "none";
-        restartGame();
-      }
-    }
-
-    function restartGame() {
-      playerX = canvas.width / 2;
-      playerY = canvas.height / 2;
-      bullets = [];
-      enemies = [];
-      isGameOver = false;
-      startTime = Date.now();
-      leaderboard = [];
-      spawnInterval = setInterval(spawnEnemy, 1000);
-    }
-
     let spawnInterval = setInterval(spawnEnemy, 1000);
-    startTime = Date.now();
-    setInterval(updateTimer, 100);
 
     draw();
   </script>
