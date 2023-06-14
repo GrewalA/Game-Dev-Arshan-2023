@@ -220,20 +220,21 @@
       );
     }
 
-    function detectBulletCollision() {
-      bullets.forEach(bullet => {
-        enemies.forEach((enemy, enemyIndex) => {
-          const dx = bullet.x - enemy.x;
-          const dy = bullet.y - enemy.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
+  function detectBulletCollision() {
+  bullets.forEach((bullet, bulletIndex) => {
+    enemies.forEach((enemy, enemyIndex) => {
+      const dx = bullet.x - enemy.x;
+      const dy = bullet.y - enemy.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
 
-          if (distance < bulletRadius + enemyRadius) {
-            bullets.splice(bulletIndex, 1);
-            enemies.splice(enemyIndex, 1);
-          }
-        });
-      });
-    }
+      if (distance < bulletRadius + enemyRadius) {
+        bullets.splice(bulletIndex, 1);
+        enemies.splice(enemyIndex, 1);
+      }
+    });
+  });
+}
+
 
     function drawPlayer() {
       ctx.beginPath();
